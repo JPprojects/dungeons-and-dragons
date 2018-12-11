@@ -336,3 +336,6 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+# appsettings.json
+DungeonsAndDragons/DungeonsAndDragons/appsettings.json
