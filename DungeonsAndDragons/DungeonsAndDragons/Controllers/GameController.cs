@@ -55,5 +55,10 @@ namespace DungeonsAndDragons.Controllers
             _context.SaveChanges();
             return Redirect("Index");
         }
+
+        public IActionResult View(int id)
+        {
+            return View();
+        }
     }
 }
