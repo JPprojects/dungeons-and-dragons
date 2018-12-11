@@ -10,6 +10,10 @@
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="2.44.0" />
+    <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.22.0" />
+    <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.141.0" />
   </ItemGroup>
 
   <ItemGroup>
