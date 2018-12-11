@@ -1,4 +1,28 @@
-﻿@{
+﻿@page
+@{
     ViewData["Title"] = "Sign In";
 }
+
 <h1>Game Dashboard</h1>
+
+<br />
+
+<a asp-controller="game" asp-action="new"><button>New Game</button></a>
+
+<br />
+
+<h2>My DM Games</h2>
+@foreach (var game in ViewBag.DMGames)
+{
+    @game.name<br />
+}
+
+<h2>My Player Games</h2>
+@foreach (var game in ViewBag.PlayerGames)
+{
+    @game.name<br />
+}
+
+<h2>My Invites</h2>
+@ViewBag.Invites
+
