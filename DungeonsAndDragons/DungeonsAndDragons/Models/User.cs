@@ -21,16 +21,7 @@ namespace DungeonsAndDragons.Models
         public static bool AuthenticateSignIn(string password, string enteredpassword)
         {
 
-            var userEnteredPasswordEncrypted = Encryption.EncryptPassword(enteredpassword);
-
-            if (userEnteredPasswordEncrypted != password)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return Encryption.EncryptPassword(enteredpassword) == password;
         }
     }
 
