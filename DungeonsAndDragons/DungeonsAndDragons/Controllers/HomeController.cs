@@ -1,10 +1,15 @@
-﻿using System;
+﻿using DungeonsAndDragons.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using DungeonsAndDragons.Models;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -20,7 +25,10 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Hello = _context.users.ToList();
+            if (HttpContext.Session.GetString("username") != null)
+            {
+                Response.Redirect("../Game");
+            }
             return View();
         }
     }

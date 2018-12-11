@@ -16,4 +16,7 @@
     <ProjectReference Include="..\DungeonsAndDragons\DungeonsAndDragons.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="UnitTest1.cs" />
+  </ItemGroup>
 </Project>
