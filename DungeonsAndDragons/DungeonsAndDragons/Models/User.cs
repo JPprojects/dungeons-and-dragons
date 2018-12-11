@@ -7,7 +7,7 @@ namespace DungeonsAndDragons.Models
 {
     public class User
     {
-        public long id { get; set; }
+        public int id { get; set; }
         [Column(TypeName = "varchar(20)")]
         public string username { get; set; }
         [Column(TypeName = "varchar(200)")]
