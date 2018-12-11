@@ -20,6 +20,16 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Index()
         {
+
+            @ViewBag.DMGames = _context.games.Where(x => x.dm == 1);
+            var playergameslist = new List<Game>();
+            var playergames = _context.gamesusers.Where(x => x.userid == 1);
+            foreach (var game in playergames)
+            {
+                playergameslist.Add(_context.games.SingleOrDefault(x => x.id == game.gameid));
+            }
+            @ViewBag.PlayerGames = playergameslist;
+            @ViewBag.Invites = "test";
             return View();
         }
 
@@ -32,7 +42,7 @@ namespace DungeonsAndDragons.Controllers
             return View();
         }
 
-        public IActionResult Create(string name, User user)
+        public IActionResult Create(string name)
         {
             //if (HttpContext.Session.GetString("username") == null)
             //{
