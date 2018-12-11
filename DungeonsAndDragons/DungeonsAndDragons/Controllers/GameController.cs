@@ -22,6 +22,7 @@ namespace DungeonsAndDragons.Controllers
         {
             @ViewBag.DMGames = _context.games.Where(x => x.dm == 1);
 
+            // Needs refactoring to use join table.
             var playergames = _context.gamesusers.Where(x => x.userid == 1);
             List<Game> playergameslist = new List<Game>();
             foreach (var game in playergames)
@@ -30,6 +31,7 @@ namespace DungeonsAndDragons.Controllers
             }
 
             @ViewBag.PlayerGames = playergameslist;
+            //End refactoring
 
             @ViewBag.Invites = "test";
 
