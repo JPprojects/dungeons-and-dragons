@@ -4,8 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DungeonsAndDragons.Models;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Session;
+using Microsoft.AspNetCore.Http;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -20,6 +24,12 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("username") == null)
+            {
+                Response.Redirect("/");
+            }
+            ViewBag.Username = HttpContext.Session.GetString("username");
+            ViewBag.id = HttpContext.Session.GetInt32("userID");
             @ViewBag.DMGames = _context.games.Where(x => x.dm == 1);
 
             // Needs refactoring to use join table.
