@@ -19,4 +19,7 @@
     <Compile Remove="Migrations\20181211141449_GameClass.cs" />
     <Compile Remove="Migrations\20181211142627_GameClass.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Game\" />
+  </ItemGroup>
 </Project>
