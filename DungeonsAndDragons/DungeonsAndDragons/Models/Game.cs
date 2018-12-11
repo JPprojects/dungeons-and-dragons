@@ -9,6 +9,6 @@ namespace DungeonsAndDragons.Models
         public long id { get; set; }
         [Column(TypeName = "varchar(50)")]
         public string name { get; set; }
-        public User dm_id { get; set; }
+        public User dm_ { get; set; }
     }
 }

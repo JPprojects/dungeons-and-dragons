@@ -15,4 +15,8 @@
   <ItemGroup>
     <Content Remove="Views\Home\About.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\20181211141449_GameClass.cs" />
+    <Compile Remove="Migrations\20181211142627_GameClass.cs" />
+  </ItemGroup>
 </Project>
