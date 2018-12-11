@@ -25,11 +25,19 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult New()
         {
+            //if (HttpContext.Session.GetString("username") == null)
+            //{
+            //    return Redirect("Home/Index");
+            //}
             return View();
         }
 
-        public IActionResult Create(string name)
+        public IActionResult Create(string name, User user)
         {
+            //if (HttpContext.Session.GetString("username") == null)
+            //{
+            //    return Redirect("Home/Index");
+            //}
             _context.games.Add(new Game { name = name });
             _context.SaveChanges();
             return Redirect("Index");
