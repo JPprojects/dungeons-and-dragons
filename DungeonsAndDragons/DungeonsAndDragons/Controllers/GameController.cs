@@ -104,12 +104,24 @@ namespace DungeonsAndDragons.Controllers
             var game = _context.games.SingleOrDefault(x => x.id == id);
 
             ViewBag.Game = game;
+            ViewBag.Message = TempData["FlashMessage"];
             return View();
         }
 
         public IActionResult Invite(int id, string username)
         {
             var inviteduser = _context.users.SingleOrDefault(x => x.username == username);
+
+            if (inviteduser == null)
+            {
+                TempData["FlashMessage"] = "Player does not exist";
+                return Redirect($"View/{id}");
+            }
+            else if (username == HttpContext.Session.GetString("username"))
+            {
+                TempData["FlashMessage"] = "Cannot invite yourself to a game";
+                return Redirect($"View/{id}");
+            }
 
             _context.gamesusers.Add(new GameUser { gameid = id, userid = inviteduser.id });
             _context.SaveChanges();
