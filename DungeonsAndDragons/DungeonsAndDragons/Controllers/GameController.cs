@@ -151,6 +151,11 @@ namespace DungeonsAndDragons.Controllers
                 TempData["FlashMessage"] = "Cannot invite yourself to a game";
                 return Redirect($"View/{id}");
             }
+            else if (_context.gamesusers.SingleOrDefault(x => x.userid == inviteduser.id & x.gameid == id) != null)
+            {
+                TempData["FlashMessage"] = "Player has already been invited";
+                return Redirect($"View/{id}");
+            }
 
             _context.gamesusers.Add(new GameUser { gameid = id, userid = inviteduser.id });
             _context.SaveChanges();
