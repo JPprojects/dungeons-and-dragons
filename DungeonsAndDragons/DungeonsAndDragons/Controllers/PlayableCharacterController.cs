@@ -26,10 +26,17 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult New()
         {
+            if (HttpContext.Session.GetInt32("userID") == null)
+            {
+                return Redirect("/");
+            }
+
+            ViewBag.Username = HttpContext.Session.GetString("username");
+
             return View();
         }
 
-        public IActionResult Create(string name, int gamesusersid)
+        public IActionResult Create(string name, int gamesusersid = 0)
         {
             if (HttpContext.Session.GetInt32("userID") == null)
             {
@@ -38,11 +45,16 @@ namespace DungeonsAndDragons.Controllers
 
             int userID = HttpContext.Session.GetInt32("userID") ?? default(int);
 
-            _context.playablecharacters.Add(new PlayableCharacter { userid = userID, name = name });
+            var character = new PlayableCharacter() { userid = userID, name = name };
+            _context.playablecharacters.Add(character);
             _context.SaveChanges();
 
-            var result = _context.gamesusers.Find(gamesusersid);
-            result.playablecharacterid = 1;
+            if (gamesusersid != 0)
+            {
+                var result = _context.gamesusers.Find(gamesusersid);
+                result.playablecharacterid = character.id;
+                _context.SaveChanges();
+            }
 
             return Redirect("New");
         }
