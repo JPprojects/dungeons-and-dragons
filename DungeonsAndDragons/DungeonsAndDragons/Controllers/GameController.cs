@@ -143,5 +143,15 @@ namespace DungeonsAndDragons.Controllers
 
             return Redirect($"View/{id}");
         }
+
+        public IActionResult Decline(int id)
+        {
+            var gameuser = _context.gamesusers.SingleOrDefault(x => x.gameid == id);
+
+            _context.gamesusers.Remove(gameuser);
+            _context.SaveChanges();
+
+            return Redirect("../Game");
+        }
     }
 }
