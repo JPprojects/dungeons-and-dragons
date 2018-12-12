@@ -107,10 +107,9 @@ namespace DungeonsAndDragons.Controllers
             }
             int user_id = HttpContext.Session.GetInt32("userID") ?? default(int);
 
-            _context.games.Add(new Game { name = name, dm = user_id });
+            var game = new Game { name = name, dm = user_id };
+            _context.games.Add(game);
             _context.SaveChanges();
-
-            var game = _context.games.SingleOrDefault(x => x.name == name);
 
             return Redirect($"View/{game.id}");
         }
