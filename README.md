@@ -37,6 +37,22 @@ cd dungeons-and-dragons
 
 (Database Migration info to go here)
 
+## appsettings
+Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons` directory with the below code snippet. Ensure that you update the Username and Password key value pairs with the username and password you will be using to access your database.
+
+```csharp
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Warning"
+        }
+    },
+    "AllowedHosts": "*",
+    "ConnectionStrings": {
+        "DefaultConnection": "Host=localhost;Port=5432;Username=username;Password=password;Database=dungeons_and_dragons;"
+    }
+}
+```
 
 ## Contributors ##
 * [Aimee Craig](https://github.com/aimeecraig)
