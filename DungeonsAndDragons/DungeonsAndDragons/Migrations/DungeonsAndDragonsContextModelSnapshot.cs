@@ -20,10 +20,10 @@ namespace DungeonsAndDragons.Migrations
 
             modelBuilder.Entity("DungeonsAndDragons.Models.Game", b =>
                 {
-                    b.Property<long>("id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long>("dm");
+                    b.Property<int>("dm");
 
                     b.Property<string>("name")
                         .HasColumnType("varchar(50)");
