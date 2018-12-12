@@ -47,7 +47,19 @@ namespace DungeonsAndDragons.Controllers
             games.ToList();
             @ViewBag.PlayerGames = games;
 
-            @ViewBag.Invites = "test";
+            var invites =
+               from gameuser in _context.gamesusers
+               join game in _context.games
+               on gameuser.gameid equals game.id
+               where gameuser.userid == userid
+               select new Game
+               {
+                   id = game.id,
+                   name = game.name,
+                   dm = game.dm,
+               };
+               invites.ToList();
+            @ViewBag.Invites = invites;
 
             return View();
         }
@@ -58,6 +70,9 @@ namespace DungeonsAndDragons.Controllers
             {
                 return Redirect("Home/Index");
             }
+            ViewBag.Username = HttpContext.Session.GetString("username");
+            ViewBag.id = HttpContext.Session.GetInt32("userID");
+
             return View();
         }
 
@@ -79,10 +94,27 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult View(int id)
         {
+            if (HttpContext.Session.GetString("username") == null)
+            {
+                return Redirect("Home/Index");
+            }
+            ViewBag.Username = HttpContext.Session.GetString("username");
+            ViewBag.id = HttpContext.Session.GetInt32("userID");
+
             var game = _context.games.SingleOrDefault(x => x.id == id);
 
             ViewBag.Game = game;
             return View();
+        }
+
+        public IActionResult Invite(int id, string username)
+        {
+            var inviteduser = _context.users.SingleOrDefault(x => x.username == username);
+
+            _context.gamesusers.Add(new GameUser { gameid = id, userid = inviteduser.id });
+            _context.SaveChanges();
+
+            return Redirect($"View/{id}");
         }
     }
 }

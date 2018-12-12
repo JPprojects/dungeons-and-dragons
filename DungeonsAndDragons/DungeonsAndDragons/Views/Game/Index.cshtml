@@ -24,5 +24,8 @@
 }
 
 <h2>My Invites</h2>
-@ViewBag.Invites
+@foreach (var invite in ViewBag.Invites)
+{
+    @invite.name<br />
+}
 

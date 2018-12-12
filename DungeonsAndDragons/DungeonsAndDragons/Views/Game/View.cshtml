@@ -3,3 +3,11 @@
 }
 
 <h1> @ViewBag.Game.name </h1>
+
+<h3>Invite Players:</h3>
+<form action="../Invite" method="post">
+    <label for="name">Player Name</label>
+    <input type="hidden" name="id" value="@ViewBag.Game.id">
+    <input type="text" name="username" required="" autofocus="" />
+    <input type="submit" name="Invite" />
+</form>
