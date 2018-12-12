@@ -144,21 +144,20 @@ namespace DungeonsAndDragons.Controllers
             if (inviteduser == null)
             {
                 TempData["FlashMessage"] = "Player does not exist";
-                return Redirect($"View/{id}");
             }
             else if (username == HttpContext.Session.GetString("username"))
             {
                 TempData["FlashMessage"] = "Cannot invite yourself to a game";
-                return Redirect($"View/{id}");
             }
             else if (_context.gamesusers.SingleOrDefault(x => x.userid == inviteduser.id & x.gameid == id) != null)
             {
                 TempData["FlashMessage"] = "Player has already been invited";
-                return Redirect($"View/{id}");
             }
-
-            _context.gamesusers.Add(new GameUser { gameid = id, userid = inviteduser.id });
-            _context.SaveChanges();
+            else
+            {
+                _context.gamesusers.Add(new GameUser { gameid = id, userid = inviteduser.id });
+                _context.SaveChanges();
+            }
 
             return Redirect($"View/{id}");
         }
