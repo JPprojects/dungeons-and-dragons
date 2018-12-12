@@ -1,3 +1,32 @@
 ﻿@page
 @{
 }
+<h1> @ViewBag.Game.name </h1>
+@if (ViewBag.DM.id == ViewBag.id)
+{
+    <h3>Invite Players:</h3>
+    <form action="../Invite" method="post">
+        <label for="name">Player Name</label>
+        <input type="hidden" name="id" value="@ViewBag.Game.id">
+        <input type="text" name="username" required="" autofocus="" />
+        <input type="submit" name="Invite" />
+    </form>
+}
+
+<br />
+@ViewBag.Message
+<h3> Dungeon Master </h3>
+@ViewBag.DM.username
+<h3> Players </h3>
+@foreach (var user in ViewBag.Users)
+{
+    @user.username
+    <br />
+}
+
+<h3> Pending Players </h3>
+@foreach  (var user in ViewBag.PendingUsers)
+{
+    @user.username
+    <br />
+}
