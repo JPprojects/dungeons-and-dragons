@@ -12,5 +12,6 @@ namespace DungeonsAndDragons.Models
         public DbSet<User> users { get; set; }
         public DbSet<Game> games { get; set; }
         public DbSet<GameUser> gamesusers { get; set; }
+        public DbSet<PlayableCharacter> playablecharacters { get; set; }
     }
 }

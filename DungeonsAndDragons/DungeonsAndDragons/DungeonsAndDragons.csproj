@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="Views\User\" />
     <Folder Include="Views\Game\" />
+    <Folder Include="Views\PlayableCharacter\" />
   </ItemGroup>
   
 </Project>

@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DungeonsAndDragons.Models
 {
-    public class GameUser
+    public class Character
     {
         public int id { get; set; }
-        public int gameid { get; set; }
-        public int userid { get; set; }
-        public int playablecharacterid { get; set; }
+        [Column(TypeName = "varchar(20)")]
+        public string name { get; set; }
     }
 }

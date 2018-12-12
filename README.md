@@ -54,6 +54,17 @@ Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDrago
 }
 ```
 
+(Run migrations)
+
+## Setup Foreign Keys
+In the `gamesusers` table set the following foreign keys:
+* gameid => games.id
+* userid => users.id
+* playablecharacterid = playablecharacters.id (nullable = true)
+
+In the `playablecharacters` table set the following foreign keys:
+* userid = users.id
+
 ## Contributors ##
 * [Aimee Craig](https://github.com/aimeecraig)
 * [John Littler](https://github.com/JSLittler)

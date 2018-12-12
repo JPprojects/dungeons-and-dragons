@@ -2,15 +2,17 @@
 using DungeonsAndDragons.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DungeonsAndDragons.Migrations
 {
     [DbContext(typeof(DungeonsAndDragonsContext))]
-    partial class DungeonsAndDragonsContextModelSnapshot : ModelSnapshot
+    [Migration("20181212103407_Character")]
+    partial class Character
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,8 +42,6 @@ namespace DungeonsAndDragons.Migrations
 
                     b.Property<int>("gameid");
 
-                    b.Property<int>("playablecharacterid");
-
                     b.Property<int>("userid");
 
                     b.HasKey("id");
@@ -56,8 +56,6 @@ namespace DungeonsAndDragons.Migrations
 
                     b.Property<string>("name")
                         .HasColumnType("varchar(20)");
-
-                    b.Property<int>("userid");
 
                     b.HasKey("id");
 
