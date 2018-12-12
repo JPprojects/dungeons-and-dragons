@@ -1,33 +1,30 @@
 @{
     ViewData["Title"] = "Sign In";
 }
-
 <h1>Game Dashboard</h1>
-
 <br />
-
 <a asp-controller="game" asp-action="new"><button>New Game</button></a>
-
 <br />
-
 <h2>My DM Games</h2>
 @foreach (var game in ViewBag.DMGames)
 {
-<a href="Game/View/@game.id">@game.name</a>
-<br />
+    <a href="Game/View/@game.id">@game.name</a>
+    <br />
 }
-
 <h2>My Player Games</h2>
 @foreach (var game in ViewBag.PlayerGames)
 {
     <a href="Game/View/@game.id">@game.name</a>
     <br />
 }
-
 <h2>My Invites</h2>
 @foreach (var invite in ViewBag.Invites)
 {
     @invite.name
+    <form action="PlayableCharacter/New" method="get">
+        <input type="hidden" name="gamesusersid" value="@invite.id" />
+        <input type="submit" value="Accept" />
+    </form>
     <form action="Game/Decline" method="post">
         <input type="hidden" name="id" value="@invite.id" />
         <input type="submit" value="Decline" />
