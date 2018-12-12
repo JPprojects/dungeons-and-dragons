@@ -28,20 +28,24 @@ namespace DungeonsAndDragons.Controllers
             {
                 Response.Redirect("/");
             }
+            int userid = HttpContext.Session.GetInt32("userID") ?? default(int);
             ViewBag.Username = HttpContext.Session.GetString("username");
             ViewBag.id = HttpContext.Session.GetInt32("userID");
-            @ViewBag.DMGames = _context.games.Where(x => x.dm == 1);
 
-            // Needs refactoring to use join table.
-            var playergames = _context.gamesusers.Where(x => x.userid == 1);
-            List<Game> playergameslist = new List<Game>();
-            foreach (var game in playergames)
-            {
-                playergameslist.Add(_context.games.SingleOrDefault(x => x.id == game.gameid));
-            }
+            @ViewBag.DMGames = _context.games.Where(x => x.dm == userid);
 
-            @ViewBag.PlayerGames = playergameslist;
-            //End refactoring
+            var games =
+               from gameuser in _context.gamesusers
+               join game in _context.games
+               on gameuser.gameid equals game.id where gameuser.userid == userid
+               select new Game
+               {
+                   id = game.id,
+                   name = game.name,
+                   dm = game.dm,
+               };
+            games.ToList();
+            @ViewBag.PlayerGames = games;
 
             @ViewBag.Invites = "test";
 
@@ -67,11 +71,17 @@ namespace DungeonsAndDragons.Controllers
 
             _context.games.Add(new Game { name = name, dm = user_id });
             _context.SaveChanges();
-            return Redirect("Index");
+
+            var game = _context.games.SingleOrDefault(x => x.name == name);
+
+            return Redirect($"View/{game.id}");
         }
 
         public IActionResult View(int id)
         {
+            var game = _context.games.SingleOrDefault(x => x.id == id);
+
+            ViewBag.Game = game;
             return View();
         }
     }
