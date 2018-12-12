@@ -338,4 +338,4 @@ ASALocalRun/
 .localhistory/
 
 # appsettings.json
-DungeonsAndDragons/DungeonsAndDragons/appsettings.json
+*appsettings.json
