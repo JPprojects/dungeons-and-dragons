@@ -23,3 +23,10 @@
     @user.username
     <br />
 }
+
+<h3> Pending Players </h3>
+@foreach  (var user in ViewBag.PendingUsers)
+{
+    @user.username
+    <br />
+}

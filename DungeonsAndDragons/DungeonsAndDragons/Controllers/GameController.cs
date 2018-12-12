@@ -37,7 +37,7 @@ namespace DungeonsAndDragons.Controllers
             var games =
                from gameuser in _context.gamesusers
                join game in _context.games
-               on gameuser.gameid equals game.id where gameuser.userid == userid
+               on gameuser.gameid equals game.id where gameuser.userid == userid & gameuser.playablecharacterid != null
                select new Game
                {
                    id = game.id,
@@ -51,7 +51,7 @@ namespace DungeonsAndDragons.Controllers
                from gameuser in _context.gamesusers
                join game in _context.games
                on gameuser.gameid equals game.id
-               where gameuser.userid == userid
+               where gameuser.userid == userid & gameuser.playablecharacterid == null
                select new Game
                {
                    id = game.id,
@@ -109,7 +109,7 @@ namespace DungeonsAndDragons.Controllers
             var users_in_game =
                from u in _context.users
                join g in _context.gamesusers
-               on u.id equals g.userid where g.gameid == id
+               on u.id equals g.userid where g.gameid == id & g.playablecharacterid != null
                select new User
                {
                    id = u.id,
@@ -117,6 +117,19 @@ namespace DungeonsAndDragons.Controllers
                };
             users_in_game.ToList();
             ViewBag.Users = users_in_game;
+
+            var invited_users =
+               from u in _context.users
+               join g in _context.gamesusers
+               on u.id equals g.userid
+               where g.gameid == id & g.playablecharacterid == null
+               select new User
+               {
+                   id = u.id,
+                   username = u.username
+               };
+            invited_users.ToList();
+            ViewBag.PendingUsers = invited_users;
 
             ViewBag.Game = game;
             ViewBag.Message = TempData["FlashMessage"];
