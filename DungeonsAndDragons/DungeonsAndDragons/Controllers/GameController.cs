@@ -103,6 +103,21 @@ namespace DungeonsAndDragons.Controllers
 
             var game = _context.games.SingleOrDefault(x => x.id == id);
 
+            var dm_id = game.dm;
+            ViewBag.DM = _context.users.SingleOrDefault(x => x.id == dm_id);
+
+            var users_in_game =
+               from u in _context.users
+               join g in _context.gamesusers
+               on u.id equals g.userid where g.gameid == id
+               select new User
+               {
+                   id = u.id,
+                   username = u.username
+               };
+            users_in_game.ToList();
+            ViewBag.Users = users_in_game;
+
             ViewBag.Game = game;
             ViewBag.Message = TempData["FlashMessage"];
             return View();

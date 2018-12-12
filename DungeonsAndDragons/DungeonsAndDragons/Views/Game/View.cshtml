@@ -14,3 +14,13 @@
 
 <br />
 @ViewBag.Message
+
+<h3> Dungeon Master </h3>
+@ViewBag.DM.username
+
+<h3> Players </h3>
+@foreach (var user in ViewBag.Users)
+{
+    @user.username
+    <br />
+}
