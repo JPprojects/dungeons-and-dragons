@@ -160,7 +160,7 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Decline(int id)
         {
-            var gameuser = _context.gamesusers.SingleOrDefault(x => x.gameid == id);
+            var gameuser = _context.gamesusers.SingleOrDefault(x => x.id == id);
 
             _context.gamesusers.Remove(gameuser);
             _context.SaveChanges();
