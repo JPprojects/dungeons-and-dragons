@@ -48,18 +48,22 @@ namespace DungeonsAndDragons.Controllers
             @ViewBag.PlayerGames = games;
 
             var invites =
-               from gameuser in _context.gamesusers
-               join game in _context.games
-               on gameuser.gameid equals game.id
-               where gameuser.userid == userid & gameuser.playablecharacterid == null
-               select new Mapping
-               {
-                   id = gameuser.id,
-                   gameid = game.id,
-                   gamename = game.name,
-                   gamedm = game.dm
-               };
-               invites.ToList();
+                from game in _context.games
+                join gameuser in _context.gamesusers
+                on game.id equals gameuser.gameid
+                join user in _context.users
+                on game.dm equals user.id
+                where gameuser.userid == userid & gameuser.playablecharacterid == null
+                select new Mapping
+                {
+                    id = gameuser.id,
+                    gameid = game.id,
+                    gamename = game.name,
+                    gamedm = game.dm,
+                    userid = user.id,
+                    userusername = user.username
+                };
+            invites.ToList();
             @ViewBag.Invites = invites;
 
             return View();
