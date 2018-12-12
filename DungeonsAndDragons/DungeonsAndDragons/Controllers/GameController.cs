@@ -52,11 +52,12 @@ namespace DungeonsAndDragons.Controllers
                join game in _context.games
                on gameuser.gameid equals game.id
                where gameuser.userid == userid & gameuser.playablecharacterid == null
-               select new Game
+               select new Mapping
                {
-                   id = game.id,
-                   name = game.name,
-                   dm = game.dm,
+                   id = gameuser.id,
+                   gameid = game.id,
+                   gamename = game.name,
+                   gamedm = game.dm
                };
                invites.ToList();
             @ViewBag.Invites = invites;
