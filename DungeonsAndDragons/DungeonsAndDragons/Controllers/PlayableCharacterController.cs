@@ -29,7 +29,7 @@ namespace DungeonsAndDragons.Controllers
             return View();
         }
 
-        public IActionResult Create(string name, int gamesusersid)
+        public IActionResult Create(string name)
         {
             if (HttpContext.Session.GetInt32("userID") == null)
             {
@@ -38,11 +38,34 @@ namespace DungeonsAndDragons.Controllers
 
             int userID = HttpContext.Session.GetInt32("userID") ?? default(int);
 
-            _context.playablecharacters.Add(new PlayableCharacter { userid = userID, name = name });
+            var character = new PlayableCharacter() { userid = userID, name = name };
+
+            _context.playablecharacters.Add(character);
             _context.SaveChanges();
 
+            var gamesusersid = 1;
+
             var result = _context.gamesusers.Find(gamesusersid);
-            result.playablecharacterid = 1;
+            result.playablecharacterid = character.id;
+            _context.SaveChanges();
+
+
+
+
+
+            //var playablecharacter = new PlayableCharacter()
+            //{
+            //    userid = userID,
+            //    name = name
+            //};
+
+            //var abc = _context.playablecharacters.Add(new PlayableCharacter { name = name, userid = userID });
+            //_context.SaveChanges();
+            //var result = _context.gamesusers.Find(gamesusersid);
+            //var b = abc.Properties;
+            //result.playablecharacterid =
+            //_context.SaveChanges();
+
 
             return Redirect("New");
         }
