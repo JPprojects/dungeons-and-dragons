@@ -26,10 +26,17 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult New()
         {
+            if (HttpContext.Session.GetInt32("userID") == null)
+            {
+                return Redirect("/");
+            }
+
+            ViewBag.Username = HttpContext.Session.GetString("username");
+
             return View();
         }
 
-        public IActionResult Create(string name)
+        public IActionResult Create(string name, int gamesusersid = 0)
         {
             if (HttpContext.Session.GetInt32("userID") == null)
             {
@@ -39,33 +46,15 @@ namespace DungeonsAndDragons.Controllers
             int userID = HttpContext.Session.GetInt32("userID") ?? default(int);
 
             var character = new PlayableCharacter() { userid = userID, name = name };
-
             _context.playablecharacters.Add(character);
             _context.SaveChanges();
 
-            var gamesusersid = 1;
-
-            var result = _context.gamesusers.Find(gamesusersid);
-            result.playablecharacterid = character.id;
-            _context.SaveChanges();
-
-
-
-
-
-            //var playablecharacter = new PlayableCharacter()
-            //{
-            //    userid = userID,
-            //    name = name
-            //};
-
-            //var abc = _context.playablecharacters.Add(new PlayableCharacter { name = name, userid = userID });
-            //_context.SaveChanges();
-            //var result = _context.gamesusers.Find(gamesusersid);
-            //var b = abc.Properties;
-            //result.playablecharacterid =
-            //_context.SaveChanges();
-
+            if (gamesusersid != 0)
+            {
+                var result = _context.gamesusers.Find(gamesusersid);
+                result.playablecharacterid = character.id;
+                _context.SaveChanges();
+            }
 
             return Redirect("New");
         }
