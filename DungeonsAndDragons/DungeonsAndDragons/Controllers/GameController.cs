@@ -50,20 +50,22 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult New()
         {
-            //if (HttpContext.Session.GetString("username") == null)
-            //{
-            //    return Redirect("Home/Index");
-            //}
+            if (HttpContext.Session.GetString("username") == null)
+            {
+                return Redirect("Home/Index");
+            }
             return View();
         }
 
         public IActionResult Create(string name)
         {
-            //if (HttpContext.Session.GetString("username") == null)
-            //{
-            //    return Redirect("Home/Index");
-            //}
-            _context.games.Add(new Game { name = name });
+            if (HttpContext.Session.GetString("username") == null)
+            {
+                return Redirect("Home/Index");
+            }
+            int user_id = HttpContext.Session.GetInt32("userID") ?? default(int);
+
+            _context.games.Add(new Game { name = name, dm = user_id });
             _context.SaveChanges();
             return Redirect("Index");
         }
