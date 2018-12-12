@@ -41,35 +41,40 @@ namespace DungeonsAndDragons.Controllers
                where userid == gameuser.userid
                select new Mapping
                {
+                   id = gameuser.id,
                    gameid = game.id,
                    gamename = game.name,
                    gamedm = game.dm,
-                   playablecharacterid = gameuser.playablecharacterid,
+                   playablecharacterid = gameuser.playablecharacterid
                };
 
-            List<Game> playergames = new List<Game>();
-            List<Game> gameinvites = new List<Game>();
+            List<Mapping> playergames = new List<Mapping>();
+            List<Mapping> gameinvites = new List<Mapping>();
 
             foreach (Mapping game in games)
             {
                 if (game.playablecharacterid != null)
                 {
-                    Game newgame = new Game()
+                    Mapping newgame = new Mapping()
                     {
-                        id = game.gameid,
-                        name = game.gamename,
-                        dm = game.gamedm
+                        id = game.id,
+                        gameid = game.gameid,
+                        gamename = game.gamename,
+                        gamedm = game.gamedm,
+                        playablecharacterid = game.playablecharacterid
                     };
 
                     playergames.Add(newgame);
                 }
                 else
                 {
-                    Game newgame = new Game()
+                    Mapping newgame = new Mapping()
                     {
-                        id = game.gameid,
-                        name = game.gamename,
-                        dm = game.gamedm
+                        id = game.id,
+                        gameid = game.gameid,
+                        gamename = game.gamename,
+                        gamedm = game.gamedm,
+                        playablecharacterid = game.playablecharacterid
                     };
 
                     gameinvites.Add(newgame);
@@ -124,31 +129,46 @@ namespace DungeonsAndDragons.Controllers
             var dm_id = game.dm;
             ViewBag.DM = _context.users.SingleOrDefault(x => x.id == dm_id);
 
-            var users_in_game =
-               from u in _context.users
-               join g in _context.gamesusers
-               on u.id equals g.userid
-               where g.gameid == id & g.playablecharacterid != null
-               select new User
+            IQueryable gameusers =
+               from gameuser in _context.gamesusers
+               join user in _context.users
+               on gameuser.userid equals user.id
+               where gameuser.gameid == id
+               select new Mapping
                {
-                   id = u.id,
-                   username = u.username
+                   userid = user.id,
+                   userusername = user.username,
+                   playablecharacterid = gameuser.playablecharacterid,
                };
-            users_in_game.ToList();
-            ViewBag.Users = users_in_game;
 
-            var invited_users =
-               from u in _context.users
-               join g in _context.gamesusers
-               on u.id equals g.userid
-               where g.gameid == id & g.playablecharacterid == null
-               select new User
-               {
-                   id = u.id,
-                   username = u.username
-               };
-            invited_users.ToList();
-            ViewBag.PendingUsers = invited_users;
+            List<User> ingameusers = new List<User>();
+            List<User> invitedusers = new List<User>();
+
+            foreach (Mapping user in gameusers)
+            {
+                if (user.playablecharacterid != null)
+                {
+                    User newuser = new User()
+                    {
+                        id = user.id,
+                        username = user.userusername
+                    };
+
+                    ingameusers.Add(newuser);
+                }
+                else
+                {
+                    User newuser = new User()
+                    {
+                        id = user.id,
+                        username = user.userusername
+                    };
+
+                    invitedusers.Add(newuser);
+                }
+            }
+            ViewBag.Users = ingameusers;
+            ViewBag.PendingUsers = invitedusers;
 
             ViewBag.Game = game;
             ViewBag.Message = TempData["FlashMessage"];

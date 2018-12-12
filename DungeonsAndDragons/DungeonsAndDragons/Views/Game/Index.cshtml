@@ -20,7 +20,7 @@
 <h2>My Invites</h2>
 @foreach (var invite in ViewBag.Invites)
 {
-    @invite.name
+    @invite.gamename
     <form action="PlayableCharacter/New" method="get">
         <input type="hidden" name="gamesusersid" value="@invite.id" />
         <input type="submit" value="Accept" />
