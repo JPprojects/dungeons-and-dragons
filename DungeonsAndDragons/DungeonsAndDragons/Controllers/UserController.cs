@@ -30,8 +30,7 @@ namespace DungeonsAndDragons.Controllers
 
         }
 
-        [HttpPost]
-        public void SignIn(string username, string password)
+        public IActionResult SignIn(string username, string password)
         {
             var user = _context.users.SingleOrDefault(c => c.username == username);
 
@@ -39,30 +38,28 @@ namespace DungeonsAndDragons.Controllers
             {
                 HttpContext.Session.SetInt32("userID", user.id);
                 HttpContext.Session.SetString("username", user.username);
-                Response.Redirect("../Game");
+                return Redirect("../Game");
             }
             else
             {
                 TempData["FlashMessage"] = "Login credentials do not match.";
-                Response.Redirect("/User");
+                return Redirect("/User");
             }
         }
 
-        // GET: /<controller>/
         public IActionResult New()
         {
             ViewBag.Message = TempData["FlashMessage"];
             return View();
         }
 
-        [HttpPost]
-        public void Create(string username, string password)
+        public IActionResult Create(string username, string password)
         {
             var user = _context.users.SingleOrDefault(c => c.username == username);
             if (user != null)
             {
                 TempData["FlashMessage"] = "Username already in use";
-                Response.Redirect("New");
+                return Redirect("New");
             }
             else
             {
@@ -72,14 +69,14 @@ namespace DungeonsAndDragons.Controllers
                 var retrievedUser = _context.users.SingleOrDefault(c => c.username == username);
                 HttpContext.Session.SetInt32("userID", retrievedUser.id);
                 HttpContext.Session.SetString("username", retrievedUser.username);
-                Response.Redirect("../Game");
+                return Redirect("../Game");
             }
         }
 
-        public void SignOut()
+        public IActionResult SignOut()
         {
             HttpContext.Session.Clear();
-            Response.Redirect("/");
+            return Redirect("/");
         }
     }
 }
