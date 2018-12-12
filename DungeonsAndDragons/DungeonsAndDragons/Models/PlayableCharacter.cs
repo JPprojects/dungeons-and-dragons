@@ -6,6 +6,6 @@ namespace DungeonsAndDragons.Models
 {
     public class PlayableCharacter : Character
     {
-
+        public int userid { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DungeonsAndDragons.Models;
 
@@ -28,10 +29,21 @@ namespace DungeonsAndDragons.Controllers
             return View();
         }
 
-        public IActionResult Create(string name)
+        public IActionResult Create(string name, int gamesusersid)
         {
-            _context.playablecharacters.Add(new PlayableCharacter { name = name });
+            if (HttpContext.Session.GetInt32("userID") == null)
+            {
+                return Redirect("/");
+            }
+
+            int userID = HttpContext.Session.GetInt32("userID") ?? default(int);
+
+            _context.playablecharacters.Add(new PlayableCharacter { userid = userID, name = name });
             _context.SaveChanges();
+
+            var result = _context.gamesusers.Find(gamesusersid);
+            result.playablecharacterid = 1;
+
             return Redirect("New");
         }
     }
