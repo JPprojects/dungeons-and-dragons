@@ -9,8 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DungeonsAndDragons.Migrations
 {
     [DbContext(typeof(DungeonsAndDragonsContext))]
-    [Migration("20181211160451_RemovedForeignKey")]
-    partial class RemovedForeignKey
+    [Migration("20181212085750_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,10 +22,10 @@ namespace DungeonsAndDragons.Migrations
 
             modelBuilder.Entity("DungeonsAndDragons.Models.Game", b =>
                 {
-                    b.Property<long>("id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<long>("dm");
+                    b.Property<int>("dm");
 
                     b.Property<string>("name")
                         .HasColumnType("varchar(50)");
@@ -35,9 +35,23 @@ namespace DungeonsAndDragons.Migrations
                     b.ToTable("games");
                 });
 
+            modelBuilder.Entity("DungeonsAndDragons.Models.GameUser", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("gameid");
+
+                    b.Property<int>("userid");
+
+                    b.HasKey("id");
+
+                    b.ToTable("gamesusers");
+                });
+
             modelBuilder.Entity("DungeonsAndDragons.Models.User", b =>
                 {
-                    b.Property<long>("id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("password")

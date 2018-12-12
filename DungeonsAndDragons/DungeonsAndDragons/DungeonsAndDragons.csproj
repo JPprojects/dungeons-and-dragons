@@ -20,6 +20,7 @@
   <ItemGroup>
     <Compile Remove="Migrations\20181211141449_GameClass.cs" />
     <Compile Remove="Migrations\20181211142627_GameClass.cs" />
+    <Compile Remove="Migrations\20181210151947_InitialCreate.cs" />
   </ItemGroup>
   
   <ItemGroup>
