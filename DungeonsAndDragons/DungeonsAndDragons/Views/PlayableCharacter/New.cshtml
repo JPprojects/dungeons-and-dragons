@@ -6,7 +6,7 @@
     <input type="text" name="name" required="" autofocus="" placeholder="Character name" />
     <br />
     <br />  
-    <select name="species_id">
+    <select id="species-form" name="species_id" onchange="changePreview(this)">
         @foreach (var species in ViewBag.Species)
         {
             <option value="@species.id" >@species.species_type</option>
@@ -17,3 +17,5 @@
     <input type="hidden" name="gamesusersid" value="@ViewBag.GamesUsersID" />
     <input type="submit" value="Generate Character" />
 </form>
+
+<img id="preview" class="preview" src="@ViewBag.Species[0].image_path" style="height: 100px; width: 100px;" />
