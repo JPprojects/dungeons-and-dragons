@@ -62,5 +62,38 @@ namespace DungeonsAndDragons.Controllers
 
             return Redirect($"../Game/View/{result.gameid}");
         }
+
+        public IActionResult View(int id)
+        {
+            ViewBag.Username = HttpContext.Session.GetString("username");
+
+            //ViewBag.Character = _context.playablecharacters.SingleOrDefault(x => x.id == character_id);
+
+            IQueryable result =
+               from species in _context.species
+               join character in _context.playablecharacters
+               on species.id equals character.species_id
+               select new Mapping
+               {
+                   speciesid = species.id,
+                   speciestype = species.species_type,
+                   speciesimage = species.image_path,
+                   speciesbasehp = species.base_hp,
+                   speciesbaseattack = species.base_attack,
+                   playablecharacterid = character.id,
+                   playablecharactername = character.name
+
+               };
+
+            foreach (Mapping character in result)
+            {
+                if (character.playablecharacterid == id)
+                {
+                    ViewBag.Character = character;
+                }
+            }
+
+            return View();
+        }
     }
 }

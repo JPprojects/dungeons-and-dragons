@@ -12,6 +12,11 @@ namespace DungeonsAndDragons.Models
         public int? playablecharacterid { get; set; }
         public string playablecharactername { get; set; }
         public int characteruserid { get; set; }
+        public int speciesid { get; set; }
+        public string speciestype { get; set; }
+        public string speciesimage { get; set; }
+        public int speciesbasehp { get; set; }
+        public int speciesbaseattack { get; set; }
 
     }
 }
