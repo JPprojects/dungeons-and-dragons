@@ -22,15 +22,19 @@
 <h3> Dungeon Master </h3>
 @ViewBag.DM.username
 <h3> Players </h3>
-@foreach (var user in ViewBag.Users)
-{
-    @user.userusername
-    <br />
-}
+<div id="acceptedPlayers">
+    @foreach (var user in ViewBag.Users)
+    {
+        @user.userusername
+        <br />
+    }
+</div>
 
 <h3> Pending Players </h3>
-@foreach (var user in ViewBag.PendingUsers)
-{
-    @user.userusername
-    <br />
-}
+<div id="pendingPlayers">
+    @foreach (var user in ViewBag.PendingUsers)
+    {
+        @user.userusername
+        <br />
+    }
+</div>

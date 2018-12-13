@@ -5,9 +5,9 @@ namespace DungeonsAndDragons.Hubs
 {
     public class DnDHub : Hub
     {
-        public async Task AcceptInvite(int gameUserId)
+        public async Task UpdatePlayerInvites(string acceptedplayers, string pendingplayers)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            await Clients.All.SendAsync("UpdatePlayerInvites", acceptedplayers, pendingplayers);
         }
     }
 }
