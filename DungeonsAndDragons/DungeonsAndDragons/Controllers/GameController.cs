@@ -47,7 +47,7 @@ namespace DungeonsAndDragons.Controllers
                    gameid = game.id,
                    gamename = game.name,
                    gamedm = game.dm,
-                   playablecharacterid = gameuser.playablecharacterid
+                   playablecharacterid = gameuser.playablecharacterid,
                    userid = user.id,
                    userusername = user.username
                };
@@ -181,43 +181,6 @@ namespace DungeonsAndDragons.Controllers
             _context.SaveChanges();
 
             return Redirect("../Game");
-        }
-        
-        public IActionResult Test()
-        {
-                      var games =
-               from gameuser in _context.gamesusers
-               join game in _context.games
-               on gameuser.gameid equals game.id where gameuser.userid == userid & gameuser.playablecharacterid != null
-               select new Game
-               {
-                   id = game.id,
-                   name = game.name,
-                   dm = game.dm,
-               };
-            games.ToList();
-            @ViewBag.PlayerGames = games;
-
-            var invites =
-                from game in _context.games
-                join gameuser in _context.gamesusers
-                on game.id equals gameuser.gameid
-                join user in _context.users
-                on game.dm equals user.id
-                where gameuser.userid == userid & gameuser.playablecharacterid == null
-                select new Mapping
-                {
-                    id = gameuser.id,
-                    gameid = game.id,
-                    gamename = game.name,
-                    gamedm = game.dm,
-                    userid = user.id,
-                    userusername = user.username
-                };
-            invites.ToList();
-            @ViewBag.Invites = invites;
-            
-            return View();
         }
     }
 }
