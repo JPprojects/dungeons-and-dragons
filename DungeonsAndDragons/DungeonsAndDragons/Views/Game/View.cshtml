@@ -20,13 +20,13 @@
 <h3> Players </h3>
 @foreach (var user in ViewBag.Users)
 {
-    @user.username
+    @user.userusername
     <br />
 }
 
 <h3> Pending Players </h3>
-@foreach  (var user in ViewBag.PendingUsers)
+@foreach (var user in ViewBag.PendingUsers)
 {
-    @user.username
+    @user.userusername
     <br />
 }
