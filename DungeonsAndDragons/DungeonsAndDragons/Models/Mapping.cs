@@ -9,8 +9,8 @@ namespace DungeonsAndDragons.Models
         public int gameid { get; set; }
         public int userid { get; set; }
         public string userusername { get; set; }
-        public int characterid { get; set; }
-        public string charactername { get; set; }
+        public int? playablecharacterid { get; set; }
+        public string playablecharactername { get; set; }
         public int characteruserid { get; set; }
 
     }
