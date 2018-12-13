@@ -48,7 +48,9 @@ namespace DungeonsAndDragons.Controllers
 
             int userID = HttpContext.Session.GetInt32("userID") ?? default(int);
 
-            var character = new PlayableCharacter() { userid = userID, name = name, species_id = species_id };
+            Species species = _context.species.SingleOrDefault(x => x.id == species_id);
+
+            var character = new PlayableCharacter() { userid = userID, name = name, species_id = species_id, hp = species.base_hp, attack = species.base_attack };
             _context.playablecharacters.Add(character);
             _context.SaveChanges();
 
@@ -81,7 +83,9 @@ namespace DungeonsAndDragons.Controllers
                    speciesbasehp = species.base_hp,
                    speciesbaseattack = species.base_attack,
                    playablecharacterid = character.id,
-                   playablecharactername = character.name
+                   playablecharactername = character.name,
+                   playablecharacterhp = character.hp,
+                   playablecharacterattack = character.attack
 
                };
 

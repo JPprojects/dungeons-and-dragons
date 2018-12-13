@@ -10,5 +10,7 @@ namespace DungeonsAndDragons.Models
         [Column(TypeName = "varchar(20)")]
         public string name { get; set; }
         public int species_id { get; set; }
+        public int hp { get; set; }
+        public int attack { get; set; }
     }
 }
