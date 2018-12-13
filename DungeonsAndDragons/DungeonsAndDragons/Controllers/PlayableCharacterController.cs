@@ -34,10 +34,12 @@ namespace DungeonsAndDragons.Controllers
             ViewBag.Username = HttpContext.Session.GetString("username");
             ViewBag.GamesUsersID = gamesusersid;
 
+            ViewBag.Species = _context.species.ToList();
+
             return View();
         }
 
-        public IActionResult Create(string name, int gamesusersid = 0)
+        public IActionResult Create(string name, int species_id, int gamesusersid = 0)
         {
             if (HttpContext.Session.GetInt32("userID") == null)
             {
@@ -46,7 +48,7 @@ namespace DungeonsAndDragons.Controllers
 
             int userID = HttpContext.Session.GetInt32("userID") ?? default(int);
 
-            var character = new PlayableCharacter() { userid = userID, name = name };
+            var character = new PlayableCharacter() { userid = userID, name = name, species_id = species_id };
             _context.playablecharacters.Add(character);
             _context.SaveChanges();
 
