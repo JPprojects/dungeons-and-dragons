@@ -7,9 +7,12 @@ connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) 
     accepted = jQuery.parseJSON(acceptedplayers);
     var pending = jQuery.parseJSON(pendingplayers);
     $("#acceptedPlayers").empty();
-    document.getElementById("pendingPlayers").remove();
+    $("#pendingPlayers").empty();
     accepted.forEach(element => {
-        $("#acceptedPlayers").append(element.userusername);
+        $("#acceptedPlayers").append("<p>" + element.userusername + "</p>");
+    });
+    pending.forEach(element => {
+        $("#pendingPlayers").append("<p>" + element.userusername + "</p>");
     });
 
 });
