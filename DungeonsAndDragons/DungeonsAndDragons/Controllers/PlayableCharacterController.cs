@@ -67,9 +67,12 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult View(int id)
         {
-            ViewBag.Username = HttpContext.Session.GetString("username");
+            if (HttpContext.Session.GetInt32("userID") == null)
+            {
+                return Redirect("../../Home");
+            }
 
-            //ViewBag.Character = _context.playablecharacters.SingleOrDefault(x => x.id == character_id);
+            ViewBag.Username = HttpContext.Session.GetString("username");
 
             IQueryable result =
                from species in _context.species

@@ -118,12 +118,17 @@ namespace DungeonsAndDragons.Controllers
                from gameuser in _context.gamesusers
                join user in _context.users
                on gameuser.userid equals user.id
+               join character in _context.playablecharacters
+               on gameuser.playablecharacterid equals character.id into test
+               from character in test.DefaultIfEmpty()
                where gameuser.gameid == id
                select new Mapping
                {
                    userid = user.id,
                    userusername = user.username,
+                   gameid = gameuser.gameid,
                    playablecharacterid = gameuser.playablecharacterid,
+                   playablecharactername = character.name
                };
 
             List<Mapping> ingameusers = new List<Mapping>();
