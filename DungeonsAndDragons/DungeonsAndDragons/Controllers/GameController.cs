@@ -34,37 +34,41 @@ namespace DungeonsAndDragons.Controllers
 
             @ViewBag.DMGames = _context.games.Where(x => x.dm == userid);
 
-            var games =
+            IQueryable games =
                from gameuser in _context.gamesusers
                join game in _context.games
-               on gameuser.gameid equals game.id where gameuser.userid == userid & gameuser.playablecharacterid != null
-               select new Game
+               on gameuser.gameid equals game.id
+               join user in _context.users
+               on game.dm equals user.id
+               where userid == gameuser.userid
+               select new Mapping
                {
-                   id = game.id,
-                   name = game.name,
-                   dm = game.dm,
+                   id = gameuser.id,
+                   gameid = game.id,
+                   gamename = game.name,
+                   gamedm = game.dm,
+                   playablecharacterid = gameuser.playablecharacterid
+                   userid = user.id,
+                   userusername = user.username
                };
-            games.ToList();
-            @ViewBag.PlayerGames = games;
 
-            var invites =
-                from game in _context.games
-                join gameuser in _context.gamesusers
-                on game.id equals gameuser.gameid
-                join user in _context.users
-                on game.dm equals user.id
-                where gameuser.userid == userid & gameuser.playablecharacterid == null
-                select new Mapping
+            List<Mapping> playergames = new List<Mapping>();
+            List<Mapping> gameinvites = new List<Mapping>();
+
+            foreach (Mapping game in games)
+            {
+                if (game.playablecharacterid != null)
                 {
-                    id = gameuser.id,
-                    gameid = game.id,
-                    gamename = game.name,
-                    gamedm = game.dm,
-                    userid = user.id,
-                    userusername = user.username
-                };
-            invites.ToList();
-            @ViewBag.Invites = invites;
+                    playergames.Add(game);
+                }
+                else
+                {
+                    gameinvites.Add(game);
+                }
+            }
+
+            @ViewBag.PlayerGames = playergames;
+            @ViewBag.Invites = gameinvites;
 
             return View();
         }
@@ -89,10 +93,9 @@ namespace DungeonsAndDragons.Controllers
             }
             int user_id = HttpContext.Session.GetInt32("userID") ?? default(int);
 
-            _context.games.Add(new Game { name = name, dm = user_id });
+            var game = new Game { name = name, dm = user_id };
+            _context.games.Add(game);
             _context.SaveChanges();
-
-            var game = _context.games.SingleOrDefault(x => x.name == name);
 
             return Redirect($"View/{game.id}");
         }
@@ -111,30 +114,34 @@ namespace DungeonsAndDragons.Controllers
             var dm_id = game.dm;
             ViewBag.DM = _context.users.SingleOrDefault(x => x.id == dm_id);
 
-            var users_in_game =
-               from u in _context.users
-               join g in _context.gamesusers
-               on u.id equals g.userid where g.gameid == id & g.playablecharacterid != null
-               select new User
+            IQueryable gameusers =
+               from gameuser in _context.gamesusers
+               join user in _context.users
+               on gameuser.userid equals user.id
+               where gameuser.gameid == id
+               select new Mapping
                {
-                   id = u.id,
-                   username = u.username
+                   userid = user.id,
+                   userusername = user.username,
+                   playablecharacterid = gameuser.playablecharacterid,
                };
-            users_in_game.ToList();
-            ViewBag.Users = users_in_game;
 
-            var invited_users =
-               from u in _context.users
-               join g in _context.gamesusers
-               on u.id equals g.userid
-               where g.gameid == id & g.playablecharacterid == null
-               select new User
-               {
-                   id = u.id,
-                   username = u.username
-               };
-            invited_users.ToList();
-            ViewBag.PendingUsers = invited_users;
+            List<Mapping> ingameusers = new List<Mapping>();
+            List<Mapping> invitedusers = new List<Mapping>();
+
+            foreach (Mapping user in gameusers)
+            {
+                if (user.playablecharacterid != null)
+                {
+                    ingameusers.Add(user);
+                }
+                else
+                {
+                    invitedusers.Add(user);
+                }
+            }
+            ViewBag.Users = ingameusers;
+            ViewBag.PendingUsers = invitedusers;
 
             ViewBag.Game = game;
             ViewBag.Message = TempData["FlashMessage"];
@@ -174,6 +181,43 @@ namespace DungeonsAndDragons.Controllers
             _context.SaveChanges();
 
             return Redirect("../Game");
+        }
+        
+        public IActionResult Test()
+        {
+                      var games =
+               from gameuser in _context.gamesusers
+               join game in _context.games
+               on gameuser.gameid equals game.id where gameuser.userid == userid & gameuser.playablecharacterid != null
+               select new Game
+               {
+                   id = game.id,
+                   name = game.name,
+                   dm = game.dm,
+               };
+            games.ToList();
+            @ViewBag.PlayerGames = games;
+
+            var invites =
+                from game in _context.games
+                join gameuser in _context.gamesusers
+                on game.id equals gameuser.gameid
+                join user in _context.users
+                on game.dm equals user.id
+                where gameuser.userid == userid & gameuser.playablecharacterid == null
+                select new Mapping
+                {
+                    id = gameuser.id,
+                    gameid = game.id,
+                    gamename = game.name,
+                    gamedm = game.dm,
+                    userid = user.id,
+                    userusername = user.username
+                };
+            invites.ToList();
+            @ViewBag.Invites = invites;
+            
+            return View();
         }
     }
 }
