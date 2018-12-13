@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using DungeonsAndDragons.Models;
+using DungeonsAndDragons.Hubs;
 
 namespace DungeonsAndDragons
 {
@@ -38,7 +39,7 @@ namespace DungeonsAndDragons
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDistributedMemoryCache();
             services.AddSession();
-
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +59,11 @@ namespace DungeonsAndDragons
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<DnDHub>("/dndhub");
+            });
 
             app.UseMvc(routes =>
             {

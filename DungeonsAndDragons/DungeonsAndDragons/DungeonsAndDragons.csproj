@@ -11,6 +11,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
     <Folder Include="Views\User\" />
     <Folder Include="Views\Game\" />
     <Folder Include="Views\PlayableCharacter\" />
+    <Folder Include="Hubs\" />
   </ItemGroup>
   
 </Project>
