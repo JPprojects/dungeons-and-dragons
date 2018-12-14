@@ -39,10 +39,12 @@ namespace DungeonsAndDragons.Controllers
             ViewBag.Username = HttpContext.Session.GetString("username");
             ViewBag.GamesUsersID = gamesusersid;
 
+            ViewBag.Species = _context.species.ToList();
+
             return View();
         }
 
-        public IActionResult Create(string name, int gamesusersid = 0)
+        public IActionResult Create(string name, int species_id, int gamesusersid = 0)
         {
             if (HttpContext.Session.GetInt32("userID") == null)
             {
@@ -51,7 +53,9 @@ namespace DungeonsAndDragons.Controllers
 
             int userID = HttpContext.Session.GetInt32("userID") ?? default(int);
 
-            var character = new PlayableCharacter() { userid = userID, name = name };
+            Species species = _context.species.SingleOrDefault(x => x.id == species_id);
+
+            var character = new PlayableCharacter() { userid = userID, name = name, species_id = species_id, hp = species.base_hp, attack = species.base_attack };
             _context.playablecharacters.Add(character);
             _context.SaveChanges();
 
@@ -93,6 +97,44 @@ namespace DungeonsAndDragons.Controllers
             _hubcontext.Clients.All.SendAsync("UpdatePlayerInvites", JsonConvert.SerializeObject(acceptedplayers), JsonConvert.SerializeObject(pendingplayers));
 
             return Redirect($"../Game/View/{result.gameid}");
+        }
+
+        public IActionResult View(int id)
+        {
+            if (HttpContext.Session.GetInt32("userID") == null)
+            {
+                return Redirect("../../Home");
+            }
+
+            ViewBag.Username = HttpContext.Session.GetString("username");
+
+            IQueryable result =
+               from species in _context.species
+               join character in _context.playablecharacters
+               on species.id equals character.species_id
+               select new Mapping
+               {
+                   speciesid = species.id,
+                   speciestype = species.species_type,
+                   speciesimage = species.image_path,
+                   speciesbasehp = species.base_hp,
+                   speciesbaseattack = species.base_attack,
+                   playablecharacterid = character.id,
+                   playablecharactername = character.name,
+                   playablecharacterhp = character.hp,
+                   playablecharacterattack = character.attack
+
+               };
+
+            foreach (Mapping character in result)
+            {
+                if (character.playablecharacterid == id)
+                {
+                    ViewBag.Character = character;
+                }
+            }
+
+            return View();
         }
     }
 }

@@ -10,24 +10,25 @@ using System.Text;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Http;
+using StaticHttpContextAccessor.Helpers;
 
 namespace DungeonsAndDragons.Controllers
 {
     public class GameController : Controller
     {
         private readonly DungeonsAndDragonsContext _context;
+        private readonly SessionHandler _sessionHandler;
 
-        public GameController(DungeonsAndDragonsContext context)
+        public GameController(DungeonsAndDragonsContext context, SessionHandler sessionHandler)
         {
             _context = context;
+            _sessionHandler = sessionHandler;
         }
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("username") == null)
-            {
-                Response.Redirect("/");
-            }
+            if (!_sessionHandler.UserIsSignedIn()) {Response.Redirect("/");}
+
             int userid = HttpContext.Session.GetInt32("userID") ?? default(int);
             ViewBag.Username = HttpContext.Session.GetString("username");
             ViewBag.id = HttpContext.Session.GetInt32("userID");
@@ -75,10 +76,8 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult New()
         {
-            if (HttpContext.Session.GetString("username") == null)
-            {
-                return Redirect("Home/Index");
-            }
+            if (!_sessionHandler.UserIsSignedIn()){return Redirect("Home/Index");}
+
             ViewBag.Username = HttpContext.Session.GetString("username");
             ViewBag.id = HttpContext.Session.GetInt32("userID");
 
@@ -87,12 +86,9 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Create(string name)
         {
-            if (HttpContext.Session.GetString("username") == null)
-            {
-                return Redirect("Home/Index");
-            }
-            int user_id = HttpContext.Session.GetInt32("userID") ?? default(int);
+            if (!_sessionHandler.UserIsSignedIn()){return Redirect("Home/Index");}
 
+            int user_id = HttpContext.Session.GetInt32("userID") ?? default(int);
             var game = new Game { name = name, dm = user_id };
             _context.games.Add(game);
             _context.SaveChanges();
@@ -102,10 +98,8 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult View(int id)
         {
-            if (HttpContext.Session.GetString("username") == null)
-            {
-                return Redirect("Home/Index");
-            }
+            if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
+
             ViewBag.Username = HttpContext.Session.GetString("username");
             ViewBag.id = HttpContext.Session.GetInt32("userID");
 
@@ -118,12 +112,17 @@ namespace DungeonsAndDragons.Controllers
                from gameuser in _context.gamesusers
                join user in _context.users
                on gameuser.userid equals user.id
+               join character in _context.playablecharacters
+               on gameuser.playablecharacterid equals character.id into test
+               from character in test.DefaultIfEmpty()
                where gameuser.gameid == id
                select new Mapping
                {
                    userid = user.id,
                    userusername = user.username,
+                   gameid = gameuser.gameid,
                    playablecharacterid = gameuser.playablecharacterid,
+                   playablecharactername = character.name
                };
 
             List<Mapping> ingameusers = new List<Mapping>();

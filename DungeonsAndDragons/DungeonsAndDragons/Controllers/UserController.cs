@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using StaticHttpContextAccessor.Helpers;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -16,10 +17,12 @@ namespace DungeonsAndDragons.Controllers
     {
 
         private readonly DungeonsAndDragonsContext _context;
+        private readonly SessionHandler _sessionHandler;
 
-        public UserController(DungeonsAndDragonsContext context)
+        public UserController(DungeonsAndDragonsContext context, SessionHandler sessionHandler)
         {
             _context = context;
+            _sessionHandler = sessionHandler;
         }
 
         public IActionResult Index()
@@ -36,8 +39,7 @@ namespace DungeonsAndDragons.Controllers
 
             if (user != null && DungeonsAndDragons.Models.User.AuthenticateSignIn(user.password, password))
             {
-                HttpContext.Session.SetInt32("userID", user.id);
-                HttpContext.Session.SetString("username", user.username);
+                _sessionHandler.SetUserSession(user.username, user.id);
                 return Redirect("../Game");
             }
             else
@@ -67,8 +69,8 @@ namespace DungeonsAndDragons.Controllers
                 _context.users.Add(new User { username = username, password = encrypted });
                 _context.SaveChanges();
                 var retrievedUser = _context.users.SingleOrDefault(c => c.username == username);
-                HttpContext.Session.SetInt32("userID", retrievedUser.id);
-                HttpContext.Session.SetString("username", retrievedUser.username);
+
+                _sessionHandler.SetUserSession(retrievedUser.username, retrievedUser.id);
                 return Redirect("../Game");
             }
         }

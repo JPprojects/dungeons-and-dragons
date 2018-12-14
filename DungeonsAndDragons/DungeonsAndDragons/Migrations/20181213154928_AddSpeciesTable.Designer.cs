@@ -3,15 +3,17 @@ using System;
 using DungeonsAndDragons.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DungeonsAndDragons.Migrations
 {
     [DbContext(typeof(DungeonsAndDragonsContext))]
-    partial class DungeonsAndDragonsContextModelSnapshot : ModelSnapshot
+    [Migration("20181213154928_AddSpeciesTable")]
+    partial class AddSpeciesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,10 +56,6 @@ namespace DungeonsAndDragons.Migrations
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("attack");
-
-                    b.Property<int>("hp");
 
                     b.Property<string>("name")
                         .HasColumnType("varchar(20)");
