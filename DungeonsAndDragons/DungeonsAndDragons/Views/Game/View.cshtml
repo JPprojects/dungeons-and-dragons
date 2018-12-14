@@ -29,7 +29,7 @@
     <h3>NPCs in Game:</h3>
     @foreach (NonPlayableCharacter character in ViewBag.NPCs)
     {
-        @character.name
+        <a href="../../NonPlayableCharacter/View/@character.id">@character.name</a>
         <br />
     }
 }

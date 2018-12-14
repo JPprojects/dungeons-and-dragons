@@ -19,6 +19,10 @@ namespace DungeonsAndDragons.Models
         public string speciesimage { get; set; }
         public int speciesbasehp { get; set; }
         public int speciesbaseattack { get; set; }
+        public int? nonplayablecharacterid { get; set; }
+        public string nonplayablecharactername { get; set; }
+        public int nonplayablecharacterhp { get; set; }
+        public int nonplayablecharacterattack { get; set; }
 
     }
 }
