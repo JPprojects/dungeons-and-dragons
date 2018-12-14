@@ -27,7 +27,7 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Index()
         {
-            if (!_sessionHandler.UserIsSignedIn()) {Response.Redirect("/");}
+            if (!_sessionHandler.UserIsSignedIn()) { Response.Redirect("/"); }
 
             int userid = HttpContext.Session.GetInt32("userID") ?? default(int);
             ViewBag.Username = HttpContext.Session.GetString("username");
@@ -76,7 +76,7 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult New()
         {
-            if (!_sessionHandler.UserIsSignedIn()){return Redirect("Home/Index");}
+            if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
             ViewBag.Username = HttpContext.Session.GetString("username");
             ViewBag.id = HttpContext.Session.GetInt32("userID");
@@ -86,7 +86,7 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Create(string name)
         {
-            if (!_sessionHandler.UserIsSignedIn()){return Redirect("Home/Index");}
+            if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
             int user_id = HttpContext.Session.GetInt32("userID") ?? default(int);
             var game = new Game { name = name, dm = user_id };
@@ -113,8 +113,8 @@ namespace DungeonsAndDragons.Controllers
                join user in _context.users
                on gameuser.userid equals user.id
                join character in _context.playablecharacters
-               on gameuser.playablecharacterid equals character.id into test
-               from character in test.DefaultIfEmpty()
+               on gameuser.playablecharacterid equals character.id into leftjoin
+               from character in leftjoin.DefaultIfEmpty()
                where gameuser.gameid == id
                select new Mapping
                {

@@ -8,7 +8,7 @@ connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) 
     $("#acceptedPlayers").empty();
     $("#pendingPlayers").empty();
     accepted.forEach(element => {
-        $("#acceptedPlayers").append("<p>" + element.userusername + "</p>");
+        $("#acceptedPlayers").append('<p>' + element.userusername + ' playing as <a href="../../PlayableCharacter/View/' + element.playablecharacterid + '">' + element.playablecharactername + '</a></p>');
     });
     pending.forEach(element => {
         $("#pendingPlayers").append("<p>" + element.userusername + "</p>");
