@@ -1,4 +1,8 @@
 ﻿@page
+@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/dndhub.js"></script>
+}
 @{
 }
 <h1> @ViewBag.Game.name </h1>
@@ -18,15 +22,20 @@
 <h3> Dungeon Master </h3>
 @ViewBag.DM.username
 <h3> Players </h3>
-@foreach (var user in ViewBag.Users)
-{
-    @user.userusername <span> playing as </span> <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a>
-    <br />
-}
+
+<div id="acceptedPlayers">
+  @foreach (var user in ViewBag.Users)
+  {
+      @user.userusername <span> playing as </span> <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a>
+      <br />
+  }
+</div>
 
 <h3> Pending Players </h3>
-@foreach (var user in ViewBag.PendingUsers)
-{
-    @user.userusername
-    <br />
-}
+<div id="pendingPlayers">
+    @foreach (var user in ViewBag.PendingUsers)
+    {
+        @user.userusername
+        <br />
+    }
+</div>

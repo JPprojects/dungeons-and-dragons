@@ -1,6 +1,10 @@
 @{
     ViewData["Title"] = "Sign In";
 }
+@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/dndhub.js"></script>
+}
 <h1>Game Dashboard</h1>
 <br />
 <a asp-controller="game" asp-action="new"><button>New Game</button></a>
@@ -20,7 +24,7 @@
 <h2>My Invites</h2>
 @foreach (var invite in ViewBag.Invites)
 {
-    @invite.userusername <span>invited you to join</span> <a href="Game/view/@invite.gameid">@invite.gamename</a> 
+    @invite.userusername <span>invited you to join</span> <a href="Game/view/@invite.gameid">@invite.gamename</a>
     <form action="PlayableCharacter/New" method="get">
         <input type="hidden" name="gamesusersid" value="@invite.id" />
         <input type="submit" value="Accept" />

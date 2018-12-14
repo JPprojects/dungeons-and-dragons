@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DungeonsAndDragons.Models;
+using DungeonsAndDragons.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,10 +16,12 @@ namespace DungeonsAndDragons.Controllers
     public class PlayableCharacterController : Controller
     {
         private readonly DungeonsAndDragonsContext _context;
+        private readonly IHubContext<DnDHub> _hubcontext;
 
-        public PlayableCharacterController(DungeonsAndDragonsContext context)
+        public PlayableCharacterController(DungeonsAndDragonsContext context, IHubContext<DnDHub> hubcontext)
         {
             _context = context;
+            _hubcontext = hubcontext;
         }
 
         //public IActionResult Index()
@@ -61,6 +66,35 @@ namespace DungeonsAndDragons.Controllers
                 result.playablecharacterid = character.id;
                 _context.SaveChanges();
             }
+
+            IQueryable games =
+               from gameuser in _context.gamesusers
+               join user in _context.users
+               on gameuser.userid equals user.id
+               where gameuser.gameid == result.gameid
+               select new Mapping
+               {
+                   userid = user.id,
+                   userusername = user.username,
+                   playablecharacterid = gameuser.playablecharacterid,
+               };
+
+            List<Mapping> acceptedplayers = new List<Mapping>();
+            List<Mapping> pendingplayers = new List<Mapping>();
+
+            foreach (Mapping game in games)
+            {
+                if (game.playablecharacterid != null)
+                {
+                    acceptedplayers.Add(game);
+                }
+                else
+                {
+                    pendingplayers.Add(game);
+                }
+            }
+
+            _hubcontext.Clients.All.SendAsync("UpdatePlayerInvites", JsonConvert.SerializeObject(acceptedplayers), JsonConvert.SerializeObject(pendingplayers));
 
             return Redirect($"../Game/View/{result.gameid}");
         }
