@@ -30,6 +30,7 @@
     <Folder Include="Views\PlayableCharacter\" />
     <Folder Include="Hubs\" />
     <Folder Include="Views\Battle\" />
+    <Folder Include="Views\NonPlayableCharacter\" />
   </ItemGroup>
   
 </Project>

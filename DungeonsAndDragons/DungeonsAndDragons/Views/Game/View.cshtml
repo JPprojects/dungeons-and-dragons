@@ -19,8 +19,25 @@
         <label for="name">Player Name</label>
         <input type="hidden" name="id" value="@ViewBag.Game.id">
         <input type="text" name="username" required="" autofocus="" />
-        <input type="submit" name="Invite" />
+        <input type="submit" value="Invite" />
     </form>
+
+    <br />
+
+    <form action="../../NonPlayableCharacter/New" method="get">
+        <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
+        <input type="hidden" name="dmid" value="@ViewBag.DM.id" />
+        <input type="submit" value="Add NPC to Game" />
+    </form>
+
+    <br />
+
+    <h3>NPCs in Game:</h3>
+    @foreach (NonPlayableCharacter character in ViewBag.NPCs)
+    {
+        <a href="../../NonPlayableCharacter/View/@character.id">@character.name</a>
+        <br />
+    }
 }
 
 @ViewBag.Message
