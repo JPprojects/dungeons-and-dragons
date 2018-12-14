@@ -37,9 +37,9 @@ namespace DungeonsAndDragons.Controllers
         public IActionResult View(int id)
         {
             //TODO:
+            //Create new instance of Battle - view need to pass this route all required variables
             //Redirect logged out users
             //Redirect users that are not part of this game
-            //Create new instance of Battle
 
             @ViewBag.GameID = id;
             return View();
