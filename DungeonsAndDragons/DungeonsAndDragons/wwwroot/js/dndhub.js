@@ -16,6 +16,24 @@ connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) 
 
 });
 
-connection.start().catch(function (err) {
-    return console.error(err.toString());
+connection.on("StartBattleRedirect", function (gameid){
+    window.location.replace("../../Battle/View/" + gameid);
 });
+
+connection.on("EndBattleRedirect", function (gameid){
+    window.location.replace("../../Game/View/" + gameid);
+});
+
+connection.start().then(function(result){
+    joinGame();
+    }).catch(function (err) {
+    return console.error(err.toString());
+
+});
+
+function joinGame(){
+    var gameid = $("#gameid").text();
+    connection.invoke("JoinGame", gameid).catch(function (err) {
+    return console.error(err.toString());
+    }); 
+}

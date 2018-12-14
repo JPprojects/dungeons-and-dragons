@@ -1,0 +1,11 @@
+﻿@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/dndhub.js"></script>
+}
+
+<form action="../../Battle/End" method="post">
+    <input type="hidden" name="gameid" value="@ViewBag.GameID" />
+    <input type="submit" value="End Battle" />
+</form>
+
+<div id="gameid" style="display: none">@ViewBag.GameID</div>
