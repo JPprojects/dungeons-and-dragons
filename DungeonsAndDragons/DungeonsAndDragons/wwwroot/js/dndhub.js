@@ -25,8 +25,6 @@ connection.on("EndBattleRedirect", function (gameid){
 });
 
 connection.start().then(function(result){
-    console.log("In then!")
-    console.log(result)
     joinGame();
     }).catch(function (err) {
     return console.error(err.toString());
@@ -35,8 +33,6 @@ connection.start().then(function(result){
 
 function joinGame(){
     var gameid = $("#gameid").text();
-    console.log(gameid);
-    console.log("joinGame function ran!")
     connection.invoke("JoinGame", gameid).catch(function (err) {
     return console.error(err.toString());
     }); 
