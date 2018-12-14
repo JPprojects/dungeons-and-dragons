@@ -139,9 +139,13 @@ namespace DungeonsAndDragons.Controllers
                     invitedusers.Add(user);
                 }
             }
+
+            //List<NonPlayableCharacter> gameNPCs = _context.nonplayablecharacters.Where(x => x.gameid == id).ToList();
+            var gameNPCs = _context.nonplayablecharacters.ToList().Where(x => x.gameid == id);
+
+            ViewBag.NPCs = gameNPCs;
             ViewBag.Users = ingameusers;
             ViewBag.PendingUsers = invitedusers;
-
             ViewBag.Game = game;
             ViewBag.Message = TempData["FlashMessage"];
             return View();
