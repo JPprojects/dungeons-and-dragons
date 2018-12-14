@@ -63,10 +63,15 @@ namespace DungeonsAndDragons.Controllers
             }
             else
             {
-                var encrypted = DungeonsAndDragons.Models.Encryption.EncryptPassword(password);
-                _context.users.Add(new User { username = username, password = encrypted });
-                _context.SaveChanges();
-                var retrievedUser = _context.users.SingleOrDefault(c => c.username == username);
+                var encryptedPassword = DungeonsAndDragons.Models.Encryption.EncryptPassword(password);
+
+                var retrievedUser = Models.User.RegisterNewUser(_context, username, encryptedPassword);
+
+
+                //_context.users.Add(new User { username = username, password = encryptedPassword });
+                //_context.SaveChanges();
+                //var retrievedUser = _context.users.SingleOrDefault(c => c.username == username);
+
                 HttpContext.Session.SetInt32("userID", retrievedUser.id);
                 HttpContext.Session.SetString("username", retrievedUser.username);
                 return Redirect("../Game");

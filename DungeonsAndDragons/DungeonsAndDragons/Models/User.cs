@@ -8,6 +8,8 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using DungeonsAndDragons.Models;
 using DungeonsAndDragons.Controllers;
+using System.Reflection.Metadata.Ecma335;
+using System.Linq;
 
 namespace DungeonsAndDragons.Models
 {
@@ -24,6 +26,21 @@ namespace DungeonsAndDragons.Models
 
             return Encryption.EncryptPassword(enteredpassword) == password;
         }
+
+
+        public static User RegisterNewUser(DungeonsAndDragonsContext dbcontext, string username, string password)
+        {
+            dbcontext.users.Add(new User
+            {
+                username = username,
+                password = password
+            });
+            dbcontext.SaveChanges();
+
+            return dbcontext.users.SingleOrDefault(c => c.username == username);
+        }
+
+
     }
 
 }
