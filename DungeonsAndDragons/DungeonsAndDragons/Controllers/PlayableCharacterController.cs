@@ -72,7 +72,8 @@ namespace DungeonsAndDragons.Controllers
                join user in _context.users
                on gameuser.userid equals user.id
                join playablecharacters in _context.playablecharacters
-               on gameuser.playablecharacterid equals playablecharacters.id
+               on gameuser.playablecharacterid equals playablecharacters.id into leftjoin
+               from playablecharacters in leftjoin.DefaultIfEmpty()
                where gameuser.gameid == result.gameid
                select new Mapping
                {
