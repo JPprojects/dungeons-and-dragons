@@ -24,14 +24,12 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Create(int gameid)
         {
-            //hub redirect all users
             _hubcontext.Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid);
             return Redirect($"View/{gameid}");
         }
 
         public IActionResult End(int gameid)
         {
-            //hub redirect all users
             _hubcontext.Clients.Group(gameid.ToString()).SendAsync("EndBattleRedirect", gameid);
             return Redirect($"../Game/View/{gameid}");
         }
@@ -41,6 +39,7 @@ namespace DungeonsAndDragons.Controllers
             //TODO:
             //Redirect logged out users
             //Redirect users that are not part of this game
+            //Create new instance of Battle
 
             @ViewBag.GameID = id;
             return View();
