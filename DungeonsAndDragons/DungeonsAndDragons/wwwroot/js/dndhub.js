@@ -2,10 +2,8 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/dndhub").build();
 
-var accepted
-
 connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) {
-    accepted = jQuery.parseJSON(acceptedplayers);
+    var accepted = jQuery.parseJSON(acceptedplayers);
     var pending = jQuery.parseJSON(pendingplayers);
     $("#acceptedPlayers").empty();
     $("#pendingPlayers").empty();
