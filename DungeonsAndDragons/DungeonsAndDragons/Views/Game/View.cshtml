@@ -24,18 +24,20 @@
 <h3> Players </h3>
 
 <div id="acceptedPlayers">
-  @foreach (var user in ViewBag.Users)
-  {
-      @user.userusername <span> playing as </span> <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a>
-      <br />
-  }
+    @foreach (var user in ViewBag.Users)
+    {
+        <p>
+            @user.userusername <span> playing as </span> <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a>
+        </p>
+    }
 </div>
 
 <h3> Pending Players </h3>
 <div id="pendingPlayers">
     @foreach (var user in ViewBag.PendingUsers)
     {
-        @user.userusername
-        <br />
+        <p>
+            @user.userusername
+        </p>
     }
 </div>
