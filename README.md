@@ -65,6 +65,11 @@ In the `gamesusers` table set the following foreign keys:
 In the `playablecharacters` table set the following foreign keys:
 * userid = users.id
 
+## Setup Species Table
+To add the species, please enter the following entries into your migrated species table:
+
+![Species](images/SpeciesTable.png)
+
 ## Contributors ##
 * [Aimee Craig](https://github.com/aimeecraig)
 * [John Littler](https://github.com/JSLittler)
