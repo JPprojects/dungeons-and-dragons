@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using DungeonsAndDragons.Models;
+using StaticHttpContextAccessor.Helpers;
 
 namespace DungeonsAndDragons
 {
@@ -38,6 +39,8 @@ namespace DungeonsAndDragons
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDistributedMemoryCache();
             services.AddSession();
+            services.AddHttpContextAccessor();
+            services.AddSingleton<SessionHandler>();
 
         }
 
@@ -58,6 +61,8 @@ namespace DungeonsAndDragons
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+
+            StaticHttpContextAccessor.Helpers.AppContext.Configure(app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
 
             app.UseMvc(routes =>
             {

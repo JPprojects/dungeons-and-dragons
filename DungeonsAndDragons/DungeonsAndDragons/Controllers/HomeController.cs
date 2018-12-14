@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using StaticHttpContextAccessor.Helpers;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -17,18 +18,17 @@ namespace DungeonsAndDragons.Controllers
     {
 
         private readonly DungeonsAndDragonsContext _context;
+        private readonly SessionHandler _sessionHandler;
 
-        public HomeController(DungeonsAndDragonsContext context)
+        public HomeController(DungeonsAndDragonsContext context, SessionHandler sessionHandler)
         {
             _context = context;
+            _sessionHandler = sessionHandler;
         }
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("username") != null)
-            {
-                Response.Redirect("../Game");
-            }
+            if (_sessionHandler.UserIsSignedIn()) {Response.Redirect("../Game");}
             return View();
         }
     }
