@@ -25,14 +25,14 @@ namespace DungeonsAndDragons.Controllers
         public IActionResult Create(int gameid)
         {
             //hub redirect all users
-            _hubcontext.Clients.All.SendAsync("StartBattleRedirect", gameid);
+            _hubcontext.Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid);
             return Redirect($"View/{gameid}");
         }
 
         public IActionResult End(int gameid)
         {
             //hub redirect all users
-            _hubcontext.Clients.All.SendAsync("EndBattleRedirect", gameid);
+            _hubcontext.Clients.Group(gameid.ToString()).SendAsync("EndBattleRedirect", gameid);
             return Redirect($"../Game/View/{gameid}");
         }
 

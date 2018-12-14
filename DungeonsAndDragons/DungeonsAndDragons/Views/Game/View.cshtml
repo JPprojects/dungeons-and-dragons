@@ -1,20 +1,20 @@
-﻿@page
-@section Scripts{
+﻿@section Scripts{
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/dndhub.js"></script>
 }
-@{
-}
-<h1> @ViewBag.Game.name </h1>
 
-<form action="../../Battle/Create" method="post">
-    <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
-    <input type="submit" value="Start Battle" />
-</form>
+<h1> @ViewBag.Game.name </h1>
 
 @if (ViewBag.DM.id == ViewBag.id)
 {
+    <h3>Interactions</h3>
+    <form action="../../Battle/Create" method="post">
+        <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
+        <input type="submit" value="Start Battle" />
+    </form>
+
     <h3>Invite Players:</h3>
+
     <form action="../Invite" method="post">
         <label for="name">Player Name</label>
         <input type="hidden" name="id" value="@ViewBag.Game.id">
@@ -23,7 +23,6 @@
     </form>
 }
 
-<br />
 @ViewBag.Message
 <h3> Dungeon Master </h3>
 @ViewBag.DM.username
@@ -47,3 +46,5 @@
         </p>
     }
 </div>
+
+<div id="gameid" style="display: none">@ViewBag.Game.id</div>

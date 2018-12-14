@@ -12,12 +12,22 @@ namespace DungeonsAndDragons.Hubs
 
         public async Task StartBattleRedirect(int gameid)
         {
-            await Clients.All.SendAsync("StartBattleRedirect", gameid);
+            await Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid);
         }
 
         public async Task EndBattleRedirect(int gameid)
         {
-            await Clients.All.SendAsync("EndBattleRedirect", gameid);
+            await Clients.Group(gameid.ToString()).SendAsync("EndBattleRedirect", gameid);
         }
+
+        public async Task JoinGame(string gameid)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, gameid);
+        }
+
+        //public Task LeaveRoom(string roomName)
+        //{
+        //    return Groups.Remove(Context.ConnectionId, roomName);
+        //}
     }
 }
