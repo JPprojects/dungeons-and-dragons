@@ -20,7 +20,7 @@
 <h3> Players </h3>
 @foreach (var user in ViewBag.Users)
 {
-    @user.userusername
+    @user.userusername <span> playing as </span> <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a>
     <br />
 }
 
