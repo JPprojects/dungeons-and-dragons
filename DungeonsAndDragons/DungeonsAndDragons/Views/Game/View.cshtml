@@ -8,6 +8,7 @@
 <h1> @ViewBag.Game.name </h1>
 
 <form action="../../Battle/Create" method="post">
+    <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
     <input type="submit" value="Start Battle" />
 </form>
 

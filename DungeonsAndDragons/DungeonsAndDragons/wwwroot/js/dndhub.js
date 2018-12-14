@@ -16,6 +16,14 @@ connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) 
 
 });
 
+connection.on("StartBattleRedirect", function (gameid){
+    window.location.replace("../../Battle/View/" + gameid);
+});
+
+connection.on("EndBattleRedirect", function (gameid){
+    window.location.replace("../../Game/View/" + gameid);
+});
+
 connection.start().catch(function (err) {
     return console.error(err.toString());
 });
