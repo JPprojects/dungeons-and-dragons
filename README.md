@@ -39,10 +39,10 @@ Create a database called `dungeons_and_dragons` using PostgreSQL.
 This can be done using the following command:
 
 ```bash
-DATABASE CREATE dungeons_and_dragons
+DATABASE CREATE dungeons_and_dragons;
 ```
 
-### Set up Connection String
+### Setup Connection
 Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons` directory with the below code snippet. Ensure that you update the Username and Password key value pairs with the username and password you will be using to access your database.
 
 ```csharp
@@ -59,7 +59,7 @@ Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDrago
 }
 ```
 
-### Migrate Table schemas
+### Migrate Table Schemas
 To import the tables and table schemas for the project, while in the main project directory (`/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons`) run the following command:
 
 ```bash
@@ -69,7 +69,7 @@ dotnet ef database update
 ### Setup Foreign Keys and Nullable Values
 In each table manually set the following foreign keys and null requirements. Unless explicitly stated nullable should be set to false.
 
-* ganes
+* games
   * dm => users.id
 * gamesusers
   * gameid => games.id
@@ -79,23 +79,24 @@ In each table manually set the following foreign keys and null requirements. Unl
   * species_id => species.id
   * game_id => games.id
 * playablecharacters
-  * userid = users.id
+  * userid => users.id
   * species_id => species.id
 
-
 ### Import Games Base Data
-In Table Plus, on the table that you are importing data to:
-1. right click (two finger click)
-2. From CSV..
-3. select corresponding csv file in sql_tables directory
-4. open
-5. ensure first line is header is checked
-6. import
-7. refresh the table
+There are files in the `sql_tables` directory that need to be imported to their respective tables.
 
+In TablePlus, on the table that you are importing data to:
+1. Truncate the table you are importing into (ensuring that Restart Identity is checked).
+2. Right click (two finger click) the table in the left panel.
+3. Import > From CSV...
+4. Select the corresponding .csv file in `sql_tables` directory.
+5. Click Open.
+6. Ensure "First line is header" is checked.
+7. Click Import.
+8. Refresh the table.
 
 ## Contributors ##
-* [Aimee Craig](https://github.com/aimeecraig)
+* [Aimée Craig](https://github.com/aimeecraig)
 * [John Littler](https://github.com/JSLittler)
 * [Melissa Sedgwick](https://github.com/melissasedgwick)
 * [Terry Mace](https://github.com/Tolvic)
