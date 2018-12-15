@@ -1,0 +1,9 @@
+"id","species_type","image_path","base_hp","base_attack"
+1,"Elf","/images/species/elf.png",80,15
+2,"Goblin","/images/species/goblin.png",110,10
+3,"Dragonborn","/images/species/dragonborn.png",120,20
+4,"Dwarf","/images/species/dwarf.png",100,12
+5,"Tortle","/images/species/tortle.png",160,6
+6,"Centaur","/images/species/centaur.png",100,10
+7,"Minotaur","/images/species/minotaur.png",120,15
+8,"Tabaxi","/images/species/tabaxi.png",80,14
