@@ -33,11 +33,16 @@ git clone https://github.com/aimeecraig/dungeons-and-dragons.git
 cd dungeons-and-dragons
 ```
 
-## How to Set Up Databases ##
+## Databases Setup
+Create a database called `dungeons_and_dragons` using PostgreSQL.
 
-(Database Migration info to go here)
+This can be done using the following command:
 
-## appsettings
+```bash
+DATABASE CREATE dungeons_and_dragons;
+```
+
+### Setup Connection
 Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons` directory with the below code snippet. Ensure that you update the Username and Password key value pairs with the username and password you will be using to access your database.
 
 ```csharp
@@ -54,24 +59,44 @@ Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDrago
 }
 ```
 
-(Run migrations)
+### Migrate Table Schemas
+To import the tables and table schemas for the project, while in the main project directory (`/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons`) run the following command:
 
-## Setup Foreign Keys
-In the `gamesusers` table set the following foreign keys:
-* gameid => games.id
-* userid => users.id
-* playablecharacterid = playablecharacters.id (nullable = true)
+```bash
+dotnet ef database update
+```
 
-In the `playablecharacters` table set the following foreign keys:
-* userid = users.id
+### Setup Foreign Keys and Nullable Values
+In each table manually set the following foreign keys and null requirements. Unless explicitly stated nullable should be set to false.
 
-## Setup Species Table
-To add the species, please enter the following entries into your migrated species table:
+* games
+  * dm => users.id
+* gamesusers
+  * gameid => games.id
+  * userid => users.id
+  * playablecharacterid => playablecharacters.id, nullable => true
+* nonplayablecharacters
+  * species_id => species.id
+  * game_id => games.id
+* playablecharacters
+  * userid => users.id
+  * species_id => species.id
 
-![Species](images/SpeciesTable.png)
+### Import Games Base Data
+There are files in the `sql_tables` directory that need to be imported to their respective tables.
+
+In TablePlus, on the table that you are importing data to:
+1. Truncate the table you are importing into (ensuring that Restart Identity is checked).
+2. Right click (two finger click) the table in the left panel.
+3. Import > From CSV...
+4. Select the corresponding .csv file in `sql_tables` directory.
+5. Click Open.
+6. Ensure "First line is header" is checked.
+7. Click Import.
+8. Refresh the table.
 
 ## Contributors ##
-* [Aimee Craig](https://github.com/aimeecraig)
+* [Aimée Craig](https://github.com/aimeecraig)
 * [John Littler](https://github.com/JSLittler)
 * [Melissa Sedgwick](https://github.com/melissasedgwick)
 * [Terry Mace](https://github.com/Tolvic)

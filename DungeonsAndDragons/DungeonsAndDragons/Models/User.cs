@@ -14,8 +14,10 @@ namespace DungeonsAndDragons.Models
     public class User
     {
         public int id { get; set; }
+        [Required]
         [Column(TypeName = "varchar(20)")]
         public string username { get; set; }
+        [Required]
         [Column(TypeName = "varchar(200)")]
         public string password { get; set; }
 

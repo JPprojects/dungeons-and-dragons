@@ -8,6 +8,7 @@ namespace DungeonsAndDragons.Models
     public class Game
     {
         public int id { get; set; }
+        [Required]
         [Column(TypeName = "varchar(50)")]
         public string name { get; set; }
         public int dm { get; set; }
