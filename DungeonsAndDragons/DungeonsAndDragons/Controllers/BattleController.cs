@@ -22,10 +22,11 @@ namespace DungeonsAndDragons.Controllers
             _hubcontext = hubcontext;
         }
 
-        public IActionResult Create(int gameid)
+        public void Create(int gameid, int npc)
         {
             _hubcontext.Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid);
-            return Redirect($"View/{gameid}");
+
+            //return RedirectToAction($"View/{gameid}", new { gameid = gameid, npc = npc });
         }
 
         public IActionResult End(int gameid)
@@ -34,13 +35,14 @@ namespace DungeonsAndDragons.Controllers
             return Redirect($"../Game/View/{gameid}");
         }
 
-        public IActionResult View(int id)
+        public IActionResult View(int id, int npc)
         {
+            _hubcontext.Clients.Group(id.ToString()).SendAsync("StartBattleRedirect", id);
             //TODO:
             //Create new instance of Battle - view need to pass this route all required variables
             //Redirect logged out users
             //Redirect users that are not part of this game
-
+            @ViewBag.Battle = npc;
             @ViewBag.GameID = id;
             return View();
         }

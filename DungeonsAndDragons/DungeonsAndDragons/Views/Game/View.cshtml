@@ -8,8 +8,14 @@
 @if (ViewBag.DM.id == ViewBag.id)
 {
     <h3>Interactions</h3>
-    <form action="../../Battle/Create" method="post">
+    <form action="../../Battle/View/@ViewBag.Game.id" method="post">
         <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
+        <select name="npc">
+            @foreach (var npc in ViewBag.NPCs)
+            {
+                <option value="@npc.id">@npc.name</option>
+            }
+        </select>
         <input type="submit" value="Start Battle" />
     </form>
 
