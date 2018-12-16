@@ -4,10 +4,10 @@
 <h1>Add NPC</h1>
 
 <form action="Create" method="post">
-    <input type="text" name="name" required="" autofocus="" placeholder="Character name" />
+    <input type="text" name="characterName" required="" autofocus="" placeholder="Character name" />
     <br />
     <br />
-    <select id="species-form" name="species_id" onchange="changePreview(this)">
+    <select id="species-form" name="speciesId" onchange="changePreview(this)">
         @foreach (var species in ViewBag.Species)
         {
             <option value="@species.id">@species.species_type</option>
@@ -15,7 +15,7 @@
     </select>
     <br />
     <br />
-    <input type="hidden" name="gameid" value="@ViewBag.GameID" />
+    <input type="hidden" name="gameId" value="@ViewBag.GameID" />
     <input type="submit" value="Generate Character" />
 </form>
 <img id="preview" class="preview" src="@ViewBag.Species[0].image_path" style="height: 150px; width: 100px;" />
