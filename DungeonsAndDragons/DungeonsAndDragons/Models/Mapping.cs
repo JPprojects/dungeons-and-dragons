@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+
 namespace DungeonsAndDragons.Models
 {
     public class Mapping
@@ -24,5 +26,72 @@ namespace DungeonsAndDragons.Models
         public int nonplayablecharacterhp { get; set; }
         public int nonplayablecharacterattack { get; set; }
 
+
+
+        public static IQueryable GameUserAndPlayableCharacterJoin(DungeonsAndDragonsContext _context, int gameId)
+        {
+            IQueryable gameLobbyAcceptedAndPendingPlayers =
+               from gameuser in _context.gamesusers
+               join user in _context.users
+               on gameuser.userid equals user.id
+               join character in _context.playablecharacters
+               on gameuser.playablecharacterid equals character.id into leftjoin
+               from character in leftjoin.DefaultIfEmpty()
+               where gameuser.gameid == gameId
+               select new Mapping
+               {
+                   userid = user.id,
+                   userusername = user.username,
+                   gameid = gameuser.gameid,
+                   playablecharacterid = gameuser.playablecharacterid,
+                   playablecharactername = character.name
+               };
+
+            return gameLobbyAcceptedAndPendingPlayers;
+        }
+
+
+
+        public static IQueryable SpeciesAndCharacterJoin(DungeonsAndDragonsContext _context)
+        {
+            return
+              from species in _context.species
+              join character in _context.playablecharacters
+              on species.id equals character.species_id
+              select new Mapping
+              {
+                  speciesid = species.id,
+                  speciestype = species.species_type,
+                  speciesimage = species.image_path,
+                  speciesbasehp = species.base_hp,
+                  speciesbaseattack = species.base_attack,
+                  playablecharacterid = character.id,
+                  playablecharactername = character.name,
+                  playablecharacterhp = character.hp,
+                  playablecharacterattack = character.attack
+              };
+        }
+
+
+
+        public static IQueryable SpeciesAndNpcJoin(DungeonsAndDragonsContext _context)
+        {
+            return
+              from species in _context.species
+              join character in _context.nonplayablecharacters
+              on species.id equals character.species_id
+              select new Mapping
+              {
+                  speciesid = species.id,
+                  speciestype = species.species_type,
+                  speciesimage = species.image_path,
+                  speciesbasehp = species.base_hp,
+                  speciesbaseattack = species.base_attack,
+                  nonplayablecharacterid = character.id,
+                  nonplayablecharactername = character.name,
+                  nonplayablecharacterhp = character.hp,
+                  nonplayablecharacterattack = character.attack
+              };
+        }
     }
 }

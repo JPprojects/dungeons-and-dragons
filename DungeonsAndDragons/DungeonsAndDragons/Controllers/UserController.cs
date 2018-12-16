@@ -25,29 +25,33 @@ namespace DungeonsAndDragons.Controllers
             _sessionHandler = sessionHandler;
         }
 
+
+
         public IActionResult Index()
         {
-            ViewBag.Username = HttpContext.Session.GetString("username");
+            ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.Message = TempData["FlashMessage"];
             return View();
-
         }
+
+
 
         public IActionResult SignIn(string username, string password)
         {
-            var user = _context.users.SingleOrDefault(c => c.username == username);
+            User user = Models.User.GetUserByUserName(_context, username);
 
-            if (user != null && DungeonsAndDragons.Models.User.AuthenticateSignIn(user.password, password))
+            if (user != null && Models.User.AuthenticateSignIn(user.password, password))
             {
                 _sessionHandler.SetUserSession(user.username, user.id);
                 return Redirect("../Game");
             }
-            else
-            {
-                TempData["FlashMessage"] = "Login credentials do not match.";
-                return Redirect("/User");
-            }
+
+            TempData["FlashMessage"] = "Login credentials do not match.";
+            return Redirect("/User");
+
         }
+
+
 
         public IActionResult New()
         {
@@ -55,25 +59,27 @@ namespace DungeonsAndDragons.Controllers
             return View();
         }
 
+
+
         public IActionResult Create(string username, string password)
         {
-            var user = _context.users.SingleOrDefault(c => c.username == username);
+            var user = Models.User.GetUserByUserName(_context, username);
+
             if (user != null)
             {
                 TempData["FlashMessage"] = "Username already in use";
                 return Redirect("New");
             }
-            else
-            {
-                var encrypted = DungeonsAndDragons.Models.Encryption.EncryptPassword(password);
-                _context.users.Add(new User { username = username, password = encrypted });
-                _context.SaveChanges();
-                var retrievedUser = _context.users.SingleOrDefault(c => c.username == username);
 
-                _sessionHandler.SetUserSession(retrievedUser.username, retrievedUser.id);
-                return Redirect("../Game");
-            }
+            string encryptedPassword = Encryption.EncryptPassword(password);
+            User newUser = Models.User.CreateNewUser(_context, username, encryptedPassword);
+            _sessionHandler.SetUserSession(newUser.username, newUser.id);
+
+            return Redirect("../Game");
+
         }
+
+
 
         public IActionResult SignOut()
         {

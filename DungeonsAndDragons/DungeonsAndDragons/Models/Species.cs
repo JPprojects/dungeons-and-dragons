@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace DungeonsAndDragons.Models
 {
@@ -16,5 +17,13 @@ namespace DungeonsAndDragons.Models
         public string image_path { get; set; }
         public int base_hp { get; set; }
         public int base_attack { get; set; }
+
+
+
+        public static Species GetSpeciesByID(DungeonsAndDragonsContext _context, int speciesId)
+        {
+            return _context.species.SingleOrDefault(s => s.id == speciesId);
+        }
+
     }
 }
