@@ -5,7 +5,7 @@
 
         public bool UserIsSignedIn()
         {
-           return AppContext.Current.Session.GetS("username") != "null";
+            return AppContext.Current.Session.GetS("username") != "null";
         }
 
         public void SetUserSession(string username, int id)
@@ -19,9 +19,9 @@
             return AppContext.Current.Session.GetS("username");
         }
 
-        public int? GetSignedInUserID()
+        public int GetSignedInUserID()
         {
-            return AppContext.Current.Session.GetInt("userID");
+            return AppContext.Current.Session.GetInt("userID") ?? default(int);
         }
     }
 }

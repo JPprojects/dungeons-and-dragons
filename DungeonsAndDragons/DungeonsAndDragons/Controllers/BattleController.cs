@@ -22,16 +22,14 @@ namespace DungeonsAndDragons.Controllers
             _hubcontext = hubcontext;
         }
 
-        public IActionResult Create(int gameid)
+        public void Create(int gameid)
         {
             _hubcontext.Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid);
-            return Redirect($"View/{gameid}");
         }
 
-        public IActionResult End(int gameid)
+        public void End(int gameid)
         {
             _hubcontext.Clients.Group(gameid.ToString()).SendAsync("EndBattleRedirect", gameid);
-            return Redirect($"../Game/View/{gameid}");
         }
 
         public IActionResult View(int id)
@@ -41,7 +39,7 @@ namespace DungeonsAndDragons.Controllers
             //Redirect logged out users
             //Redirect users that are not part of this game
 
-            @ViewBag.GameID = id;
+            @ViewBag.gameid = id;
             return View();
         }
     }
