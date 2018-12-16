@@ -58,12 +58,7 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Create(string gameName, int signedInUserId)
         {
-            if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
-
-            var game = new Game { name = gameName, dm = signedInUserId };
-
-            _context.games.Add(game);
-            _context.SaveChanges();
+            Game game = Game.CreateGame(_context, gameName, signedInUserId);
 
             return Redirect($"View/{game.id}");
         }
@@ -74,13 +69,14 @@ namespace DungeonsAndDragons.Controllers
         {
             if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
+            int gameId = id;
+
+            Game game = Game.getGameById(_context, gameId);
+            IQueryable gameLobbyAcceptedAndPendingPlayers = Mapping.GameUserAndPlayableCharacterJoin(_context, gameId);
+
             ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.UserID = _sessionHandler.GetSignedInUserID();
-
-            Game game = _context.games.SingleOrDefault(x => x.id == id);
-            IQueryable gameLobbyAcceptedAndPendingPlayers = Mapping.GameUserAndPlayableCharacterJoin(_context, id);
-
-            ViewBag.NPCs = _context.nonplayablecharacters.Where(x => x.gameid == id);
+            ViewBag.NPCs = _context.nonplayablecharacters.Where(x => x.gameid == gameId);
             ViewBag.AcceptedUsers = Game.GetPlayerGames(gameLobbyAcceptedAndPendingPlayers);
             ViewBag.PendingUsers = Game.GetInvites(gameLobbyAcceptedAndPendingPlayers);
             ViewBag.Game = game;
@@ -95,13 +91,6 @@ namespace DungeonsAndDragons.Controllers
         public IActionResult Invite(int id, string inviteeUsername)
         {
             var inviteduser = _context.users.SingleOrDefault(x => x.username == inviteeUsername);
-
-            //string signedInUsername = _sessionHandler.GetSignedInUsername();
-
-            //if (!Game.ValidateAndSendInvite(_context, id, inviteeUsername, signedInUsername))
-            //{
-            //    TempData["FlashMessage"] = Game.GetInvalidInviteString(_context, id, inviteeUsername, signedInUsername);
-            //}
 
             if (inviteduser == null)
             {
@@ -128,10 +117,9 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Decline(int id)
         {
-            GameUser inviteRow = _context.gamesusers.SingleOrDefault(x => x.id == id);
+            int gameUserId = id;
 
-            _context.gamesusers.Remove(inviteRow);
-            _context.SaveChanges();
+            Game.DeclineIvite(_context, gameUserId);
 
             return Redirect("../Game");
         }

@@ -14,6 +14,23 @@ namespace DungeonsAndDragons.Models
         public string name { get; set; }
         public int dm { get; set; }
 
+
+        public static Game CreateGame(DungeonsAndDragonsContext _context, string gameName, int UserId)
+        {
+            var game = new Game { name = gameName, dm = UserId };
+
+            _context.games.Add(game);
+            _context.SaveChanges();
+
+            return game;
+        }
+
+
+        public static Game getGameById(DungeonsAndDragonsContext _context, int gameId)
+        {
+            return _context.games.SingleOrDefault(x => x.id == gameId);
+        }
+
         public static IQueryable<Game> GetDMGames(DungeonsAndDragonsContext _context, int loggedinuserid)
         {
             return _context.games.Where(x => x.dm == loggedinuserid);
@@ -21,11 +38,11 @@ namespace DungeonsAndDragons.Models
 
 
 
-        public static List<Mapping> GetPlayerGames(IQueryable useracceptedandpendinggames)
+        public static List<Mapping> GetPlayerGames(IQueryable userAcceptedAndPendingGames)
         {
             List<Mapping> acceptedgames = new List<Mapping>();
 
-            foreach (Mapping result in useracceptedandpendinggames)
+            foreach (Mapping result in userAcceptedAndPendingGames)
             {
                 if (result.playablecharacterid != null)
                 {
@@ -38,11 +55,11 @@ namespace DungeonsAndDragons.Models
 
 
 
-        public static List<Mapping> GetInvites(IQueryable useracceptedandpendinggames)
+        public static List<Mapping> GetInvites(IQueryable userAcceptedAndPendingGames)
         {
             List<Mapping> pendinggames = new List<Mapping>();
 
-            foreach (Mapping result in useracceptedandpendinggames)
+            foreach (Mapping result in userAcceptedAndPendingGames)
             {
                 if (result.playablecharacterid == null)
                 {
@@ -123,6 +140,14 @@ namespace DungeonsAndDragons.Models
         public static void SendInvite(DungeonsAndDragonsContext _context, int gameId, User invitedUser)
         {
             _context.gamesusers.Add(new GameUser { gameid = gameId, userid = invitedUser.id });
+            _context.SaveChanges();
+        }
+
+        public static void DeclineIvite(DungeonsAndDragonsContext _context, int gameUserId)
+        {
+            GameUser inviteRow = _context.gamesusers.SingleOrDefault(x => x.id == gameUserId);
+
+            _context.gamesusers.Remove(inviteRow);
             _context.SaveChanges();
         }
     }
