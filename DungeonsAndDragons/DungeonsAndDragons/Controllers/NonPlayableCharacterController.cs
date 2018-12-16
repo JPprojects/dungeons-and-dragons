@@ -8,6 +8,7 @@ using DungeonsAndDragons.Models;
 using DungeonsAndDragons.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using StaticHttpContextAccessor.Helpers;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -15,76 +16,48 @@ namespace DungeonsAndDragons.Controllers
     {
 
         private readonly DungeonsAndDragonsContext _context;
+        private readonly SessionHandler _sessionHandler;
         private readonly IHubContext<DnDHub> _hubcontext;
 
-        public NonPlayableCharacterController(DungeonsAndDragonsContext context, IHubContext<DnDHub> hubcontext)
+        public NonPlayableCharacterController(DungeonsAndDragonsContext context, SessionHandler sessionHandler, IHubContext<DnDHub> hubcontext)
         {
             _context = context;
+            _sessionHandler = sessionHandler;
             _hubcontext = hubcontext;
         }
 
+
+
         public IActionResult New(int gameid, int dmid)
         {
-            if (HttpContext.Session.GetInt32("userID") != dmid)
-            {
-                return Redirect("/");
-            }
+            if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
-            ViewBag.Username = HttpContext.Session.GetString("username");
+            ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.GameID = gameid;
             ViewBag.Species = _context.species.ToList();
 
             return View();
         }
 
-        public IActionResult Create(string name, int gameid, int species_id)
+
+
+        public IActionResult Create(string characterName, int gameId, int speciesId)
         {
-            if (HttpContext.Session.GetInt32("userID") == null)
-            {
-                return Redirect("/");
-            }
+            NonPlayableCharacter.GenerateNPC(_context, gameId, speciesId, characterName);
 
-            Species species = _context.species.SingleOrDefault(x => x.id == species_id);
-
-            var character = new NonPlayableCharacter() { gameid = gameid, name = name, species_id = species_id, hp = species.base_hp, attack = species.base_attack };
-            _context.nonplayablecharacters.Add(character);
-            _context.SaveChanges();
-
-            return Redirect($"../Game/View/{gameid}");
+            return Redirect($"../Game/View/{gameId}");
         }
+
+
 
         public IActionResult View(int id)
         {
-            if (HttpContext.Session.GetInt32("userID") == null)
-            {
-                return Redirect("../../Home");
-            }
-            ViewBag.Username = HttpContext.Session.GetString("username");
+            if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
-            IQueryable result =
-               from species in _context.species
-               join character in _context.nonplayablecharacters
-               on species.id equals character.species_id
-               select new Mapping
-               {
-                   speciesid = species.id,
-                   speciestype = species.species_type,
-                   speciesimage = species.image_path,
-                   speciesbasehp = species.base_hp,
-                   speciesbaseattack = species.base_attack,
-                   nonplayablecharacterid = character.id,
-                   nonplayablecharactername = character.name,
-                   nonplayablecharacterhp = character.hp,
-                   nonplayablecharacterattack = character.attack
-               };
+            int characterId = id;
 
-            foreach (Mapping character in result)
-            {
-                if (character.nonplayablecharacterid == id)
-                {
-                    ViewBag.Character = character;
-                }
-            }
+            ViewBag.Username = _sessionHandler.GetSignedInUsername();
+            ViewBag.Character = NonPlayableCharacter.GetStatsForNpcCharacter(_context, characterId);
 
             return View();
         }

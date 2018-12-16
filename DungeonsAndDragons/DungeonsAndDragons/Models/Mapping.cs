@@ -50,7 +50,7 @@ namespace DungeonsAndDragons.Models
             return useracceptedandpendinggames;
         }
 
-
+      
 
         public static IQueryable GameUserAndPlayableCharacterJoin(DungeonsAndDragonsContext _context, int gameId)
         {
@@ -72,6 +72,50 @@ namespace DungeonsAndDragons.Models
                };
 
             return gameLobbyAcceptedAndPendingPlayers;
+        }
+
+
+
+        public static IQueryable SpeciesAndCharacterJoin(DungeonsAndDragonsContext _context)
+        {
+            return
+              from species in _context.species
+              join character in _context.playablecharacters
+              on species.id equals character.species_id
+              select new Mapping
+              {
+                  speciesid = species.id,
+                  speciestype = species.species_type,
+                  speciesimage = species.image_path,
+                  speciesbasehp = species.base_hp,
+                  speciesbaseattack = species.base_attack,
+                  playablecharacterid = character.id,
+                  playablecharactername = character.name,
+                  playablecharacterhp = character.hp,
+                  playablecharacterattack = character.attack
+              };
+        }
+
+
+
+        public static IQueryable SpeciesAndNpcJoin(DungeonsAndDragonsContext _context)
+        {
+            return
+              from species in _context.species
+              join character in _context.nonplayablecharacters
+              on species.id equals character.species_id
+              select new Mapping
+              {
+                  speciesid = species.id,
+                  speciestype = species.species_type,
+                  speciesimage = species.image_path,
+                  speciesbasehp = species.base_hp,
+                  speciesbaseattack = species.base_attack,
+                  nonplayablecharacterid = character.id,
+                  nonplayablecharactername = character.name,
+                  nonplayablecharacterhp = character.hp,
+                  nonplayablecharacterattack = character.attack
+              };
         }
     }
 }

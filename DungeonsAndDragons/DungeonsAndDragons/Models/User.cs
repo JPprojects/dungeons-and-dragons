@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using DungeonsAndDragons.Models;
 using DungeonsAndDragons.Controllers;
+using System.Linq;
 
 namespace DungeonsAndDragons.Models
 {
@@ -21,11 +22,35 @@ namespace DungeonsAndDragons.Models
         [Column(TypeName = "varchar(200)")]
         public string password { get; set; }
 
+
+
+        public static User GetUserByUserName(DungeonsAndDragonsContext _context, string username)
+        {
+            return _context.users.SingleOrDefault(c => c.username == username);
+        }
+
+
+
         public static bool AuthenticateSignIn(string password, string enteredpassword)
         {
-
             return Encryption.EncryptPassword(enteredpassword) == password;
         }
+
+
+
+        public static User CreateNewUser(DungeonsAndDragonsContext _context, string username, string password)
+        {
+            _context.users.Add(new User
+            {
+                username = username,
+                password = password
+            });
+            _context.SaveChanges();
+
+            return _context.users.SingleOrDefault(u => u.username == username);
+        }
+
+
     }
 
 }
