@@ -13,8 +13,8 @@ namespace DungeonsAndDragons.Models
         [Column(TypeName = "varchar(50)")]
         public string name { get; set; }
         public int dm { get; set; }
-        
-      public static Game CreateGame(DungeonsAndDragonsContext _context, string gameName, int UserId)
+
+        public static Game CreateGame(DungeonsAndDragonsContext _context, string gameName, int UserId)
         {
             var game = new Game { name = gameName, dm = UserId };
 
@@ -25,7 +25,7 @@ namespace DungeonsAndDragons.Models
         }
 
 
-     
+
         public static Game getGameById(DungeonsAndDragonsContext _context, int gameId)
         {
             return _context.games.SingleOrDefault(x => x.id == gameId);
@@ -36,8 +36,8 @@ namespace DungeonsAndDragons.Models
             return _context.games.Where(x => x.dm == loggedinuserid);
         }
 
-      
-      
+
+
         public static List<Mapping> GetPlayerGames(IQueryable userAcceptedAndPendingGames)
         {
             List<Mapping> acceptedGames = new List<Mapping>();
@@ -143,7 +143,7 @@ namespace DungeonsAndDragons.Models
             _context.SaveChanges();
         }
 
-        public static void DeclineIvite(DungeonsAndDragonsContext _context, int gameUserId)
+        public static void DeclineInvite(DungeonsAndDragonsContext _context, int gameUserId)
         {
             GameUser inviteRow = _context.gamesusers.SingleOrDefault(x => x.id == gameUserId);
 

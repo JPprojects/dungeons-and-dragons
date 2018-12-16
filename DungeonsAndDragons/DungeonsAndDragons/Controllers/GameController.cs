@@ -119,7 +119,7 @@ namespace DungeonsAndDragons.Controllers
         {
             int gameUserId = id;
 
-            Game.DeclineIvite(_context, gameUserId);
+            Game.DeclineInvite(_context, gameUserId);
 
             return Redirect("../Game");
         }
