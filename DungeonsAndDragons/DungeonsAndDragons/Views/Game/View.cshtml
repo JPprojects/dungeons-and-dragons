@@ -9,7 +9,7 @@
 {
     <h3>Interactions</h3>
     <form action="../../Battle/View/@ViewBag.Game.id" method="post">
-        <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
+        @*<input type="hidden" name="gameid" value="@ViewBag.Game.id" />*@
         <select name="npc">
             @foreach (var npc in ViewBag.NPCs)
             {
