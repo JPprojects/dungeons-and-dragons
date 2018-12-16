@@ -5,7 +5,7 @@
 
 <h1> @ViewBag.Game.name </h1>
 
-@if (ViewBag.DM.id == ViewBag.id)
+@if (ViewBag.DM.id == ViewBag.UserID)
 {
     <h3>Interactions</h3>
     <form action="../../Battle/Create" method="post">
@@ -21,6 +21,8 @@
         <input type="text" name="username" required="" autofocus="" />
         <input type="submit" value="Invite" />
     </form>
+
+    @ViewBag.Message
 
     <br />
 
@@ -40,13 +42,12 @@
     }
 }
 
-@ViewBag.Message
 <h3> Dungeon Master </h3>
 @ViewBag.DM.username
 <h3> Players </h3>
 
 <div id="acceptedPlayers">
-    @foreach (var user in ViewBag.Users)
+    @foreach (var user in ViewBag.AcceptedUsers)
     {
         <p>
             @user.userusername <span> playing as </span> <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a>

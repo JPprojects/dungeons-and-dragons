@@ -27,6 +27,30 @@ namespace DungeonsAndDragons.Models
         public int nonplayablecharacterattack { get; set; }
 
 
+        public static IQueryable GameAndUserJoin(DungeonsAndDragonsContext _context, int loggedinuserid)
+        {
+            IQueryable useracceptedandpendinggames =
+               from gameuser in _context.gamesusers
+               join game in _context.games
+               on gameuser.gameid equals game.id
+               join user in _context.users
+               on game.dm equals user.id
+               where gameuser.userid == loggedinuserid
+               select new Mapping
+               {
+                   id = gameuser.id,
+                   gameid = game.id,
+                   gamename = game.name,
+                   gamedm = game.dm,
+                   playablecharacterid = gameuser.playablecharacterid,
+                   userid = user.id,
+                   userusername = user.username
+               };
+
+            return useracceptedandpendinggames;
+        }
+
+      
 
         public static IQueryable GameUserAndPlayableCharacterJoin(DungeonsAndDragonsContext _context, int gameId)
         {

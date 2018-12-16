@@ -12,8 +12,8 @@ namespace DungeonsAndDragons.Models
         public int userid { get; set; }
         public int? playablecharacterid { get; set; }
 
-
-
+      
+      
         public static GameUser GetGameUserByID(DungeonsAndDragonsContext _context, int gameUserId)
         {
             return _context.gamesusers.Find(gameUserId);
@@ -33,6 +33,5 @@ namespace DungeonsAndDragons.Models
 
             return gamePlayer;
         }
-
     }
 }

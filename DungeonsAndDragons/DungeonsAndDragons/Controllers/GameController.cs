@@ -25,147 +25,84 @@ namespace DungeonsAndDragons.Controllers
             _sessionHandler = sessionHandler;
         }
 
+
+
         public IActionResult Index()
         {
             if (!_sessionHandler.UserIsSignedIn()) { Response.Redirect("/"); }
 
-            int userid = HttpContext.Session.GetInt32("userID") ?? default(int);
-            ViewBag.Username = HttpContext.Session.GetString("username");
-            ViewBag.id = HttpContext.Session.GetInt32("userID");
+            int signedInUserId = _sessionHandler.GetSignedInUserID();
+            IQueryable gameAndUserJoin = Mapping.GameAndUserJoin(_context, signedInUserId);
 
-            @ViewBag.DMGames = _context.games.Where(x => x.dm == userid);
-
-            IQueryable games =
-               from gameuser in _context.gamesusers
-               join game in _context.games
-               on gameuser.gameid equals game.id
-               join user in _context.users
-               on game.dm equals user.id
-               where userid == gameuser.userid
-               select new Mapping
-               {
-                   id = gameuser.id,
-                   gameid = game.id,
-                   gamename = game.name,
-                   gamedm = game.dm,
-                   playablecharacterid = gameuser.playablecharacterid,
-                   userid = user.id,
-                   userusername = user.username
-               };
-
-            List<Mapping> playergames = new List<Mapping>();
-            List<Mapping> gameinvites = new List<Mapping>();
-
-            foreach (Mapping game in games)
-            {
-                if (game.playablecharacterid != null)
-                {
-                    playergames.Add(game);
-                }
-                else
-                {
-                    gameinvites.Add(game);
-                }
-            }
-
-            @ViewBag.PlayerGames = playergames;
-            @ViewBag.Invites = gameinvites;
+            ViewBag.Username = _sessionHandler.GetSignedInUsername();
+            ViewBag.DMGames = Game.GetDMGames(_context, signedInUserId);
+            ViewBag.AcceptedGames = Game.GetPlayerGames(gameAndUserJoin);
+            ViewBag.PendingGames = Game.GetInvites(gameAndUserJoin);
 
             return View();
         }
+
+
 
         public IActionResult New()
         {
             if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
-            ViewBag.Username = HttpContext.Session.GetString("username");
-            ViewBag.id = HttpContext.Session.GetInt32("userID");
+            ViewBag.Username = _sessionHandler.GetSignedInUsername();
+            ViewBag.UserID = _sessionHandler.GetSignedInUserID();
 
             return View();
         }
 
-        public IActionResult Create(string name)
-        {
-            if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
-            int user_id = HttpContext.Session.GetInt32("userID") ?? default(int);
-            var game = new Game { name = name, dm = user_id };
-            _context.games.Add(game);
-            _context.SaveChanges();
+
+        public IActionResult Create(string gameName, int signedInUserId)
+        {
+            Game game = Game.CreateGame(_context, gameName, signedInUserId);
 
             return Redirect($"View/{game.id}");
         }
+
+
 
         public IActionResult View(int id)
         {
             if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
-            ViewBag.Username = HttpContext.Session.GetString("username");
-            ViewBag.id = HttpContext.Session.GetInt32("userID");
+            int gameId = id;
 
-            var game = _context.games.SingleOrDefault(x => x.id == id);
+            Game game = Game.getGameById(_context, gameId);
+            IQueryable gameLobbyAcceptedAndPendingPlayers = Mapping.GameUserAndPlayableCharacterJoin(_context, gameId);
 
-            var dm_id = game.dm;
-            ViewBag.DM = _context.users.SingleOrDefault(x => x.id == dm_id);
-
-            IQueryable gameusers =
-               from gameuser in _context.gamesusers
-               join user in _context.users
-               on gameuser.userid equals user.id
-               join character in _context.playablecharacters
-               on gameuser.playablecharacterid equals character.id into leftjoin
-               from character in leftjoin.DefaultIfEmpty()
-               where gameuser.gameid == id
-               select new Mapping
-               {
-                   userid = user.id,
-                   userusername = user.username,
-                   gameid = gameuser.gameid,
-                   playablecharacterid = gameuser.playablecharacterid,
-                   playablecharactername = character.name
-               };
-
-            List<Mapping> ingameusers = new List<Mapping>();
-            List<Mapping> invitedusers = new List<Mapping>();
-
-            foreach (Mapping user in gameusers)
-            {
-                if (user.playablecharacterid != null)
-                {
-                    ingameusers.Add(user);
-                }
-                else
-                {
-                    invitedusers.Add(user);
-                }
-            }
-
-            //List<NonPlayableCharacter> gameNPCs = _context.nonplayablecharacters.Where(x => x.gameid == id).ToList();
-            var gameNPCs = _context.nonplayablecharacters.ToList().Where(x => x.gameid == id);
-
-            ViewBag.NPCs = gameNPCs;
-            ViewBag.Users = ingameusers;
-            ViewBag.PendingUsers = invitedusers;
+            ViewBag.Username = _sessionHandler.GetSignedInUsername();
+            ViewBag.UserID = _sessionHandler.GetSignedInUserID();
+            ViewBag.NPCs = _context.nonplayablecharacters.Where(x => x.gameid == gameId);
+            ViewBag.AcceptedUsers = Game.GetPlayerGames(gameLobbyAcceptedAndPendingPlayers);
+            ViewBag.PendingUsers = Game.GetInvites(gameLobbyAcceptedAndPendingPlayers);
             ViewBag.Game = game;
             ViewBag.Message = TempData["FlashMessage"];
+            ViewBag.DM = _context.users.SingleOrDefault(x => x.id == game.dm);
+
             return View();
         }
 
-        public IActionResult Invite(int id, string username)
+
+
+        public IActionResult Invite(int id, string inviteeUsername)
         {
-            var inviteduser = _context.users.SingleOrDefault(x => x.username == username);
+            var inviteduser = _context.users.SingleOrDefault(x => x.username == inviteeUsername);
 
             if (inviteduser == null)
             {
-                TempData["FlashMessage"] = "Player does not exist";
+                TempData["FlashMessage"] = "Player does not exist.";
             }
-            else if (username == HttpContext.Session.GetString("username"))
+            else if (inviteeUsername == HttpContext.Session.GetString("username"))
             {
-                TempData["FlashMessage"] = "Cannot invite yourself to a game";
+                TempData["FlashMessage"] = "Cannot invite yourself to a game.";
             }
             else if (_context.gamesusers.SingleOrDefault(x => x.userid == inviteduser.id & x.gameid == id) != null)
             {
-                TempData["FlashMessage"] = "Player has already been invited";
+                TempData["FlashMessage"] = "Player has already been invited.";
             }
             else
             {
@@ -176,12 +113,13 @@ namespace DungeonsAndDragons.Controllers
             return Redirect($"View/{id}");
         }
 
+
+
         public IActionResult Decline(int id)
         {
-            var gameuser = _context.gamesusers.SingleOrDefault(x => x.id == id);
+            int gameUserId = id;
 
-            _context.gamesusers.Remove(gameuser);
-            _context.SaveChanges();
+            Game.DeclineIvite(_context, gameUserId);
 
             return Redirect("../Game");
         }
