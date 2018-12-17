@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,11 +8,22 @@ using DungeonsAndDragons.Hubs;
 using DungeonsAndDragons.Models;
 using StaticHttpContextAccessor.Helpers;
 using Newtonsoft.Json;
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace DungeonsAndDragons.Hubs
 {
     public class DnDHub : Hub
     {
+        public async Task JoinUserGroup(string userId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, "Player-" + userId);
+        }
+
+        public async Task UpdateUserInvites(string playerGroup)
+        {
+            await Clients.Group(playerGroup).SendAsync("UpdateUserInvites");
+        }
+
         public async Task UpdatePlayerInvites(string acceptedplayers, string pendingplayers)
         {
             await Clients.All.SendAsync("UpdatePlayerInvites", acceptedplayers, pendingplayers);
@@ -38,11 +49,6 @@ namespace DungeonsAndDragons.Hubs
             await Clients.Group(gameid).SendAsync("UpdateBattleStats", "5000");
 
         }
-
-        //public async Task PlayerAttack()
-        //{
-
-        //}
 
         //public Task LeaveRoom(string roomName)
         //{

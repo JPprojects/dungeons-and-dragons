@@ -18,7 +18,6 @@ connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) 
     pending.forEach(element => {
         $("#pendingPlayers").append("<p>" + element.userusername + "</p>");
     });
-
 });
 
 connection.on("StartBattleRedirect", function (gameid, npcId){

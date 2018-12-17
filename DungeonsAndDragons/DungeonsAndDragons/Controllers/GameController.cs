@@ -11,6 +11,8 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Session;
 using Microsoft.AspNetCore.Http;
 using StaticHttpContextAccessor.Helpers;
+using Microsoft.AspNetCore.SignalR;
+using DungeonsAndDragons.Hubs;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -18,11 +20,13 @@ namespace DungeonsAndDragons.Controllers
     {
         private readonly DungeonsAndDragonsContext _context;
         private readonly SessionHandler _sessionHandler;
+        private readonly IHubContext<DnDHub> _hubcontext;
 
-        public GameController(DungeonsAndDragonsContext context, SessionHandler sessionHandler)
+        public GameController(DungeonsAndDragonsContext context, SessionHandler sessionHandler, IHubContext<DnDHub> hubcontext)
         {
             _context = context;
             _sessionHandler = sessionHandler;
+            _hubcontext = hubcontext;
         }
 
 
@@ -34,6 +38,7 @@ namespace DungeonsAndDragons.Controllers
             int signedInUserId = _sessionHandler.GetSignedInUserID();
             IQueryable gameAndUserJoin = Mapping.GameAndUserJoin(_context, signedInUserId);
 
+            ViewBag.UserId = signedInUserId;
             ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.DMGames = Game.GetDMGames(_context, signedInUserId);
             ViewBag.AcceptedGames = Game.GetPlayerGames(gameAndUserJoin);
@@ -109,6 +114,10 @@ namespace DungeonsAndDragons.Controllers
                 _context.gamesusers.Add(new GameUser { gameid = id, userid = inviteduser.id });
                 _context.SaveChanges();
             }
+            string invitedUserId = inviteduser.id.ToString();
+            string playerGroup = "Player-" + invitedUserId;
+
+            _hubcontext.Clients.Group(playerGroup).SendAsync("UpdateUserInvites", playerGroup);
 
             return Redirect($"View/{id}");
         }
