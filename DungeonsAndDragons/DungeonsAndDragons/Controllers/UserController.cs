@@ -29,7 +29,7 @@ namespace DungeonsAndDragons.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Username = _sessionHandler.GetSignedInUsername();
+            //ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.Message = TempData["FlashMessage"];
             return View();
         }

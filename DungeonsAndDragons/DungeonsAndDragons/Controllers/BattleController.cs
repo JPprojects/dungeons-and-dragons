@@ -47,7 +47,7 @@ namespace DungeonsAndDragons.Controllers
 
             Battle battle = Battle.StartBattle(_context, gameId, npcId);
 
-            if (battle.players.Count == 0) { TempData["FlashMessage"] = "No players available."; return Redirect($"../../Game/View/{gameId}"); };
+            if (battle.players.Count == 0) { TempData["FlashMessage"] = "No players available."; return Redirect($"../../Game/View/{gameId}"); }
 
             ViewBag.Battle = battle;
             ViewBag.jsonBattle = JsonConvert.SerializeObject(battle);
