@@ -53,6 +53,7 @@ namespace DungeonsAndDragons.Controllers
             ViewBag.jsonBattle = JsonConvert.SerializeObject(battle);
             ViewBag.gameid = id;
             ViewBag.LoggedInUserID = _sessionHandler.GetSignedInUserID();
+            ViewBag.Username = _sessionHandler.GetSignedInUsername();
             return View();
         }
 
