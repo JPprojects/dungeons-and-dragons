@@ -7,8 +7,6 @@ using DungeonsAndDragons.Hubs;
 using DungeonsAndDragons.Models;
 using Microsoft.AspNetCore.SignalR;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace DungeonsAndDragons.Controllers
 {
     public class BattleController : Controller
@@ -22,9 +20,9 @@ namespace DungeonsAndDragons.Controllers
             _hubcontext = hubcontext;
         }
 
-        public void Create(int gameid)
+        public void Create(int gameid, int npcId)
         {
-            _hubcontext.Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid);
+            _hubcontext.Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid, npcId);
         }
 
         public void End(int gameid)
@@ -32,13 +30,16 @@ namespace DungeonsAndDragons.Controllers
             _hubcontext.Clients.Group(gameid.ToString()).SendAsync("EndBattleRedirect", gameid);
         }
 
-        public IActionResult View(int id)
+        public IActionResult View(int id, int npcId)
         {
             //TODO:
             //Create new instance of Battle - view need to pass this route all required variables
             //Redirect logged out users
             //Redirect users that are not part of this game
 
+            int gameId = id;
+
+            ViewBag.Battle = Battle.StartBattle(_context, gameId, npcId);
             @ViewBag.gameid = id;
             return View();
         }

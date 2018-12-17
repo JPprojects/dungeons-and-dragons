@@ -10,9 +10,9 @@ namespace DungeonsAndDragons.Hubs
             await Clients.All.SendAsync("UpdatePlayerInvites", acceptedplayers, pendingplayers);
         }
 
-        public async Task StartBattleRedirect(int gameid)
+        public async Task StartBattleRedirect(int gameid, int npcId)
         {
-            await Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid);
+            await Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid, npcId);
         }
 
         public async Task EndBattleRedirect(int gameid)

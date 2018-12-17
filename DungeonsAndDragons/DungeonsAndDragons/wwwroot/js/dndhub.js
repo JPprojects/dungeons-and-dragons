@@ -16,8 +16,8 @@ connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) 
 
 });
 
-connection.on("StartBattleRedirect", function (gameid){
-    window.location.replace("../../Battle/View/" + gameid);
+connection.on("StartBattleRedirect", function (gameid, npcId){
+    window.location.replace("../../Battle/View/" + gameid + "?npcId=" + npcId);
 });
 
 connection.on("EndBattleRedirect", function (gameid){
