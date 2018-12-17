@@ -1,10 +1,22 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+using System;
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace DungeonsAndDragons.Hubs
 {
     public class DnDHub : Hub
     {
+        public async Task JoinUserGroup(string userId)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, "Player-" + userId);
+        }
+
+        public async Task UpdateUserInvites(string playerGroup)
+        {
+            await Clients.Group(playerGroup).SendAsync("UpdateUserInvites");
+        }
+
         public async Task UpdatePlayerInvites(string acceptedplayers, string pendingplayers)
         {
             await Clients.All.SendAsync("UpdatePlayerInvites", acceptedplayers, pendingplayers);
