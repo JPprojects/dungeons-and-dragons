@@ -9,9 +9,9 @@ namespace DungeonsAndDragons.Models
     {
         public int userid { get; set; }
 
-        public static PlayableCharacter CreateNewCharacter(DungeonsAndDragonsContext _context, int userId, string characterName, int speciesId, int baseHP, int baseAttack)
+        public static PlayableCharacter CreateNewCharacter(DungeonsAndDragonsContext _context, int userId, string characterName, int speciesId, int baseHP, int baseAttack, string imagePath, int currentHp)
         {
-            PlayableCharacter character = new PlayableCharacter() { userid = userId, name = characterName, species_id = speciesId, hp = baseHP, attack = baseAttack };
+            PlayableCharacter character = new PlayableCharacter() { userid = userId, name = characterName, species_id = speciesId, maxHp = baseHP, attack = baseAttack, imagePath = imagePath, currentHp = currentHp };
             _context.playablecharacters.Add(character);
             _context.SaveChanges();
 
@@ -24,7 +24,7 @@ namespace DungeonsAndDragons.Models
         {
             Species species = Models.Species.GetSpeciesByID(_context, speciesId);
 
-            PlayableCharacter newCharacter = Models.PlayableCharacter.CreateNewCharacter(_context, userId, characterName, speciesId, species.base_hp, species.base_attack);
+            PlayableCharacter newCharacter = Models.PlayableCharacter.CreateNewCharacter(_context, userId, characterName, speciesId, species.base_hp, species.base_attack, species.image_path, species.base_hp);
 
             GameUser AssignedCharacter = Models.GameUser.AssignCharacterToGamePlayer(_context, gamesUsersId, newCharacter.id);
 

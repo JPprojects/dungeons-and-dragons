@@ -5,9 +5,6 @@ namespace DungeonsAndDragons.Models
 {
     public class Battle
     {
-        public List<int> players { get; set; }
-        public int npc { get; set; }
-        public int dm { get; set; }
-        public int gameid { get; set; }
+        public int gameId { get; set; }         public int dmId { get; set; }         public int currentPlayerId { get; set; }         public List<PlayableCharacter> players { get; set; }         public NonPlayableCharacter NPC { get; set; }
     }
 }
