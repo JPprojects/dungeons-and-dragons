@@ -1,4 +1,5 @@
-﻿@{
+﻿@section Scripts{
+    <script src="~/js/characterPreview.js"></script>
 }
 
 <h1>New Playable Character Form</h1>
@@ -18,4 +19,10 @@
     <input type="submit" value="Generate Character" />
 </form>
 
-<img id="preview" class="preview" src="@ViewBag.Species[0].image_path" style="height: 150px; width: 100px;" />
+<div id="character-preview">
+    <img id="character-image" class="preview" src="@ViewBag.Species[0].image_path" style="height: 150px; width: 100px;" />
+    <p>HP <span id="character-hp">@ViewBag.Species[0].base_hp</span></p>
+    <p>Attack: <span id="character-attack">@ViewBag.Species[0].base_attack</span></p>
+</div>
+
+<div id="json-species" style="display:none;">@ViewBag.jsonSpecies</div>
