@@ -12,7 +12,7 @@ namespace DungeonsAndDragons.Models
         {
             int dmId = _context.games.SingleOrDefault(x => x.id == gameId).id;
             NonPlayableCharacter npc = _context.nonplayablecharacters.SingleOrDefault(x => x.id == npcId);
-            List<GameUser> gameUserResults = _context.gamesusers.Where(x => x.gameid == gameId).ToList();
+            List<GameUser> gameUserResults = _context.gamesusers.Where(x => x.gameid == gameId & x.playablecharacterid != null).ToList();
             List<PlayableCharacter> players = new List<PlayableCharacter> { };
 
             foreach (var result in gameUserResults)
@@ -21,7 +21,15 @@ namespace DungeonsAndDragons.Models
                 players.Add(player);
             }
 
-            var currentPlayerId = players.First().id;
+            int currentPlayerId;
+            if (players.Count == 0)
+            {
+                currentPlayerId = 0;
+            }
+            else
+            {
+                currentPlayerId = players.First().id;
+            }
 
             var battle = new Battle() { gameId = gameId, dmId = dmId, NPC = npc, players = players, currentPlayerId = currentPlayerId };
             return battle;

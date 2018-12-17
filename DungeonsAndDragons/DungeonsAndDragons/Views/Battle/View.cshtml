@@ -3,33 +3,32 @@
     <script src="~/js/dndhub.js"></script>
 }
 
-<h1>Battle Crap</h1>
-DM ID = @ViewBag.Battle.dmId
-<br />
-Game ID = @ViewBag.Battle.gameId
-<br />
-Current Player ID = @ViewBag.Battle.currentPlayerId
-<br />
-<h2>NPC</h2>
-NPC Name = @ViewBag.Battle.NPC.name
-NPC Current HP = @ViewBag.Battle.NPC.currentHp
-NPC Max HP = @ViewBag.Battle.NPC.maxHp
-NPC Attack = @ViewBag.Battle.NPC.attack
-<img src="@ViewBag.Battle.NPC.imagePath" />
+<h1>Battle!</h1>
 
-<h2>Players</h2>
+<h2>Enemy: @ViewBag.Battle.NPC.name</h2>
+<img src="@ViewBag.Battle.NPC.imagePath" />
+<br />
+Health: @ViewBag.Battle.NPC.currentHp / @ViewBag.Battle.NPC.maxHp
+<br>
+Attack: @ViewBag.Battle.NPC.attack
+
+<h2>Players:</h2>
+<br />
 @foreach (var player in ViewBag.Battle.players)
 {
-    <span>Player Name =</span> @player.name
-    <br />
-    <span>Player Current HP =</span> @player.currentHp
-    <br />
-    <span>Player Max HP =</span> @player.maxHp
-    <br />
-    <span>Player Attack =</span> @player.attack
+    <h2>@player.name</h2>
     <br />
     <img src="@player.imagePath" />
+    <br />
+    <span>Health: </span> @player.currentHp <span>/</span> @player.maxHp
+    <br />
+    <span>Attack: </span> @player.attack
+    <br />
 }
+
+<form>
+    <input type="submit" value="Attack!" />
+</form>
 
 <form action="../../Battle/End" method="post">
     <input type="hidden" name="gameid" value="@ViewBag.gameid" />

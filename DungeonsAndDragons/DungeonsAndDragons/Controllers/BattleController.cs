@@ -44,7 +44,11 @@ namespace DungeonsAndDragons.Controllers
 
             if (!Battle.IsUserInGame(_context, _sessionHandler.GetSignedInUserID(), gameId)) { return Redirect("../../Home/Index"); }
 
-            ViewBag.Battle = Battle.StartBattle(_context, gameId, npcId);
+            Battle battle = Battle.StartBattle(_context, gameId, npcId);
+
+            if (battle.players.Count == 0) { TempData["FlashMessage"] = "No players available."; return Redirect($"../../Game/View/{gameId}"); };
+
+            ViewBag.Battle = battle;
             @ViewBag.gameid = id;
             return View();
         }
