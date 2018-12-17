@@ -1,5 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using DungeonsAndDragons.Hubs;
+using DungeonsAndDragons.Models;
+using StaticHttpContextAccessor.Helpers;
+using Newtonsoft.Json;
 
 namespace DungeonsAndDragons.Hubs
 {
@@ -24,6 +32,17 @@ namespace DungeonsAndDragons.Hubs
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, gameid);
         }
+
+        public async Task UpdateBattleStats(string gameid, string updatedStatsJson)
+        {
+            await Clients.Group(gameid).SendAsync("UpdateBattleStats", "5000");
+
+        }
+
+        //public async Task PlayerAttack()
+        //{
+
+        //}
 
         //public Task LeaveRoom(string roomName)
         //{

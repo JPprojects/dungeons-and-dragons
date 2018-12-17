@@ -7,6 +7,7 @@ using DungeonsAndDragons.Hubs;
 using DungeonsAndDragons.Models;
 using Microsoft.AspNetCore.SignalR;
 using StaticHttpContextAccessor.Helpers;
+using Newtonsoft.Json;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -49,8 +50,22 @@ namespace DungeonsAndDragons.Controllers
             if (battle.players.Count == 0) { TempData["FlashMessage"] = "No players available."; return Redirect($"../../Game/View/{gameId}"); };
 
             ViewBag.Battle = battle;
-            @ViewBag.gameid = id;
+            ViewBag.jsonBattle = JsonConvert.SerializeObject(battle);
+            ViewBag.gameid = id;
+            ViewBag.LoggedInUserID = _sessionHandler.GetSignedInUserID();
             return View();
+        }
+
+        public JsonResult UpdateJSON(string json)
+        {
+            var item = json;
+            var deserializedJson = JsonConvert.DeserializeObject<Battle>(json);
+            var gameId = deserializedJson.gameId;
+
+            Battle.UpdateNpcHp(_context, deserializedJson.NPC.id, deserializedJson.NPC.currentHp);
+            _hubcontext.Clients.Group(deserializedJson.gameId.ToString()).SendAsync("UpdateBattleStats", gameId.ToString(), item);
+            //_hubcontext.Clients.All.SendAsync("UpdateBattleStats", gameId.ToString(), json)
+            return Json(json);
         }
     }
 }

@@ -55,5 +55,12 @@ namespace DungeonsAndDragons.Models
                 return false;
             }
         }
+
+        public static void UpdateNpcHp(DungeonsAndDragonsContext _context, int npcId, int newHP)
+        {
+            var character = _context.nonplayablecharacters.Find(npcId);
+            character.currentHp = newHP;
+            _context.SaveChanges();
+        }
     }
 }

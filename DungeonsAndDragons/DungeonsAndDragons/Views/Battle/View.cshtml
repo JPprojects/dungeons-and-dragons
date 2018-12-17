@@ -26,13 +26,28 @@ Attack: @ViewBag.Battle.NPC.attack
     <br />
 }
 
-<form>
-    <input type="submit" value="Attack!" />
-</form>
+@if (ViewBag.Battle.dmId == ViewBag.LoggedInUserID)
+{
+    <form>
+        <select>
+            @foreach (var player in ViewBag.Battle.players)
+            {
+                <option value="@player.id">@player.name</option>
+            }
+        </select>
+        <input type="submit" value="Attack!" />
+    </form>
 
-<form action="../../Battle/End" method="post">
-    <input type="hidden" name="gameid" value="@ViewBag.gameid" />
-    <input type="submit" value="End Battle" />
-</form>
+    <form action="../../Battle/End" method="post">
+        <input type="hidden" name="gameid" value="@ViewBag.gameid" />
+        <input type="submit" value="End Battle" />
+    </form>
+}
+
+@if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
+{
+    <button id="playerAttackButton">Attack @ViewBag.Battle.NPC.name!</button>
+}
 
 <div id="gameid" style="display: none">@ViewBag.gameid</div>
+<div id="jsonBattle" style="display: none">@ViewBag.jsonBattle</div>
