@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using DungeonsAndDragons.Hubs;
 using DungeonsAndDragons.Models;
 using Microsoft.AspNetCore.SignalR;
+using StaticHttpContextAccessor.Helpers;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -13,11 +14,13 @@ namespace DungeonsAndDragons.Controllers
     {
         private readonly IHubContext<DnDHub> _hubcontext;
         private readonly DungeonsAndDragonsContext _context;
+        private readonly SessionHandler _sessionHandler;
 
-        public BattleController(DungeonsAndDragonsContext context, IHubContext<DnDHub> hubcontext)
+        public BattleController(DungeonsAndDragonsContext context, IHubContext<DnDHub> hubcontext, SessionHandler sessionHandler)
         {
             _context = context;
             _hubcontext = hubcontext;
+            _sessionHandler = sessionHandler;
         }
 
         public void Create(int gameid, int npcId)
@@ -33,11 +36,13 @@ namespace DungeonsAndDragons.Controllers
         public IActionResult View(int id, int npcId)
         {
             //TODO:
-            //Create new instance of Battle - view need to pass this route all required variables
-            //Redirect logged out users
             //Redirect users that are not part of this game
 
             int gameId = id;
+
+            if (!_sessionHandler.UserIsSignedIn()) { return Redirect("../../Home/Index"); }
+
+            if (!Battle.IsUserInGame(_context, _sessionHandler.GetSignedInUserID(), gameId)) { return Redirect("../../Home/Index"); }
 
             ViewBag.Battle = Battle.StartBattle(_context, gameId, npcId);
             @ViewBag.gameid = id;

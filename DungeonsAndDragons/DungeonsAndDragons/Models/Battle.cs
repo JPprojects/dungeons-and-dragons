@@ -26,5 +26,26 @@ namespace DungeonsAndDragons.Models
             var battle = new Battle() { gameId = gameId, dmId = dmId, NPC = npc, players = players, currentPlayerId = currentPlayerId };
             return battle;
         }
+
+        public static bool IsUserInGame(DungeonsAndDragonsContext _context, int loggedInUserId, int gameId)
+        {
+            GameUser check = _context.gamesusers.SingleOrDefault(x => x.gameid == gameId & x.userid == loggedInUserId);
+            var dmcheck = _context.games.Find(gameId);
+
+
+
+            if (check != null)
+            {
+                return true;
+            }
+            else if (dmcheck.dm == loggedInUserId)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
