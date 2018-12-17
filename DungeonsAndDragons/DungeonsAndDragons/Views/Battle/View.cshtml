@@ -3,9 +3,51 @@
     <script src="~/js/dndhub.js"></script>
 }
 
-<form action="../../Battle/End" method="post">
-    <input type="hidden" name="gameid" value="@ViewBag.gameid" />
-    <input type="submit" value="End Battle" />
-</form>
+<h1>Battle!</h1>
+
+<h2>Enemy: @ViewBag.Battle.NPC.name</h2>
+<img src="@ViewBag.Battle.NPC.imagePath" />
+<br />
+Health: @ViewBag.Battle.NPC.currentHp / @ViewBag.Battle.NPC.maxHp
+<br>
+Attack: @ViewBag.Battle.NPC.attack
+
+<h2>Players:</h2>
+<br />
+@foreach (var player in ViewBag.Battle.players)
+{
+    <h2>@player.name</h2>
+    <br />
+    <img src="@player.imagePath" />
+    <br />
+    <span>Health: </span> @player.currentHp <span>/</span> @player.maxHp
+    <br />
+    <span>Attack: </span> @player.attack
+    <br />
+}
+
+@if (ViewBag.Battle.dmId == ViewBag.LoggedInUserID)
+{
+    <form>
+        <select>
+            @foreach (var player in ViewBag.Battle.players)
+            {
+                <option value="@player.id">@player.name</option>
+            }
+        </select>
+        <input type="submit" value="Attack!" />
+    </form>
+
+    <form action="../../Battle/End" method="post">
+        <input type="hidden" name="gameid" value="@ViewBag.gameid" />
+        <input type="submit" value="End Battle" />
+    </form>
+}
+
+@if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
+{
+    <button id="playerAttackButton">Attack @ViewBag.Battle.NPC.name!</button>
+}
 
 <div id="gameid" style="display: none">@ViewBag.gameid</div>
+<div id="jsonBattle" style="display: none">@ViewBag.jsonBattle</div>

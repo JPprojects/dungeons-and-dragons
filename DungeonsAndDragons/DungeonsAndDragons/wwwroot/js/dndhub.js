@@ -1,6 +1,11 @@
 ﻿"use strict";
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/dndhub").build();
+var jsonBattle = $("#jsonBattle").text();
+if (jsonBattle != "")
+{
+    var battleJson = jQuery.parseJSON(jsonBattle);
+};
 
 connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) {
     var accepted = jQuery.parseJSON(acceptedplayers);
@@ -15,13 +20,27 @@ connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) 
     });
 });
 
-connection.on("StartBattleRedirect", function (gameid){
-    window.location.replace("../../Battle/View/" + gameid);
+connection.on("StartBattleRedirect", function (gameid, npcId){
+    window.location.replace("../../Battle/View/" + gameid + "?npcId=" + npcId);
 });
 
 connection.on("EndBattleRedirect", function (gameid){
     window.location.replace("../../Game/View/" + gameid);
 });
+
+$("#playerAttackButton").click(function(){
+    battleJson.NPC.currentHp -= 10;
+    UpdateJson();
+});
+
+function UpdateJson() {
+    console.log("ajax running");
+    $.ajax({
+        url: '../UpdateJSON',
+        type: 'POST',
+        data: {"json" : JSON.stringify(battleJson)}
+    })
+};
 
 connection.start().then(function(result){
     joinGame();
@@ -36,3 +55,9 @@ function joinGame(){
     return console.error(err.toString());
     }); 
 }
+
+
+
+connection.on("UpdateBattleStats", function (updatedStatsJson) {
+    location.reload();
+});

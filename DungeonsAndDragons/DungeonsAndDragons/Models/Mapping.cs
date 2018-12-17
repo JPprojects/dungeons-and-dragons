@@ -50,7 +50,7 @@ namespace DungeonsAndDragons.Models
             return useracceptedandpendinggames;
         }
 
-      
+
 
         public static IQueryable GameUserAndPlayableCharacterJoin(DungeonsAndDragonsContext _context, int gameId)
         {
@@ -91,7 +91,7 @@ namespace DungeonsAndDragons.Models
                   speciesbaseattack = species.base_attack,
                   playablecharacterid = character.id,
                   playablecharactername = character.name,
-                  playablecharacterhp = character.hp,
+                  playablecharacterhp = character.maxHp,
                   playablecharacterattack = character.attack
               };
         }
@@ -113,7 +113,7 @@ namespace DungeonsAndDragons.Models
                   speciesbaseattack = species.base_attack,
                   nonplayablecharacterid = character.id,
                   nonplayablecharactername = character.name,
-                  nonplayablecharacterhp = character.hp,
+                  nonplayablecharacterhp = character.maxHp,
                   nonplayablecharacterattack = character.attack
               };
         }

@@ -11,9 +11,9 @@ namespace DungeonsAndDragons.Models
 
 
 
-        public static NonPlayableCharacter CreateNonPlayableCharacter(DungeonsAndDragonsContext _context, int gameid, string chracterName, int speciesId, int hp, int attack)
+        public static NonPlayableCharacter CreateNonPlayableCharacter(DungeonsAndDragonsContext _context, int gameid, string chracterName, int speciesId, int maxHp, int attack, string imagePath, int currentHp)
         {
-            var character = new NonPlayableCharacter() { gameid = gameid, name = chracterName, species_id = speciesId, hp = hp, attack = attack };
+            var character = new NonPlayableCharacter() { gameid = gameid, name = chracterName, species_id = speciesId, maxHp = maxHp, attack = attack, imagePath = imagePath, currentHp = currentHp };
             _context.nonplayablecharacters.Add(character);
             _context.SaveChanges();
 
@@ -26,7 +26,7 @@ namespace DungeonsAndDragons.Models
         {
             Species species = Species.GetSpeciesByID(_context, species_id);
 
-            return CreateNonPlayableCharacter(_context, gameId, characterName, species_id, species.base_hp, species.base_attack);
+            return CreateNonPlayableCharacter(_context, gameId, characterName, species_id, species.base_hp, species.base_attack, species.image_path, species.base_hp);
         }
 
 

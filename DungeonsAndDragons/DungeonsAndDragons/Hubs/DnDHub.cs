@@ -1,6 +1,13 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using DungeonsAndDragons.Hubs;
+using DungeonsAndDragons.Models;
+using StaticHttpContextAccessor.Helpers;
+using Newtonsoft.Json;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace DungeonsAndDragons.Hubs
@@ -22,9 +29,9 @@ namespace DungeonsAndDragons.Hubs
             await Clients.All.SendAsync("UpdatePlayerInvites", acceptedplayers, pendingplayers);
         }
 
-        public async Task StartBattleRedirect(int gameid)
+        public async Task StartBattleRedirect(int gameid, int npcId)
         {
-            await Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid);
+            await Clients.Group(gameid.ToString()).SendAsync("StartBattleRedirect", gameid, npcId);
         }
 
         public async Task EndBattleRedirect(int gameid)
@@ -35,6 +42,12 @@ namespace DungeonsAndDragons.Hubs
         public async Task JoinGame(string gameid)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, gameid);
+        }
+
+        public async Task UpdateBattleStats(string gameid, string updatedStatsJson)
+        {
+            await Clients.Group(gameid).SendAsync("UpdateBattleStats", "5000");
+
         }
 
         //public Task LeaveRoom(string roomName)
