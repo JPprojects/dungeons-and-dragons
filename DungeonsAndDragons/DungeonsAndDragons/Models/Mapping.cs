@@ -91,7 +91,7 @@ namespace DungeonsAndDragons.Models
                   speciesbaseattack = species.base_attack,
                   playablecharacterid = character.id,
                   playablecharactername = character.name,
-                  playablecharacterhp = character.maxHp,
+                  playablecharacterhp = character.currentHp,
                   playablecharacterattack = character.attack
               };
         }

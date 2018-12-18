@@ -1,0 +1,7 @@
+﻿id,itemName,itemType,imagePath,healingFactor,attack,monetaryValue
+1,Potion,Healing,,20,0,10
+2,Hyper Potion,Healing,,100,0,50
+3,Max Potion,Healing,,999999,0,150
+4,Fire Cracker,Attack,,0,20,40
+5,Fire bomb,Attack,,0,100,200
+6,Gold Coins,Money,,0,0,1

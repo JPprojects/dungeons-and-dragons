@@ -17,5 +17,7 @@ namespace DungeonsAndDragons.Models
         public DbSet<PlayableCharacter> playablecharacters { get; set; }
         public DbSet<NonPlayableCharacter> nonplayablecharacters { get; set; }
         public DbSet<Species> species { get; set; }
+        public DbSet<InventoryItem> inventoryitems { get; set; }
+        public DbSet<Inventory> inventory { get; set; }
     }
 }

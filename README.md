@@ -75,6 +75,9 @@ In each table manually set the following foreign keys and null requirements. Unl
   * gameid => games.id
   * userid => users.id
   * playablecharacterid => playablecharacters.id, nullable => true
+* inventory
+  * chracterid => playablecharacters.id
+  * inventoryItemId => inventoryitems.id
 * nonplayablecharacters
   * species_id => species.id
   * game_id => games.id

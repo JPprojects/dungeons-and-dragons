@@ -72,6 +72,7 @@ namespace DungeonsAndDragons.Controllers
             ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.UserID = _sessionHandler.GetSignedInUserID();
             ViewBag.Character = PlayableCharacter.GetStatsForUserGeneratedCharacter(_context, characterId);
+            ViewBag.Inventory = Inventory.GetPlayersInventoryForDisplay(_context, characterId);
 
             return View();
         }
