@@ -54,6 +54,7 @@ namespace DungeonsAndDragons.Controllers
 
             List<InventoryItem> merchantWares = _context.inventoryitems.ToList();
 
+            ViewBag.Message = TempData["FlashMessage"];
             ViewBag.LoggedInUserID = userid;
             ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.gameid = gameId;
@@ -61,6 +62,7 @@ namespace DungeonsAndDragons.Controllers
 
             if (merchant.dmId != userid)
             {
+                ViewBag.player = LoggedInUsersCharacter;
                 List<InventoryMapping> inventory = Inventory.GetPlayersInventoryForDisplay(_context, LoggedInUsersCharacter.id);
                 ViewBag.Inventory = inventory;
                 ViewBag.Balance = inventory.Find(x => x.itemName == "Gold Coins").quantity;
@@ -72,16 +74,28 @@ namespace DungeonsAndDragons.Controllers
             return View();
         }
 
-        public JsonResult UpdateJSON(string json)
+        public IActionResult Purchase(int gameId, int itemId, int characterId)
         {
-            //var item = json;
-            //var deserializedJson = JsonConvert.DeserializeObject<Battle>(json);
-            //var gameId = deserializedJson.gameId;
+            List<Inventory> playersInventory = Inventory.getPlayersInventory(_context, characterId);
 
-            //Battle.UpdateNpcHp(_context, deserializedJson.NPC.id, deserializedJson.NPC.currentHp);
-            //_hubcontext.Clients.Group(deserializedJson.gameId.ToString()).SendAsync("UpdateBattleStats", gameId.ToString(), item);
-            ////_hubcontext.Clients.All.SendAsync("UpdateBattleStats", gameId.ToString(), json)
-            return Json(json);
+            int characterBalance = playersInventory.Find(item => item.inventoryItemId == 6).quantity;
+
+            int itemPrice = _context.inventoryitems.ToList().Find(item => item.id == itemId).monetaryValue;
+
+            if (characterBalance < itemPrice)
+            {
+
+                TempData["FlashMessage"] = "Insufficent funds.";
+
+            }
+            else
+            {
+                Inventory.RemoveItemFromInventory(_context, characterId, 6, itemPrice);
+
+                Inventory.addItemToInventory(_context, characterId, itemId, 1);
+            }
+
+            return Redirect($"View/{gameId}");
         }
     }
 }

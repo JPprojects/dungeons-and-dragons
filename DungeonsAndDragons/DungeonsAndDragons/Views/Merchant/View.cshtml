@@ -2,16 +2,9 @@
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/dndhub.js"></script>
 }
-
-@foreach (var player in ViewBag.merchant.players)
-{
-    if (@player.userid == @ViewBag.LoggedInUserID)
-    {
-        @player.name;
-    }
-}
-
-
+<div>
+    @ViewBag.Message
+</div>
 
 
 <h1>Merchant</h1>
@@ -45,7 +38,14 @@
                 <td>@item.monetaryValue</td>
                 <td>
                     @if (@ViewBag.Merchant.dmId != @ViewBag.LoggedInUserID)
-                    {<button>Buy</button>}
+                    {
+                        <form action="/Merchant/Purchase" method="post">
+                            <input type="hidden" name="gameId" value="@ViewBag.gameid" />
+                            <input type="hidden" name="itemId" value="@item.id" />
+                            <input type="hidden" name="characterId" value="@ViewBag.player.id" />
+                            <input type="submit" value="Buy" />
+                        </form>
+                    }
                 </td>
 
             </tr>
