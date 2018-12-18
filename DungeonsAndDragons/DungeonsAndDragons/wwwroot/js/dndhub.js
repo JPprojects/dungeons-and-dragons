@@ -1,11 +1,23 @@
 ﻿"use strict";
 
+// ********** Connection String ********** //
+
 var connection = new signalR.HubConnectionBuilder().withUrl("/dndhub").build();
-var jsonBattle = $("#jsonBattle").text();
-if (jsonBattle != "")
-{
-    var battleJson = jQuery.parseJSON(jsonBattle);
-};
+
+// ********** Functions ********** //
+
+function joinGame(){
+    var gameid = $("#gameid").text();
+    connection.invoke("JoinGame", gameid).catch(function (err) {
+    return console.error(err.toString());
+    }); 
+}
+
+// ********** Broadcast Events ********** //
+
+
+
+// ********** Listener Events ********** //
 
 connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) {
     var accepted = jQuery.parseJSON(acceptedplayers);
@@ -32,40 +44,11 @@ connection.on("StartBattleRedirect", function (gameid, npcId){
     window.location.replace("../../Battle/View/" + gameid + "?npcId=" + npcId);
 });
 
-connection.on("EndBattleRedirect", function (gameid){
-    window.location.replace("../../Game/View/" + gameid);
-});
-
-$("#playerAttackButton").click(function(){
-    battleJson.NPC.currentHp -= 10;
-    UpdateJson();
-});
-
-function UpdateJson() {
-    console.log("ajax running");
-    $.ajax({
-        url: '../UpdateJSON',
-        type: 'POST',
-        data: {"json" : JSON.stringify(battleJson)}
-    })
-};
+// ********** Establish Connection ********** //
 
 connection.start().then(function(result){
     joinGame();
     }).catch(function (err) {
     return console.error(err.toString());
 
-});
-
-function joinGame(){
-    var gameid = $("#gameid").text();
-    connection.invoke("JoinGame", gameid).catch(function (err) {
-    return console.error(err.toString());
-    }); 
-}
-
-
-
-connection.on("UpdateBattleStats", function (updatedStatsJson) {
-    location.reload();
 });

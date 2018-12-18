@@ -5,7 +5,9 @@ using System.Linq;
 namespace DungeonsAndDragons.Models
 {
     public class Battle : Interaction
-    {         public int currentPlayerId { get; set; }         public NonPlayableCharacter NPC { get; set; }
+    {      
+        public int currentPlayerId { get; set; }     
+        public NonPlayableCharacter NPC { get; set; }
 
         public static Battle StartBattle(DungeonsAndDragonsContext _context, int gameId, int npcId)
         {
@@ -27,17 +29,25 @@ namespace DungeonsAndDragons.Models
             }
             else
             {
-                currentPlayerId = players.First().id;
+                currentPlayerId = players.First().userid;
             }
 
             var battle = new Battle() { gameId = gameId, dmId = dmId, NPC = npc, players = players, currentPlayerId = currentPlayerId };
             return battle;
         }
 
-        public static void UpdateNpcHp(DungeonsAndDragonsContext _context, int npcId, int newHP)
+
+        public static void UpdateNpcHp(DungeonsAndDragonsContext _context, int npcId, int newHp)
         {
             var character = _context.nonplayablecharacters.Find(npcId);
-            character.currentHp = newHP;
+            character.currentHp = newHp;
+            _context.SaveChanges();
+        }
+
+        public static void UpdatePlayerHp(DungeonsAndDragonsContext _context, int characterId, int newHp)
+        {
+            var character = _context.playablecharacters.Find(characterId);
+            character.currentHp = newHp;
             _context.SaveChanges();
         }
     }

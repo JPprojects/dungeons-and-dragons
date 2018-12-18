@@ -46,7 +46,7 @@ namespace DungeonsAndDragons.Hubs
 
         public async Task UpdateBattleStats(string gameid, string updatedStatsJson)
         {
-            await Clients.Group(gameid).SendAsync("UpdateBattleStats", "5000");
+            await Clients.Group(gameid).SendAsync("UpdateBattleStats", gameid, updatedStatsJson);
 
         }
 

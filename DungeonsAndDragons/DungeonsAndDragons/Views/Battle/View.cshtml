@@ -1,42 +1,40 @@
 ﻿@section Scripts{
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/dndhub.js"></script>
+    <script src="~/js/battle.js"></script>
 }
 
 <h1>Battle!</h1>
 
-<h2>Enemy: @ViewBag.Battle.NPC.name</h2>
-<img src="@ViewBag.Battle.NPC.imagePath" />
+<h2>Enemy: <span class="enemyName"></span></h2>
+<img id="enemyImage" src="" />
 <br />
-Health: @ViewBag.Battle.NPC.currentHp / @ViewBag.Battle.NPC.maxHp
+Health: <span id="enemyCurrentHp"></span> / <span id="enemyMaxHp"></span>
 <br>
-Attack: @ViewBag.Battle.NPC.attack
+Attack: <span id="enemyAttack"></span>
 
 <h2>Players:</h2>
 <br />
 @foreach (var player in ViewBag.Battle.players)
 {
-    <h2>@player.name</h2>
+    <h2 class="@player.id-name"></h2>
     <br />
-    <img src="@player.imagePath" />
+    <img id="@player.id-image" src="" />
     <br />
-    <span>Health: </span> @player.currentHp <span>/</span> @player.maxHp
+    <span>Health:</span> <span id="@player.id-currentHp"></span> <span>/</span> <span id="@player.id-maxHp"></span>
     <br />
-    <span>Attack: </span> @player.attack
+    <span>Attack:</span> <span id="@player.id-attack"></span>
     <br />
 }
 
 @if (ViewBag.Battle.dmId == ViewBag.LoggedInUserID)
 {
-    <form>
-        <select>
-            @foreach (var player in ViewBag.Battle.players)
-            {
-                <option value="@player.id">@player.name</option>
-            }
-        </select>
-        <input type="submit" value="Attack!" />
-    </form>
+    <select id="npcAttack">
+        @foreach (var player in ViewBag.Battle.players)
+        {
+            <option class="@player.id-name" value="@player.id"></option>
+        }
+    </select>
+    <button id="npcAttackButton" type="submit">Attack!</button>
 
     <form action="../../Battle/End" method="post">
         <input type="hidden" name="gameid" value="@ViewBag.gameid" />
@@ -44,10 +42,13 @@ Attack: @ViewBag.Battle.NPC.attack
     </form>
 }
 
-@if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
-{
-    <button id="playerAttackButton">Attack @ViewBag.Battle.NPC.name!</button>
-}
+<div id="playerAttack" style="display:none">
+    @if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
+    {
+        <button id="playerAttackButton">Attack <span class="enemyName"></span>!</button>
+    }
+</div>
 
 <div id="gameid" style="display: none">@ViewBag.gameid</div>
 <div id="jsonBattle" style="display: none">@ViewBag.jsonBattle</div>
+<div id="loggedInUserId" style="display:none">@ViewBag.LoggedInUserID</div>
