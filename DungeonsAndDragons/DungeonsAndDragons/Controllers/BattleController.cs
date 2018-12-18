@@ -57,14 +57,20 @@ namespace DungeonsAndDragons.Controllers
             return View();
         }
 
-        public JsonResult UpdateJSON(string json)
+        public JsonResult UpdateJSON(string json, int characterId, int characterCurrentHp)
         {
             var deserializedJson = JsonConvert.DeserializeObject<Battle>(json);
             var gameId = deserializedJson.gameId;
 
             Battle.UpdateNpcHp(_context, deserializedJson.NPC.id, deserializedJson.NPC.currentHp);
+
+            if (characterId != 0)
+            {
+                Battle.UpdatePlayerHp(_context, characterId, characterCurrentHp);
+            }
+
             _hubcontext.Clients.Group(deserializedJson.gameId.ToString()).SendAsync("UpdateBattleStats", gameId.ToString(), json);
-            //_hubcontext.Clients.All.SendAsync("UpdateBattleStats", gameId.ToString(), json)
+
             return Json(json);
         }
     }

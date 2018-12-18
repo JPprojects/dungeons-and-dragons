@@ -28,15 +28,13 @@ Attack: <span id="enemyAttack"></span>
 
 @if (ViewBag.Battle.dmId == ViewBag.LoggedInUserID)
 {
-    <form>
-        <select>
-            @foreach (var player in ViewBag.Battle.players)
-            {
-                <option class="@player.id-name" value="@player.id"></option>
-            }
-        </select>
-        <input type="submit" value="Attack!" />
-    </form>
+    <select id="npcAttack">
+        @foreach (var player in ViewBag.Battle.players)
+        {
+            <option class="@player.id-name" value="@player.id"></option>
+        }
+    </select>
+    <button id="npcAttackButton" type="submit">Attack!</button>
 
     <form action="../../Battle/End" method="post">
         <input type="hidden" name="gameid" value="@ViewBag.gameid" />

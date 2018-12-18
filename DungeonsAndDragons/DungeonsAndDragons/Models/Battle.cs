@@ -56,10 +56,17 @@ namespace DungeonsAndDragons.Models
             }
         }
 
-        public static void UpdateNpcHp(DungeonsAndDragonsContext _context, int npcId, int newHP)
+        public static void UpdateNpcHp(DungeonsAndDragonsContext _context, int npcId, int newHp)
         {
             var character = _context.nonplayablecharacters.Find(npcId);
-            character.currentHp = newHP;
+            character.currentHp = newHp;
+            _context.SaveChanges();
+        }
+
+        public static void UpdatePlayerHp(DungeonsAndDragonsContext _context, int characterId, int newHp)
+        {
+            var character = _context.playablecharacters.Find(characterId);
+            character.currentHp = newHp;
             _context.SaveChanges();
         }
     }

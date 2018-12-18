@@ -22,11 +22,15 @@ function joinGame(){
     }); 
 }
 
-function UpdateJson() {
+function UpdateJson(characterId = 0, characterCurrentHp = 0) {
     $.ajax({
         url: '../UpdateJSON',
         type: 'POST',
-        data: {"json" : JSON.stringify(battleJson)}
+        data: {
+            "json" : JSON.stringify(battleJson),
+            "characterId" : characterId,
+            "characterCurrentHp" : characterCurrentHp
+        }
     })
 };
 
@@ -40,7 +44,7 @@ function LoadBattleValues() {
         $("." + element.id + "-name").text(element.name);
         $("#" + element.id + "-image").attr("src", element.imagePath);
         $("#" + element.id + "-currentHp").text(element.currentHp);
-        $("#" + element.id + "-maxHp").text(element.currentHp);
+        $("#" + element.id + "-maxHp").text(element.maxHp);
         $("#" + element.id + "-attack").text(element.attack);
     })
 };
@@ -56,6 +60,13 @@ function UpdateJsonDiv(updatedStatsJson) {
 $("#playerAttackButton").click(function(){
     battleJson.NPC.currentHp -= 10;
     UpdateJson();
+});
+
+$("#npcAttackButton").click(function(){
+    var characterId = $("#npcAttack").val();
+    battleJson.players.find(obj => { return obj.id == characterId}).currentHp -= battleJson.NPC.attack;
+    var newHp = battleJson.players.find(obj => { return obj.id == characterId}).currentHp;
+    UpdateJson(characterId, newHp);
 });
 
 // ********** Listener Events ********** //
