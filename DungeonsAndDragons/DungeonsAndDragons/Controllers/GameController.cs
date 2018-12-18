@@ -87,7 +87,6 @@ namespace DungeonsAndDragons.Controllers
             ViewBag.Game = game;
             ViewBag.Message = TempData["FlashMessage"];
             ViewBag.DM = _context.users.SingleOrDefault(x => x.id == game.dm);
-
             return View();
         }
 

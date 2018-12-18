@@ -13,3 +13,32 @@
 <p>HP: @ViewBag.Character.playablecharacterhp</p>
 
 <p>Attack: @ViewBag.Character.playablecharacterattack</p>
+
+<h3>Inventory</h3>
+<table style="width: 100%">
+    <tr>
+        <th>Item</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Healing Factor</th>
+        <th>Attack Strength</th>
+        <th>Quantity</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var item in @ViewBag.Inventory)
+    {
+        <tr>
+            <td>@item.imagePath</td>
+            <td>@item.itemName</td>
+            <td>@item.itemType</td>
+            <td>@item.healingFactor</td>
+            <td>@item.attack</td>
+            <td>@item.quantity</td>
+            <td>
+                @if (@item.itemType == "Healing" && @ViewBag.Character.playablecharacterhp < @ViewBag.Character.speciesbasehp)
+                {<button itemid="@item.id">Use</button>}
+            </td>
+        </tr>
+    }
+
+</table>

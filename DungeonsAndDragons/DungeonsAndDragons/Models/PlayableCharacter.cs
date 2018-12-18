@@ -28,6 +28,10 @@ namespace DungeonsAndDragons.Models
 
             GameUser AssignedCharacter = Models.GameUser.AssignCharacterToGamePlayer(_context, gamesUsersId, newCharacter.id);
 
+            Inventory Coins = Models.Inventory.addItemToInventory(_context, newCharacter.id, 6, 100);
+
+            Inventory Potion = Models.Inventory.addItemToInventory(_context, newCharacter.id, 1, 1);
+
             return AssignedCharacter;
         }
 
