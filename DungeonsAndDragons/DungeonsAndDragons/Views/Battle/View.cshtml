@@ -5,24 +5,24 @@
 
 <h1>Battle!</h1>
 
-<h2>Enemy: @ViewBag.Battle.NPC.name</h2>
-<img src="@ViewBag.Battle.NPC.imagePath" />
+<h2>Enemy: <span class="enemyName"></span></h2>
+<img id="enemyImage" src="" />
 <br />
-Health: @ViewBag.Battle.NPC.currentHp / @ViewBag.Battle.NPC.maxHp
+Health: <span id="enemyCurrentHp"></span> / <span id="enemyMaxHp"></span>
 <br>
-Attack: @ViewBag.Battle.NPC.attack
+Attack: <span id="enemyAttack"></span>
 
 <h2>Players:</h2>
 <br />
 @foreach (var player in ViewBag.Battle.players)
 {
-    <h2>@player.name</h2>
+    <h2 class="@player.id-name"></h2>
     <br />
-    <img src="@player.imagePath" />
+    <img id="@player.id-image" src="" />
     <br />
-    <span>Health: </span> @player.currentHp <span>/</span> @player.maxHp
+    <span>Health:</span> <span id="@player.id-currentHp"></span> <span>/</span> <span id="@player.id-maxHp"></span>
     <br />
-    <span>Attack: </span> @player.attack
+    <span>Attack:</span> <span id="@player.id-attack"></span>
     <br />
 }
 
@@ -32,7 +32,7 @@ Attack: @ViewBag.Battle.NPC.attack
         <select>
             @foreach (var player in ViewBag.Battle.players)
             {
-                <option value="@player.id">@player.name</option>
+                <option class="@player.id-name" value="@player.id"></option>
             }
         </select>
         <input type="submit" value="Attack!" />
@@ -46,7 +46,7 @@ Attack: @ViewBag.Battle.NPC.attack
 
 @if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
 {
-    <button id="playerAttackButton">Attack @ViewBag.Battle.NPC.name!</button>
+    <button id="playerAttackButton">Attack <span class="enemyName"></span>!</button>
 }
 
 <div id="gameid" style="display: none">@ViewBag.gameid</div>

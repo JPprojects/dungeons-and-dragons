@@ -1,11 +1,64 @@
 ﻿"use strict";
 
+$(document).ready(function() {
+    LoadBattleValues();
+});
+
+// ********** Connection String ********** //
+
 var connection = new signalR.HubConnectionBuilder().withUrl("/dndhub").build();
 var jsonBattle = $("#jsonBattle").text();
 if (jsonBattle != "")
 {
     var battleJson = jQuery.parseJSON(jsonBattle);
 };
+
+// ********** Functions ********** //
+
+function joinGame(){
+    var gameid = $("#gameid").text();
+    connection.invoke("JoinGame", gameid).catch(function (err) {
+    return console.error(err.toString());
+    }); 
+}
+
+function UpdateJson() {
+    $.ajax({
+        url: '../UpdateJSON',
+        type: 'POST',
+        data: {"json" : JSON.stringify(battleJson)}
+    })
+};
+
+function LoadBattleValues() {
+    $(".enemyName").text(battleJson.NPC.name);
+    $("#enemyImage").attr("src", battleJson.NPC.imagePath);
+    $("#enemyCurrentHp").text(battleJson.NPC.currentHp);
+    $("#enemyMaxHp").text(battleJson.NPC.maxHp);
+    $("#enemyAttack").text(battleJson.NPC.attack);
+    battleJson.players.forEach(function(element) {
+        $("." + element.id + "-name").text(element.name);
+        $("#" + element.id + "-image").attr("src", element.imagePath);
+        $("#" + element.id + "-currentHp").text(element.currentHp);
+        $("#" + element.id + "-maxHp").text(element.currentHp);
+        $("#" + element.id + "-attack").text(element.attack);
+    })
+};
+
+function UpdateJsonDiv(updatedStatsJson) {
+    $("#jsonBattle").text(updatedStatsJson);
+    battleJson = jQuery.parseJSON(updatedStatsJson);
+    LoadBattleValues();
+};
+
+// ********** Broadcast Events ********** //
+
+$("#playerAttackButton").click(function(){
+    battleJson.NPC.currentHp -= 10;
+    UpdateJson();
+});
+
+// ********** Listener Events ********** //
 
 connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) {
     var accepted = jQuery.parseJSON(acceptedplayers);
@@ -28,36 +81,15 @@ connection.on("EndBattleRedirect", function (gameid){
     window.location.replace("../../Game/View/" + gameid);
 });
 
-$("#playerAttackButton").click(function(){
-    battleJson.NPC.currentHp -= 10;
-    UpdateJson();
+connection.on("UpdateBattleStats", function (gameId, updatedStatsJson) {
+    UpdateJsonDiv(updatedStatsJson);
 });
 
-function UpdateJson() {
-    console.log("ajax running");
-    $.ajax({
-        url: '../UpdateJSON',
-        type: 'POST',
-        data: {"json" : JSON.stringify(battleJson)}
-    })
-};
+// ********** Establish Connection ********** //
 
 connection.start().then(function(result){
     joinGame();
     }).catch(function (err) {
     return console.error(err.toString());
 
-});
-
-function joinGame(){
-    var gameid = $("#gameid").text();
-    connection.invoke("JoinGame", gameid).catch(function (err) {
-    return console.error(err.toString());
-    }); 
-}
-
-
-
-connection.on("UpdateBattleStats", function (updatedStatsJson) {
-    location.reload();
 });

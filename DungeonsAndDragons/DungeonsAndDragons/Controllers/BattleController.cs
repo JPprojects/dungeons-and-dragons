@@ -59,12 +59,11 @@ namespace DungeonsAndDragons.Controllers
 
         public JsonResult UpdateJSON(string json)
         {
-            var item = json;
             var deserializedJson = JsonConvert.DeserializeObject<Battle>(json);
             var gameId = deserializedJson.gameId;
 
             Battle.UpdateNpcHp(_context, deserializedJson.NPC.id, deserializedJson.NPC.currentHp);
-            _hubcontext.Clients.Group(deserializedJson.gameId.ToString()).SendAsync("UpdateBattleStats", gameId.ToString(), item);
+            _hubcontext.Clients.Group(deserializedJson.gameId.ToString()).SendAsync("UpdateBattleStats", gameId.ToString(), json);
             //_hubcontext.Clients.All.SendAsync("UpdateBattleStats", gameId.ToString(), json)
             return Json(json);
         }
