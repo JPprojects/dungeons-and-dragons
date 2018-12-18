@@ -47,6 +47,10 @@ function LoadBattleValues() {
         $("#" + element.id + "-maxHp").text(element.maxHp);
         $("#" + element.id + "-attack").text(element.attack);
     })
+    ShowAndHidePlayerAttackButton();
+};
+
+function ShowAndHidePlayerAttackButton() {
     if ($("#loggedInUserId").text() == battleJson.currentPlayerId) {
         $("#playerAttack").attr("style", "display:block");
     }
@@ -62,22 +66,24 @@ function UpdateJsonDiv(updatedStatsJson) {
 };
 
 function SetCurrentPlayerId() {
-    var nextPlayerIndex;
-    var currentPlayer = battleJson.players.find(obj => { return obj.userid == battleJson.currentPlayerId});
-    var currentPlayerIndex = battleJson.players.indexOf(currentPlayer);
+    var currentPlayerIndex = GetCurrentPlayerIndex();
     if (currentPlayerIndex == battleJson.players.length - 1) {
-        nextPlayerIndex = 0;
+        var nextPlayerIndex = 0;
     }
     else {
-        nextPlayerIndex = currentPlayerIndex + 1
+        var nextPlayerIndex = currentPlayerIndex + 1
     }
     battleJson.currentPlayerId = battleJson.players[nextPlayerIndex].userid
 };
 
 function PlayerAttack() {
-    var currentPlayer = battleJson.players.find(obj => { return obj.userid == battleJson.currentPlayerId});
-    var currentPlayerIndex = battleJson.players.indexOf(currentPlayer);
+    var currentPlayerIndex = GetCurrentPlayerIndex();
     battleJson.NPC.currentHp -= battleJson.players[currentPlayerIndex].attack;
+};
+
+function GetCurrentPlayerIndex() {
+    var currentPlayer = battleJson.players.find(obj => { return obj.userid == battleJson.currentPlayerId});
+    return battleJson.players.indexOf(currentPlayer);
 };
 
 // ********** Broadcast Events ********** //
