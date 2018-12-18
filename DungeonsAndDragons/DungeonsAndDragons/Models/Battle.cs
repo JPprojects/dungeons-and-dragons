@@ -28,7 +28,7 @@ namespace DungeonsAndDragons.Models
             }
             else
             {
-                currentPlayerId = players.First().id;
+                currentPlayerId = players.First().userid;
             }
 
             var battle = new Battle() { gameId = gameId, dmId = dmId, NPC = npc, players = players, currentPlayerId = currentPlayerId };

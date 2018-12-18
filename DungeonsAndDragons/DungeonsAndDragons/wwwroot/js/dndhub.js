@@ -47,6 +47,12 @@ function LoadBattleValues() {
         $("#" + element.id + "-maxHp").text(element.maxHp);
         $("#" + element.id + "-attack").text(element.attack);
     })
+    if ($("#loggedInUserId").text() == battleJson.currentPlayerId) {
+        $("#playerAttack").attr("style", "display:block");
+    }
+    else {
+        $("#playerAttack").attr("style", "display:none");
+    }
 };
 
 function UpdateJsonDiv(updatedStatsJson) {
@@ -55,10 +61,30 @@ function UpdateJsonDiv(updatedStatsJson) {
     LoadBattleValues();
 };
 
+function SetCurrentPlayerId() {
+    var nextPlayerIndex;
+    var currentPlayer = battleJson.players.find(obj => { return obj.userid == battleJson.currentPlayerId});
+    var currentPlayerIndex = battleJson.players.indexOf(currentPlayer);
+    if (currentPlayerIndex == battleJson.players.length - 1) {
+        nextPlayerIndex = 0;
+    }
+    else {
+        nextPlayerIndex = currentPlayerIndex + 1
+    }
+    battleJson.currentPlayerId = battleJson.players[nextPlayerIndex].userid
+};
+
+function PlayerAttack() {
+    var currentPlayer = battleJson.players.find(obj => { return obj.userid == battleJson.currentPlayerId});
+    var currentPlayerIndex = battleJson.players.indexOf(currentPlayer);
+    battleJson.NPC.currentHp -= battleJson.players[currentPlayerIndex].attack;
+};
+
 // ********** Broadcast Events ********** //
 
 $("#playerAttackButton").click(function(){
-    battleJson.NPC.currentHp -= 10;
+    PlayerAttack();
+    SetCurrentPlayerId();
     UpdateJson();
 });
 

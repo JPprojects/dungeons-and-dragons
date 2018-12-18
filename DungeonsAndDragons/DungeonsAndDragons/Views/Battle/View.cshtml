@@ -42,10 +42,13 @@ Attack: <span id="enemyAttack"></span>
     </form>
 }
 
-@if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
-{
-    <button id="playerAttackButton">Attack <span class="enemyName"></span>!</button>
-}
+<div id="playerAttack" style="display:none">
+    @if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
+    {
+        <button id="playerAttackButton">Attack <span class="enemyName"></span>!</button>
+    }
+</div>
 
 <div id="gameid" style="display: none">@ViewBag.gameid</div>
 <div id="jsonBattle" style="display: none">@ViewBag.jsonBattle</div>
+<div id="loggedInUserId" style="display:none">@ViewBag.LoggedInUserID</div>
