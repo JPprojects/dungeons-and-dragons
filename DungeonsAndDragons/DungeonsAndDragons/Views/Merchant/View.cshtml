@@ -3,11 +3,72 @@
     <script src="~/js/dndhub.js"></script>
 }
 
+@foreach (var player in ViewBag.merchant.players)
+{
+    if (@player.userid == @ViewBag.LoggedInUserID)
+    {
+        @player.name;
+    }
+}
+
+
+
+
 <h1>Merchant</h1>
 
 <h2>Merchant Inventory</h2>
+<table style="width: 100%">
+    <tr>
+        <th>Item</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Healing Factor</th>
+        <th>Attack Strength</th>
+        <th>Price</th>
+    </tr>
+    @foreach (var item in @ViewBag.MerchantWares)
+    {
+        <tr>
+            <td>@item.imagePath</td>
+            <td>@item.itemName</td>
+            <td>@item.itemType</td>
+            <td>@item.healingFactor</td>
+            <td>@item.attack</td>
+            <td>@item.monetaryValue</td>
+        </tr>
+    }
+
+</table>
+
+
 
 <h2>Player Inventory</h2>
+@if (ViewBag.Merchant.dmId != ViewBag.LoggedInUserID)
+{
+    <table style="width: 100%">
+        <tr>
+            <th>Item</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Healing Factor</th>
+            <th>Attack Strength</th>
+            <th>Quantity</th>
+        </tr>
+        @foreach (var item in @ViewBag.Inventory)
+        {
+            <tr>
+                <td>@item.imagePath</td>
+                <td>@item.itemName</td>
+                <td>@item.itemType</td>
+                <td>@item.healingFactor</td>
+                <td>@item.attack</td>
+                <td>@item.quantity</td>
+            </tr>
+        }
+
+    </table>
+}
+
 
 @if (ViewBag.Merchant.dmId == ViewBag.LoggedInUserID)
 {
@@ -16,3 +77,5 @@
         <input type="submit" value="End Merchant Interaction" />
     </form>
 }
+
+<div id="gameid" style="display: none">@ViewBag.gameid</div>

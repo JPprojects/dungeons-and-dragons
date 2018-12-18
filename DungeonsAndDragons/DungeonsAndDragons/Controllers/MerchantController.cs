@@ -40,20 +40,33 @@ namespace DungeonsAndDragons.Controllers
             //Redirect users that are not part of this game
 
             int gameId = id;
+            int userid = _sessionHandler.GetSignedInUserID();
 
             if (!_sessionHandler.UserIsSignedIn()) { return Redirect("../../Home/Index"); }
 
-            if (!Merchant.IsUserInGame(_context, _sessionHandler.GetSignedInUserID(), gameId)) { return Redirect("../../Home/Index"); }
+            if (!Merchant.IsUserInGame(_context, userid, gameId)) { return Redirect("../../Home/Index"); }
 
             Merchant merchant = Merchant.StartMerchant(_context, gameId);
 
-            //if (battle.players.Count == 0) { TempData["FlashMessage"] = "No players available."; return Redirect($"../../Game/View/{gameId}"); }
+            List<PlayableCharacter> charactersInGame = merchant.players;
 
-            ViewBag.Merchant = merchant;
-            //ViewBag.jsonBattle = JsonConvert.SerializeObject(battle);
+            PlayableCharacter LoggedInUsersCharacter = charactersInGame.Find(x => x.userid == userid);
+
+            List<InventoryItem> merchantWares = _context.inventoryitems.ToList();
+
+            ViewBag.LoggedInUserID = userid;
+            ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.gameid = gameId;
-            ViewBag.LoggedInUserID = _sessionHandler.GetSignedInUserID();
-            //ViewBag.Username = _sessionHandler.GetSignedInUsername();
+            ViewBag.Merchant = merchant;
+
+            if (merchant.dmId != userid)
+            {
+                ViewBag.Inventory = Inventory.GetPlayersInventoryForDisplay(_context, LoggedInUsersCharacter.id);
+            }
+
+            ViewBag.MerchantWares = merchantWares;
+
+
             return View();
         }
 

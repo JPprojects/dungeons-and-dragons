@@ -9,7 +9,7 @@ namespace DungeonsAndDragons.Models
 
         public static Battle StartBattle(DungeonsAndDragonsContext _context, int gameId, int npcId)
         {
-            int dmId = _context.games.SingleOrDefault(x => x.id == gameId).id;
+            int dmId = _context.games.SingleOrDefault(x => x.id == gameId).dm;
             NonPlayableCharacter npc = _context.nonplayablecharacters.SingleOrDefault(x => x.id == npcId);
             List<GameUser> gameUserResults = _context.gamesusers.Where(x => x.gameid == gameId & x.playablecharacterid != null).ToList();
             List<PlayableCharacter> players = new List<PlayableCharacter> { };
