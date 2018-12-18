@@ -54,5 +54,15 @@ namespace DungeonsAndDragons.Hubs
         //{
         //    return Groups.Remove(Context.ConnectionId, roomName);
         //}
+
+        public async Task StartMerchantRedirect(int gameid)
+        {
+            await Clients.Group(gameid.ToString()).SendAsync("StartMerchantRedirect", gameid);
+        }
+
+        public async Task EndMerchantRedirect(int gameid)
+        {
+            await Clients.Group(gameid.ToString()).SendAsync("EndMerchantRedirect", gameid);
+        }
     }
 }

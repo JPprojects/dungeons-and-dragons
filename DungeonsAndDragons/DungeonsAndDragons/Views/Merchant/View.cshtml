@@ -1,0 +1,18 @@
+﻿@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/dndhub.js"></script>
+}
+
+<h1>Merchant</h1>
+
+<h2>Merchant Inventory</h2>
+
+<h2>Player Inventory</h2>
+
+@if (ViewBag.Merchant.dmId == ViewBag.LoggedInUserID)
+{
+    <form action="../../Merchant/End" method="post">
+        <input type="hidden" name="gameid" value="@ViewBag.gameid" />
+        <input type="submit" value="End Merchant Interaction" />
+    </form>
+}

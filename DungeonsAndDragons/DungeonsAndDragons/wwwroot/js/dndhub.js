@@ -20,6 +20,14 @@ connection.on("UpdatePlayerInvites", function (acceptedplayers, pendingplayers) 
     });
 });
 
+connection.on("StartMerchantRedirect", function (gameid){
+    window.location.replace("../../Merchant/View/" + gameid);
+});
+
+connection.on("EndMerchantRedirect", function (gameid){
+    window.location.replace("../../Game/View/" + gameid);
+});
+
 connection.on("StartBattleRedirect", function (gameid, npcId){
     window.location.replace("../../Battle/View/" + gameid + "?npcId=" + npcId);
 });
