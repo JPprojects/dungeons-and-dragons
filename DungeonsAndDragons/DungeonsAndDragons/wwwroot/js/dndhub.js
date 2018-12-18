@@ -60,8 +60,8 @@ function ShowAndHidePlayerAttackButton() {
 };
 
 function UpdateJsonDiv(updatedStatsJson) {
-    $("#jsonBattle").text(updatedStatsJson);
     battleJson = jQuery.parseJSON(updatedStatsJson);
+    $("#jsonBattle").text(updatedStatsJson);
     LoadBattleValues();
 };
 
@@ -79,6 +79,7 @@ function SetCurrentPlayerId() {
 function PlayerAttack() {
     var currentPlayerIndex = GetCurrentPlayerIndex();
     battleJson.NPC.currentHp -= battleJson.players[currentPlayerIndex].attack;
+    if (battleJson.NPC.currentHp < 0) { battleJson.NPC.currentHp = 0 };
 };
 
 function GetCurrentPlayerIndex() {
@@ -89,6 +90,7 @@ function GetCurrentPlayerIndex() {
 // ********** Broadcast Events ********** //
 
 $("#playerAttackButton").click(function(){
+    if (battleJson.NPC.currentHp == 0) { alert("STAAAHP HE ALREADY DED!") };
     PlayerAttack();
     SetCurrentPlayerId();
     UpdateJson();
@@ -97,6 +99,7 @@ $("#playerAttackButton").click(function(){
 $("#npcAttackButton").click(function(){
     var characterId = $("#npcAttack").val();
     battleJson.players.find(obj => { return obj.id == characterId}).currentHp -= battleJson.NPC.attack;
+    if (battleJson.players.find(obj => { return obj.id == characterId}).currentHp < 0) { battleJson.players.find(obj => { return obj.id == characterId}).currentHp = 0 };
     var newHp = battleJson.players.find(obj => { return obj.id == characterId}).currentHp;
     UpdateJson(characterId, newHp);
 });
