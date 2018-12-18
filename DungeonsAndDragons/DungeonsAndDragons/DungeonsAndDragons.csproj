@@ -31,6 +31,7 @@
     <Folder Include="Hubs\" />
     <Folder Include="Views\Battle\" />
     <Folder Include="Views\NonPlayableCharacter\" />
+    <Folder Include="Views\Merchant\" />
   </ItemGroup>
   
 </Project>

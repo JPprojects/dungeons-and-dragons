@@ -4,9 +4,10 @@ using System.Linq;
 
 namespace DungeonsAndDragons.Models
 {
-    public class Battle
-    {
-        public int gameId { get; set; }         public int dmId { get; set; }         public int currentPlayerId { get; set; }         public List<PlayableCharacter> players { get; set; }         public NonPlayableCharacter NPC { get; set; }
+    public class Battle : Interaction
+    {      
+        public int currentPlayerId { get; set; }     
+        public NonPlayableCharacter NPC { get; set; }
 
         public static Battle StartBattle(DungeonsAndDragonsContext _context, int gameId, int npcId)
         {
@@ -35,26 +36,6 @@ namespace DungeonsAndDragons.Models
             return battle;
         }
 
-        public static bool IsUserInGame(DungeonsAndDragonsContext _context, int loggedInUserId, int gameId)
-        {
-            GameUser check = _context.gamesusers.SingleOrDefault(x => x.gameid == gameId & x.userid == loggedInUserId);
-            var dmcheck = _context.games.Find(gameId);
-
-
-
-            if (check != null)
-            {
-                return true;
-            }
-            else if (dmcheck.dm == loggedInUserId)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         public static void UpdateNpcHp(DungeonsAndDragonsContext _context, int npcId, int newHp)
         {

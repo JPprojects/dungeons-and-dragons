@@ -19,6 +19,11 @@
         <input type="submit" value="Start Battle" />
     </form>
 
+    <form action="../../Merchant/Create" method="post">
+        <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
+        <input type="submit" value="Start Merchant Interaction" />
+    </form>
+
     <h3>Invite Players:</h3>
 
     <form action="../Invite" method="post">
