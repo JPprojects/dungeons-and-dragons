@@ -61,7 +61,9 @@ namespace DungeonsAndDragons.Controllers
 
             if (merchant.dmId != userid)
             {
-                ViewBag.Inventory = Inventory.GetPlayersInventoryForDisplay(_context, LoggedInUsersCharacter.id);
+                List<InventoryMapping> inventory = Inventory.GetPlayersInventoryForDisplay(_context, LoggedInUsersCharacter.id);
+                ViewBag.Inventory = inventory;
+                ViewBag.Balance = inventory.Find(x => x.itemName == "Gold Coins").quantity;
             }
 
             ViewBag.MerchantWares = merchantWares;

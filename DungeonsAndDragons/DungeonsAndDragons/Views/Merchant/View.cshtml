@@ -15,6 +15,11 @@
 
 
 <h1>Merchant</h1>
+@if (@ViewBag.Merchant.dmId != @ViewBag.LoggedInUserID)
+{
+    <h2>Balance</h2>
+    <p><span id="balance">@ViewBag.Balance</span> Gold Coins</p>
+}
 
 <h2>Merchant Inventory</h2>
 <table style="width: 100%">
@@ -25,17 +30,27 @@
         <th>Healing Factor</th>
         <th>Attack Strength</th>
         <th>Price</th>
+        <th></th>
     </tr>
     @foreach (var item in @ViewBag.MerchantWares)
     {
-        <tr>
-            <td>@item.imagePath</td>
-            <td>@item.itemName</td>
-            <td>@item.itemType</td>
-            <td>@item.healingFactor</td>
-            <td>@item.attack</td>
-            <td>@item.monetaryValue</td>
-        </tr>
+        if (item.itemType != "Money")
+        {
+            <tr>
+                <td>@item.imagePath</td>
+                <td>@item.itemName</td>
+                <td>@item.itemType</td>
+                <td>@item.healingFactor</td>
+                <td>@item.attack</td>
+                <td>@item.monetaryValue</td>
+                <td>
+                    @if (@ViewBag.Merchant.dmId != @ViewBag.LoggedInUserID)
+                    {<button>Buy</button>}
+                </td>
+
+            </tr>
+        }
+
     }
 
 </table>
@@ -56,14 +71,17 @@
         </tr>
         @foreach (var item in @ViewBag.Inventory)
         {
-            <tr>
-                <td>@item.imagePath</td>
-                <td>@item.itemName</td>
-                <td>@item.itemType</td>
-                <td>@item.healingFactor</td>
-                <td>@item.attack</td>
-                <td>@item.quantity</td>
-            </tr>
+            if (item.itemType != "Money")
+            {
+                <tr>
+                    <td>@item.imagePath</td>
+                    <td>@item.itemName</td>
+                    <td>@item.itemType</td>
+                    <td>@item.healingFactor</td>
+                    <td>@item.attack</td>
+                    <td>@item.quantity</td>
+                </tr>
+            }
         }
 
     </table>
