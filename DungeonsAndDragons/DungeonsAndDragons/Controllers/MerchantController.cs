@@ -60,6 +60,9 @@ namespace DungeonsAndDragons.Controllers
             ViewBag.gameid = gameId;
             ViewBag.Merchant = merchant;
 
+            //TODO
+            //Add player name to view
+
             if (merchant.dmId != userid)
             {
                 ViewBag.player = LoggedInUsersCharacter;
