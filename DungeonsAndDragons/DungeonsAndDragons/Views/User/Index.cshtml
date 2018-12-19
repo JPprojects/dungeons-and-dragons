@@ -2,12 +2,21 @@
     ViewData["Title"] = "Sign In";
 }
 
-<h1>Sign In</h1>
+<div class="text-center">
+    <h1>Sign In</h1>
 
-<form action="/User/SignIn" method="post">
-    <input type="text" name="username" required="" autofocus="" placeholder="Username" />
-    <input type="password" name="password" required="" placeholder="Password" />
-    <input type="submit" />
-</form>
+    <form action="/User/SignIn" method="post">
+        <div class="pt-2 pb-1">
+            <input type="text" name="username" required="" autofocus="" placeholder="Username" class="form-control form-input"/>
+        </div>
+        <div class="pt-2 pb-1">
+            <input type="password" name="password" required="" placeholder="Password" class="form-control form-input"/>
+        </div>
+        <div class="pt-2 pb-1">
+            <button type="submit" class="btn btn-outline-info form-submit">Sign In</button>
+        </div> 
+    </form>
 
-@ViewBag.Message
+    @ViewBag.Message
+
+</div>
