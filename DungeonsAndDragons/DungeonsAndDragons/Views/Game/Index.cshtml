@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Games Dashboard";
+    ViewData["Title"] = "Games";
 }
 
 @section Scripts{
@@ -7,41 +7,54 @@
     <script src="~/js/playerhub.js"></script>
 }
 
-<h1>Games Dashboard</h1>
+<div class="text-center">
+    <h1>Games Dashboard</h1>
 
-<a asp-controller="game" asp-action="new"><button>New Game</button></a>
+    <hr />
+    <h2>Role: Game Master</h2>
 
-<h2>Game Master</h2>
+    <div class="pt-2 pb-1">
+        <a href="Game/New" class="btn btn-outline-info new-game-btn" roll="button" aria-pressed="true">Create Game</a>
+    </div>
 
-@foreach (var game in ViewBag.DMGames)
-{
-    <a href="Game/View/@game.id">@game.name</a>
-    <br />
-}
+    @foreach (var game in ViewBag.DMGames)
+    {
+        <a href="Game/View/@game.id">@game.name</a>
+        <br />
+    }
 
-<h2>Player</h2>
+    <hr />
+    <h2>Role: Player</h2>
 
-@foreach (var game in ViewBag.AcceptedGames)
-{
-    <a href="Game/View/@game.gameid">@game.gamename</a>
-    <br />
-}
+    @foreach (var game in ViewBag.AcceptedGames)
+    {
+        <a href="Game/View/@game.gameid">@game.gamename</a>
+        <br />
+    }
 
-<h2>Invites</h2>
+    <hr />
+    <h2>Invites</h2>
 
-@foreach (var invite in ViewBag.PendingGames)
-{
-    @invite.userusername <span>invited you to join</span> <a href="Game/view/@invite.gameid">@invite.gamename</a>
+    @foreach (var invite in ViewBag.PendingGames)
+    {
+        @invite.userusername <span>invited you to join</span> <a href="Game/view/@invite.gameid">@invite.gamename</a>
 
-    <form action="PlayableCharacter/New" method="get">
-        <input type="hidden" name="gamesusersid" value="@invite.id" />
-        <input type="submit" value="Accept" />
-    </form>
+        <div class="pt-2 pb-1">
+             <div class="inner">
+            <form action="PlayableCharacter/New" method="get">
+                <input type="hidden" name="gamesusersid" value="@invite.id" />
+                <button type="submit" class="btn btn-outline-info">Accept</button>
+            </form>
+        </div>
+            <div class="inner" >
+                <form action="Game/Decline" method="post">
+                    <input type="hidden" name="id" value="@invite.id" />
+                    <button type="submit" class="btn btn-outline-info">Decline</button>
+                </form>
+            </div>
+        </div>
 
-    <form action="Game/Decline" method="post">
-        <input type="hidden" name="id" value="@invite.id" />
-        <input type="submit" value="Decline" />
-    </form>
-}
+    }
 
-<div id="userId" style="display:none;">@ViewBag.UserId</div>
+    <div id="userId" style="display: none;">@ViewBag.UserId</div>
+</div>
