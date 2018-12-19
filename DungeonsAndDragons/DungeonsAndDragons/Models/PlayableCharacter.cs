@@ -65,7 +65,7 @@ namespace DungeonsAndDragons.Models
         public static void UseHealingItem(DungeonsAndDragonsContext _context, int itemId, int playableCharacterId)
         {
             var healingItem = Inventory.GetInventoryItemById(_context, itemId);
-            var playableCharacter = GetPlayableCharacterById(_context, itemId);
+            var playableCharacter = GetPlayableCharacterById(_context, playableCharacterId);
             playableCharacter.currentHp += healingItem.healingFactor;
             if (playableCharacter.currentHp > playableCharacter.maxHp) { playableCharacter.currentHp = playableCharacter.maxHp; };
             _context.SaveChanges();

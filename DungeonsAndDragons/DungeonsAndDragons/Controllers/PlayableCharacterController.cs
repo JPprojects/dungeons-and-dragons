@@ -80,12 +80,14 @@ namespace DungeonsAndDragons.Controllers
 
 
 
-        public void Use(string json, int itemId, int playableCharacterId)
+        public IActionResult Use(string json, int itemId, int playableCharacterId)
         {
-            var inventoryJson = JsonConvert.DeserializeObject(json);
+            //var inventoryJson = JsonConvert.DeserializeObject(json);
 
             PlayableCharacter.UseHealingItem(_context, itemId, playableCharacterId);
             Inventory.RemoveItemFromInventory(_context, playableCharacterId, itemId, 1);
+
+            return Redirect($"View/{playableCharacterId}");
         }
     }
 }

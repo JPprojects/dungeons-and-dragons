@@ -36,10 +36,7 @@ function UpdateInventoryDivValues() {
 
 // ********** Broadcast Events ********** //
 
-$(".useItem").click(function() {
-    var itemId = this.id;
-    SendJsonDataToController(itemId, $("#playableCharacterId").text());
-});
+
 
 // ********** Listener Events ********** //
 

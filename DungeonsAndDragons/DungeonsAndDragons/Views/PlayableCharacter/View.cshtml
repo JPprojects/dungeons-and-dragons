@@ -37,7 +37,13 @@
             <td>@item.quantity</td>
             <td>
                 @if (@item.itemType == "Healing" && @ViewBag.Character.playablecharacterhp < @ViewBag.Character.speciesbasehp)
-                {<button class="useItem" name="itemId" id="@item.id">Use</button>}
+                {
+                    <form asp-controller="PlayableCharacter" asp-action="Use">
+                        <input type="hidden" name="itemId" value="@item.id" />
+                        <input type="hidden" name="playableCharacterId" value="@ViewBag.Character.playablecharacterid" />
+                        <button class="useItem" name="itemId" id="@item.id">Use</button>
+                    </form>
+                }
             </td>
         </tr>
     }
