@@ -1,12 +1,22 @@
 ﻿@{
     ViewData["Title"] = "Register";
 }
-<h1>Register</h1>
 
-<form action="Create" method="post">
-    <input type="text" name="username" required="" autofocus="" placeholder="Username" />
-    <input type="password" name="password" required="" placeholder="Password" />
-    <input type="submit" />
-</form>
+<div class="text-center">
+    <h1>Register</h1>
 
-@ViewBag.Message
+    <form action="Create" method="post">
+        <div class="pt-2 pb-1">
+            <input type="text" name="username" required="" autofocus="" placeholder="Username" class="form-control form-input" />
+        </div>
+        <div class="pt-2 pb-1">
+            <input type="password" name="password" required="" placeholder="Password" class="form-control form-input" />
+        </div>
+        <div class="pt-2 pb-1">
+            <button type="submit" class="btn btn-outline-info form-submit">Register</button>
+        </div>
+    </form>
+
+    @ViewBag.Message
+
+</div>
