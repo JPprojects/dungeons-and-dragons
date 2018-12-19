@@ -11,36 +11,37 @@
 
 <a asp-controller="game" asp-action="new"><button>New Game</button></a>
 
-<br />
+<h2>Game Master</h2>
 
-<h2>My DM Games</h2>
 @foreach (var game in ViewBag.DMGames)
 {
     <a href="Game/View/@game.id">@game.name</a>
     <br />
 }
 
-<h2>My Player Games</h2>
+<h2>Player</h2>
+
 @foreach (var game in ViewBag.AcceptedGames)
 {
     <a href="Game/View/@game.gameid">@game.gamename</a>
     <br />
 }
 
-<h2>My Invites</h2>
+<h2>Invites</h2>
+
 @foreach (var invite in ViewBag.PendingGames)
 {
     @invite.userusername <span>invited you to join</span> <a href="Game/view/@invite.gameid">@invite.gamename</a>
+
     <form action="PlayableCharacter/New" method="get">
         <input type="hidden" name="gamesusersid" value="@invite.id" />
         <input type="submit" value="Accept" />
     </form>
+
     <form action="Game/Decline" method="post">
         <input type="hidden" name="id" value="@invite.id" />
         <input type="submit" value="Decline" />
     </form>
-    <br />
 }
-
 
 <div id="userId" style="display:none;">@ViewBag.UserId</div>

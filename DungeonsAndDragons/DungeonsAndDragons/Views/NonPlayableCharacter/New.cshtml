@@ -1,28 +1,28 @@
-﻿@section Scripts{
+﻿@{
+    ViewData["Title"] = "Create NPC";
+}
+
+@section Scripts{
     <script src="~/js/characterPreview.js"></script>
 }
 
-<h1>Add NPC</h1>
+<h1>Create NPC</h1>
 
 <form action="Create" method="post">
-    <input type="text" name="characterName" required="" autofocus="" placeholder="Character name" />
-    <br />
-    <br />
+    <input type="text" name="characterName" required="" autofocus="" placeholder="Character Name" />
     <select id="species-form" name="speciesId" onchange="changePreview(this)">
         @foreach (var species in ViewBag.Species)
         {
             <option value="@species.id">@species.species_type</option>
         }
     </select>
-    <br />
-    <br />
     <input type="hidden" name="gameId" value="@ViewBag.GameID" />
-    <input type="submit" value="Generate Character" />
+    <input type="submit" value="Create NPC" />
 </form>
 
 <div id="character-preview">
     <img id="character-image" class="preview" src="@ViewBag.Species[0].image_path" style="height: 150px; width: 100px;" />
-    <p>HP <span id="character-hp">@ViewBag.Species[0].base_hp</span></p>
+    <p>HP: <span id="character-hp">@ViewBag.Species[0].base_hp</span></p>
     <p>Attack: <span id="character-attack">@ViewBag.Species[0].base_attack</span></p>
 </div>
 
