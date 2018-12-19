@@ -1,6 +1,7 @@
-﻿@page
-@{
+﻿@section Scripts{
+    <script src="~/js/characterPreview.js"></script>
 }
+
 <h1>Add NPC</h1>
 
 <form action="Create" method="post">
@@ -18,4 +19,11 @@
     <input type="hidden" name="gameId" value="@ViewBag.GameID" />
     <input type="submit" value="Generate Character" />
 </form>
-<img id="preview" class="preview" src="@ViewBag.Species[0].image_path" style="height: 150px; width: 100px;" />
+
+<div id="character-preview">
+    <img id="character-image" class="preview" src="@ViewBag.Species[0].image_path" style="height: 150px; width: 100px;" />
+    <p>HP <span id="character-hp">@ViewBag.Species[0].base_hp</span></p>
+    <p>Attack: <span id="character-attack">@ViewBag.Species[0].base_attack</span></p>
+</div>
+
+<div id="json-species" style="display: none;">@ViewBag.jsonSpecies</div>
