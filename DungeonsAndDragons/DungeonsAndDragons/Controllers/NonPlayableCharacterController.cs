@@ -32,9 +32,12 @@ namespace DungeonsAndDragons.Controllers
         {
             if (!_sessionHandler.UserIsSignedIn()) { return Redirect("Home/Index"); }
 
+            List<Species> Species = _context.species.ToList();
+
             ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.GameID = gameid;
-            ViewBag.Species = _context.species.ToList();
+            ViewBag.Species = Species;
+            ViewBag.jsonSpecies = JsonConvert.SerializeObject(Species);
 
             return View();
         }
