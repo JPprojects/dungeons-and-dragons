@@ -43,12 +43,18 @@ function LoadBattleValues() {
     $("#enemyImage").attr("src", battleJson.NPC.imagePath);
     $("#enemyCurrentHp").text(battleJson.NPC.currentHp);
     $("#enemyMaxHp").text(battleJson.NPC.maxHp);
+    $("#enemyHealthBar").attr("aria-valuemax", battleJson.NPC.maxHp);
+    $("#enemyHealthBar").attr("aria-valuenow", battleJson.NPC.currentHp);
+    $("#enemyHealthBar").css("width", (battleJson.NPC.currentHp / battleJson.NPC.maxHp * 100) + "%");
     $("#enemyAttack").text(battleJson.NPC.attack);
     battleJson.players.forEach(function(element) {
         $("." + element.id + "-name").text(element.name);
         $("#" + element.id + "-image").attr("src", element.imagePath);
         $("#" + element.id + "-currentHp").text(element.currentHp);
         $("#" + element.id + "-maxHp").text(element.maxHp);
+        $("#" + element.id + "-healthBar").attr("aria-valuemax", element.maxHp);
+        $("#" + element.id + "-healthBar").attr("aria-valuenow", element.currentHp);
+        $("#" + element.id + "-healthBar").css("width", (element.currentHp / element.maxHp * 100) + "%");
         $("#" + element.id + "-attack").text(element.attack);
     })
     SetLiveCharacters();
