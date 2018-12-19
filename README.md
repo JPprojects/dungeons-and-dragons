@@ -1,29 +1,29 @@
-# Dungeons and Dragons
+# Castles and Kittens #
+
+The site can be reached by visiting [http://bit.do/castlesandkittens](http://bit.do/castlesandkittens) or by scanning the QR code below.
+
+![qr-code](images/qr.png)
 
 ## Description ##
-Final project for Makers Academy.
-
 An application to assist Dungeon Masters in the set up and running of a Dungeons and Dragons campaign.
 
-## Technologies Used ##
-* ASP.NET Core 2.2
-* ASP.NET MVC 5
-* .NET Framework 4.7.2
-* .NET Standard 2
-* NUnit
+## Tech Stack ##
+* ASP.NET Core 2.1.5
+* Entity Framework 6.2
+* SignalR 2.4
 * PostgreSQL
-* Entity Framework
 * C#
 * HTML
 * CSS
 * Bootstrap
+* JavaScript
+* jQuery
 
-## Process ##
+## Workflow Process ##
 Our [wiki](https://github.com/aimeecraig/dungeons-and-dragons/wiki) discusses our production process for this challenge.
 
 ## How to Install and Use ##
 1. Clone the repository
-
 ```
 git clone https://github.com/aimeecraig/dungeons-and-dragons.git
 ```
@@ -33,17 +33,18 @@ git clone https://github.com/aimeecraig/dungeons-and-dragons.git
 cd dungeons-and-dragons
 ```
 
-## Databases Setup
-Create a database called `dungeons_and_dragons` using PostgreSQL.
+Follow the next steps to create a local database.
 
-This can be done using the following command:
-
+## Database Setup ##
+1. Create a database called `dungeons_and_dragons` using PostgreSQL.
 ```bash
 DATABASE CREATE dungeons_and_dragons;
 ```
 
-### Setup Connection
-Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons` directory with the below code snippet. Ensure that you update the Username and Password key value pairs with the username and password you will be using to access your database.
+### Setup Connection ###
+Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons` directory using the below code snippet. Ensure that you update the `Username` and `Password` key value pairs with the username and password you will be using to access your local database.
+
+*This is usually the same username you use to log in to your machine with no password.*
 
 ```csharp
 {
@@ -59,14 +60,13 @@ Create an `appsettings.json` file in the `/dungeons-and-dragons/DungeonsAndDrago
 }
 ```
 
-### Migrate Table Schemas
-To import the tables and table schemas for the project, while in the main project directory (`/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons`) run the following command:
-
+### Migrate Table Schemas ###
+To import the tables and table schemas for the project, while in the main project directory `/dungeons-and-dragons/DungeonsAndDragons/DungeonsAndDragons` run the following command:
 ```bash
 dotnet ef database update
 ```
 
-### Setup Foreign Keys and Nullable Values
+### Setup Foreign Keys and Nullable Values ###
 In each table manually set the following foreign keys and null requirements. Unless explicitly stated nullable should be set to false.
 
 * games
@@ -85,7 +85,7 @@ In each table manually set the following foreign keys and null requirements. Unl
   * userid => users.id
   * species_id => species.id
 
-### Import Games Base Data
+### Import Pre-existing Data ###
 There are files in the `sql_tables` directory that need to be imported to their respective tables.
 
 In TablePlus, on the table that you are importing data to:
