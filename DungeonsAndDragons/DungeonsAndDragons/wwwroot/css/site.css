@@ -35,14 +35,3 @@ body {
         display: none;
     }
 }
-
-
-@keyframes attackAnimation {
-    0%, 99% {
-        top: -50px;
-    }
-
-    100% {
-        top: 0px;
-    }
-}
