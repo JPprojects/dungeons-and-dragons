@@ -112,11 +112,12 @@ namespace DungeonsAndDragons.Controllers
             {
                 _context.gamesusers.Add(new GameUser { gameid = id, userid = inviteduser.id });
                 _context.SaveChanges();
-            }
-            string invitedUserId = inviteduser.id.ToString();
-            string playerGroup = "Player-" + invitedUserId;
 
-            _hubcontext.Clients.Group(playerGroup).SendAsync("UpdateUserInvites", playerGroup);
+                string invitedUserId = inviteduser.id.ToString();
+                string playerGroup = "Player-" + invitedUserId;
+
+                _hubcontext.Clients.Group(playerGroup).SendAsync("UpdateUserInvites", playerGroup);
+            }
 
             return Redirect($"View/{id}");
         }

@@ -12,26 +12,31 @@ body {
     padding-right: 15px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.homepage {
+    text-align: center;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
+.buttondiv {
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+.logo {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 50vh;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+.homebutton {
+    width: 60%;
+    height: 50px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.homepagelogo {
+    height: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -1,20 +1,27 @@
-﻿@section Scripts{
+﻿@{
+    ViewData["Title"] = "Merchant";
+}
+
+@section Scripts{
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/dndhub.js"></script>
 }
+
 <div>
     @ViewBag.Message
 </div>
 
-
 <h1>Merchant</h1>
+
 @if (@ViewBag.Merchant.dmId != @ViewBag.LoggedInUserID)
 {
     <h2>Balance</h2>
+
     <p><span id="balance">@ViewBag.Balance</span> Gold Coins</p>
 }
 
 <h2>Merchant Inventory</h2>
+
 <table style="width: 100%">
     <tr>
         <th>Item</th>
@@ -25,6 +32,7 @@
         <th>Price</th>
         <th></th>
     </tr>
+
     @foreach (var item in @ViewBag.MerchantWares)
     {
         if (item.itemType != "Money")
@@ -47,19 +55,15 @@
                         </form>
                     }
                 </td>
-
             </tr>
         }
-
     }
-
 </table>
 
-
-
-<h2>Player Inventory</h2>
 @if (ViewBag.Merchant.dmId != ViewBag.LoggedInUserID)
 {
+    <h2>Player Inventory</h2>
+
     <table style="width: 100%">
         <tr>
             <th>Item</th>
@@ -69,6 +73,7 @@
             <th>Attack Strength</th>
             <th>Quantity</th>
         </tr>
+
         @foreach (var item in @ViewBag.Inventory)
         {
             if (item.itemType != "Money")
@@ -83,16 +88,14 @@
                 </tr>
             }
         }
-
     </table>
 }
-
 
 @if (ViewBag.Merchant.dmId == ViewBag.LoggedInUserID)
 {
     <form action="../../Merchant/End" method="post">
         <input type="hidden" name="gameid" value="@ViewBag.gameid" />
-        <input type="submit" value="End Merchant Interaction" />
+        <input type="submit" value="Close Shop" />
     </form>
 }
 

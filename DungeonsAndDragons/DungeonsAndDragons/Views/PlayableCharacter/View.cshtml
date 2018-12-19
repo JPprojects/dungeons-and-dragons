@@ -3,19 +3,22 @@
     <script src="~/js/characterView.js"></script>
 }
 
+﻿@{
+    ViewData["Title"] = ViewBag.Character.playablecharactername;
+}
+
 <h1> @ViewBag.Character.playablecharactername </h1>
 
 <img src="@ViewBag.Character.speciesimage" style="height:450px; width:300px;" />
 
-<h3>Species: @ViewBag.Character.speciestype</h3>
-
-<br />
+<h2>Species: @ViewBag.Character.speciestype</h2>
 
 <p>HP: @ViewBag.Character.playablecharacterhp</p>
 
 <p>Attack: @ViewBag.Character.playablecharacterattack</p>
 
-<h3>Inventory</h3>
+<h2>Inventory</h2>
+
 <table style="width: 100%">
     <tr>
         <th>Item</th>
@@ -26,6 +29,7 @@
         <th>Quantity</th>
         <th>Action</th>
     </tr>
+
     @foreach (var item in @ViewBag.Inventory)
     {
         <tr>
@@ -47,7 +51,6 @@
             </td>
         </tr>
     }
-
 </table>
 
 <div id="inventoryJson" style="display:none">@ViewBag.InventoryJson</div>

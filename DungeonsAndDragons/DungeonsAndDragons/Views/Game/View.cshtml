@@ -1,4 +1,8 @@
-﻿@section Scripts{
+﻿@{
+    ViewData["Title"] = ViewBag.Game.name;
+}
+
+@section Scripts{
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/dndhub.js"></script>
 }
@@ -7,7 +11,8 @@
 
 @if (ViewBag.DM.id == ViewBag.UserID)
 {
-    <h3>Interactions</h3>
+    <h2>Interactions</h2>
+
     <form action="../../Battle/Create" method="post">
         <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
         <select name="npcId">
@@ -21,58 +26,52 @@
 
     <form action="../../Merchant/Create" method="post">
         <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
-        <input type="submit" value="Start Merchant Interaction" />
+        <input type="submit" value="Open Shop" />
     </form>
 
-    <h3>Invite Players:</h3>
+    <h2>Invite Players</h2>
 
     <form action="../Invite" method="post">
-        <label for="name">Player Name</label>
         <input type="hidden" name="id" value="@ViewBag.Game.id">
-        <input type="text" name="inviteeUsername" required="" autofocus="" />
+        <input type="text" name="inviteeUsername" required="" autofocus="" placeholder="Player Name" />
         <input type="submit" value="Invite" />
     </form>
 
     @ViewBag.Message
 
-    <br />
+    <h3>NPCs</h3>
 
     <form action="../../NonPlayableCharacter/New" method="get">
         <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
         <input type="hidden" name="dmid" value="@ViewBag.DM.id" />
-        <input type="submit" value="Add NPC to Game" />
+        <input type="submit" value="Generate NPC" />
     </form>
 
-    <br />
-
-    <h3>NPCs in Game:</h3>
     @foreach (NonPlayableCharacter character in ViewBag.NPCs)
     {
-        <a href="../../NonPlayableCharacter/View/@character.id">@character.name</a>
-        <br />
+        <a href="../../NonPlayableCharacter/View/@character.id">@character.name</a><br />
     }
 }
 
-<h3> Dungeon Master </h3>
+<h3>Game Master</h3>
+
 @ViewBag.DM.username
-<h3> Players </h3>
+
+<h3>Players</h3>
 
 <div id="acceptedPlayers">
     @foreach (var user in ViewBag.AcceptedUsers)
     {
-        <p>
-            @user.userusername <span> playing as </span> <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a>
-        </p>
+        <p>@user.userusername playing as <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a></p>
     }
 </div>
 
-<h3> Pending Players </h3>
+<h3>Pending Players</h3>
+
 <div id="pendingPlayers">
     @foreach (var user in ViewBag.PendingUsers)
     {
-        <p>
-            @user.userusername
-        </p>
+        <p>@user.userusername</p>
     }
 </div>
 
