@@ -1,5 +1,6 @@
-﻿@page
-@{
+﻿@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/characterView.js"></script>
 }
 
 <h1> @ViewBag.Character.playablecharactername </h1>
@@ -36,9 +37,12 @@
             <td>@item.quantity</td>
             <td>
                 @if (@item.itemType == "Healing" && @ViewBag.Character.playablecharacterhp < @ViewBag.Character.speciesbasehp)
-                {<button itemid="@item.id">Use</button>}
+                {<button class="useItem" name="itemId" id="@item.id">Use</button>}
             </td>
         </tr>
     }
 
 </table>
+
+<div id="inventoryJson" style="display:none">@ViewBag.InventoryJson</div>
+<div id="playableCharacterId" style="display:none">@ViewBag.Character.playablecharacterid</div>

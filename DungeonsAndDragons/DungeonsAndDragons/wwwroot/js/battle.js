@@ -33,7 +33,7 @@ function UpdateJson(characterId = 0, characterCurrentHp = 0) {
             "characterId" : characterId,
             "characterCurrentHp" : characterCurrentHp
         }
-    })
+    });
 };
 
 function LoadBattleValues() {

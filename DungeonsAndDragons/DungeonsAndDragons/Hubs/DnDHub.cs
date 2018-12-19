@@ -64,5 +64,7 @@ namespace DungeonsAndDragons.Hubs
         {
             await Clients.Group(gameid.ToString()).SendAsync("EndMerchantRedirect", gameid);
         }
+
+
     }
 }

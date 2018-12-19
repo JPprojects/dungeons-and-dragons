@@ -88,7 +88,9 @@ namespace DungeonsAndDragons.Models
 
 
 
-
-
+        public static InventoryItem GetInventoryItemById(DungeonsAndDragonsContext _context, int itemId)
+        {
+            return _context.inventoryitems.Single(i => i.id == itemId);
+        }
     }
 }
