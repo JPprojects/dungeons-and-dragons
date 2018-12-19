@@ -12,15 +12,6 @@ body {
     padding-right: 15px;
 }
 
-.homepage {
-    text-align: center;
-}
-
-.buttondiv {
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
 .logo {
     padding-top: 5px;
     padding-bottom: 5px;
@@ -39,4 +30,19 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.form-input {
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-color: #bbeff7;
+}
+
+.form-submit {
+    width: 50%;
+    height: 40px;
+    font-size: 15px;
+    font-weight: bold;
 }
