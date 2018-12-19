@@ -8,8 +8,8 @@ using DungeonsAndDragons.Models;
 using DungeonsAndDragons.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-
 using StaticHttpContextAccessor.Helpers;
+using Newtonsoft.Json.Linq;
 
 namespace DungeonsAndDragons.Controllers
 {
@@ -73,8 +73,21 @@ namespace DungeonsAndDragons.Controllers
             ViewBag.UserID = _sessionHandler.GetSignedInUserID();
             ViewBag.Character = PlayableCharacter.GetStatsForUserGeneratedCharacter(_context, characterId);
             ViewBag.Inventory = Inventory.GetPlayersInventoryForDisplay(_context, characterId);
+            ViewBag.InventoryJson = JsonConvert.SerializeObject(ViewBag.Inventory);
 
             return View();
+        }
+
+
+
+        public IActionResult Use(string json, int itemId, int playableCharacterId)
+        {
+            //var inventoryJson = JsonConvert.DeserializeObject(json);
+
+            PlayableCharacter.UseHealingItem(_context, itemId, playableCharacterId);
+            Inventory.RemoveItemFromInventory(_context, playableCharacterId, itemId, 1);
+
+            return Redirect($"View/{playableCharacterId}");
         }
     }
 }

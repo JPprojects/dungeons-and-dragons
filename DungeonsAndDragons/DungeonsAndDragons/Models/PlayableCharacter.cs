@@ -53,5 +53,22 @@ namespace DungeonsAndDragons.Models
             return characterStats;
         }
 
+
+
+        public static PlayableCharacter GetPlayableCharacterById(DungeonsAndDragonsContext _context, int playableCharacterId)
+        {
+            return _context.playablecharacters.SingleOrDefault(p => p.id == playableCharacterId);
+        }
+
+
+
+        public static void UseHealingItem(DungeonsAndDragonsContext _context, int itemId, int playableCharacterId)
+        {
+            var healingItem = Inventory.GetInventoryItemById(_context, itemId);
+            var playableCharacter = GetPlayableCharacterById(_context, playableCharacterId);
+            playableCharacter.currentHp += healingItem.healingFactor;
+            if (playableCharacter.currentHp > playableCharacter.maxHp) { playableCharacter.currentHp = playableCharacter.maxHp; };
+            _context.SaveChanges();
+        }
     }
 }

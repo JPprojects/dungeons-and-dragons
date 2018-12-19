@@ -1,3 +1,8 @@
+﻿@section Scripts{
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/characterView.js"></script>
+}
+
 ﻿@{
     ViewData["Title"] = ViewBag.Character.playablecharactername;
 }
@@ -36,8 +41,17 @@
             <td>@item.quantity</td>
             <td>
                 @if (@item.itemType == "Healing" && @ViewBag.Character.playablecharacterhp < @ViewBag.Character.speciesbasehp)
-                {<button itemid="@item.id">Use</button>}
+                {
+                    <form asp-controller="PlayableCharacter" asp-action="Use">
+                        <input type="hidden" name="itemId" value="@item.id" />
+                        <input type="hidden" name="playableCharacterId" value="@ViewBag.Character.playablecharacterid" />
+                        <button class="useItem" name="itemId" id="@item.id">Use</button>
+                    </form>
+                }
             </td>
         </tr>
     }
 </table>
+
+<div id="inventoryJson" style="display:none">@ViewBag.InventoryJson</div>
+<div id="playableCharacterId" style="display:none">@ViewBag.Character.playablecharacterid</div>
