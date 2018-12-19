@@ -24,7 +24,7 @@ function joinGame(){
     }); 
 }
 
-function UpdateJson(characterId = 0, characterCurrentHp = 0) {
+function UpdateJson(characterId = 0, characterCurrentHp = 0, attackingPlayerId = 0) {
     $.ajax({
         url: '../UpdateJSON',
         type: 'POST',
@@ -37,6 +37,7 @@ function UpdateJson(characterId = 0, characterCurrentHp = 0) {
 };
 
 function LoadBattleValues() {
+    attackAnimation()
     $(".enemyName").text(battleJson.NPC.name);
     $("#enemyImage").attr("src", battleJson.NPC.imagePath);
     $("#enemyCurrentHp").text(battleJson.NPC.currentHp);
@@ -116,8 +117,9 @@ function SetLiveCharacters() {
 $("#playerAttackButton").click(function(){
     if (battleJson.NPC.currentHp == 0) { alert("STAAAHP HE ALREADY DED!") };
     PlayerAttack();
+    var attackingPlayerId = battleJson.currentPlayerId;
     SetCurrentPlayerId();
-    UpdateJson();
+    UpdateJson(0, 0, attackingPlayerId);
 });
 
 $("#npcAttackButton").click(function(){
@@ -153,4 +155,32 @@ connection.start().then(function(result){
     }).catch(function (err) {
     return console.error(err.toString());
 
-});
+    });
+
+
+// ************ Animations ************ //
+
+function moveUp(id){
+   
+    $("#" + id + "-image").css("top", "-100px");
+
+
+}
+
+function moveDown(id){
+    $("#" + id + "-image").css("top", "0px");
+
+
+}
+
+
+function attackAnimation(id){
+    moveUp(id);
+    setTimeout(moveDown, 300, id);
+}
+
+
+
+
+
+

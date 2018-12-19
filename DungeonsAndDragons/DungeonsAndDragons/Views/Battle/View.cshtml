@@ -3,51 +3,96 @@
     <script src="~/js/battle.js"></script>
 }
 
-<h1>Battle!</h1>
+<style>
+    img {
+        max-height: 200px;
+        min-height: 200px;
+        max-width: 133px;
+        min-width: 133px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+    }
 
-<h2>Enemy: <span class="enemyName"></span></h2>
-<img id="enemyImage" src="" />
-<br />
-Health: <span id="enemyCurrentHp"></span> / <span id="enemyMaxHp"></span>
-<br>
-Attack: <span id="enemyAttack"></span>
+    .card {
+        border: none;
+    }
+</style>
 
-<h2>Players:</h2>
-<br />
-@foreach (var player in ViewBag.Battle.players)
-{
-    <h2 class="@player.id-name"></h2>
-    <br />
-    <img id="@player.id-image" src="" />
-    <br />
-    <span>Health:</span> <span id="@player.id-currentHp"></span> <span>/</span> <span id="@player.id-maxHp"></span>
-    <br />
-    <span>Attack:</span> <span id="@player.id-attack"></span>
-    <br />
-}
 
-@if (ViewBag.Battle.dmId == ViewBag.LoggedInUserID)
-{
-    <select id="npcAttack">
-        @foreach (var player in ViewBag.Battle.players)
-        {
-            <option class="@player.id-name" value="@player.id"></option>
-        }
-    </select>
-    <button id="npcAttackButton" type="submit">Attack!</button>
 
-    <form action="../../Battle/End" method="post">
-        <input type="hidden" name="gameid" value="@ViewBag.gameid" />
-        <input type="submit" value="End Battle" />
-    </form>
-}
 
-<div id="playerAttack" style="display:none">
-    @if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
+<center>
+    <h1>Battle!</h1>
+</center>
+
+<div id="enemies" class="row d-flex justify-content-center">
+
+    <div class="card mx-2">
+        <img class="card-img-top" id="enemyImage" src="">
+        <div class="card-body">
+            <h5 class="card-title enemyName"></h5>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <p class="card-text">Health: <span id="enemyCurrentHp"></span> / <span id="enemyMaxHp"></span></p>
+            <p class="card-text">Attack: <span id="enemyAttack"></span></p>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="row text-center d-flex justify-content-center align-content-end" id="players">
+
+
+
+    @foreach (var player in ViewBag.Battle.players)
     {
-        <button id="playerAttackButton">Attack <span class="enemyName"></span>!</button>
+        <div class="card m-2 align-bottom">
+            <img class="card-img-top" id="@player.id-image" src="">
+            <div class="card-body">
+                <h5 class="@player.id-name enemyName"></h5>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="card-text">Health: <span id="@player.id-currentHp"></span> / <span id="@player.id-maxHp"></span></p>
+                <p class="card-text">Attack: <span id="@player.id-attack"></span></p>
+            </div>
+        </div>
     }
 </div>
+<center>
+    @if (ViewBag.Battle.dmId == ViewBag.LoggedInUserID)
+    {
+        <select id="npcAttack">
+            @foreach (var player in ViewBag.Battle.players)
+            {
+                <option class="@player.id-name" value="@player.id"></option>
+            }
+        </select>
+        <button id="npcAttackButton" type="submit">Attack!</button>
+
+        <form action="../../Battle/End" method="post">
+            <input type="hidden" name="gameid" value="@ViewBag.gameid" />
+            <input type="submit" value="End Battle" />
+        </form>
+    }
+
+    <div id="playerAttack" style="display:none">
+        @if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
+        {
+            <button id="playerAttackButton">Attack <span class="enemyName"></span>!</button>
+        }
+    </div>
+
+</center>
+
 
 <div id="gameid" style="display: none">@ViewBag.gameid</div>
 <div id="jsonBattle" style="display: none">@ViewBag.jsonBattle</div>
