@@ -57,7 +57,7 @@ namespace DungeonsAndDragons.Controllers
             return View();
         }
 
-        public JsonResult UpdateJSON(string json, int characterId, int characterCurrentHp)
+        public JsonResult UpdateJSON(string json, int characterId, int characterCurrentHp, int attackingPlayerId)
         {
             var deserializedJson = JsonConvert.DeserializeObject<Battle>(json);
             var gameId = deserializedJson.gameId;
@@ -69,7 +69,7 @@ namespace DungeonsAndDragons.Controllers
                 Battle.UpdatePlayerHp(_context, characterId, characterCurrentHp);
             }
 
-            _hubcontext.Clients.Group(deserializedJson.gameId.ToString()).SendAsync("UpdateBattleStats", gameId.ToString(), json);
+            _hubcontext.Clients.Group(deserializedJson.gameId.ToString()).SendAsync("UpdateBattleStats", gameId.ToString(), json, attackingPlayerId);
 
             return Json(json);
         }

@@ -31,7 +31,8 @@ function UpdateJson(characterId = 0, characterCurrentHp = 0, attackingPlayerId =
         data: {
             "json" : JSON.stringify(battleJson),
             "characterId" : characterId,
-            "characterCurrentHp" : characterCurrentHp
+            "characterCurrentHp" : characterCurrentHp,
+            "attackingPlayerId": attackingPlayerId
         }
     });
 };
@@ -117,7 +118,10 @@ function SetLiveCharacters() {
 $("#playerAttackButton").click(function(){
     if (battleJson.NPC.currentHp == 0) { alert("STAAAHP HE ALREADY DED!") };
     PlayerAttack();
-    var attackingPlayerId = battleJson.currentPlayerId;
+    var currentPlayerId = battleJson.currentPlayerId;
+
+    var attackingPlayerId = battleJson.players.find(obj => { return obj.userid == currentPlayerId}).id;
+    console.log(attackingPlayerId);
     SetCurrentPlayerId();
     UpdateJson(0, 0, attackingPlayerId);
 });
@@ -144,7 +148,9 @@ connection.on("EndBattleRedirect", function (gameid){
     window.location.replace("../../Game/View/" + gameid);
 });
 
-connection.on("UpdateBattleStats", function (gameId, updatedStatsJson) {
+connection.on("UpdateBattleStats", function (gameId, updatedStatsJson, attackingPlayerId) {
+    console.log(attackingPlayerId);
+    attackAnimation(attackingPlayerId);
     UpdateJsonDiv(updatedStatsJson);
 });
 
