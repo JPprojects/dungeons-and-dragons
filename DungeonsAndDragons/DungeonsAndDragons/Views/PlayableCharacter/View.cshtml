@@ -1,6 +1,5 @@
 ﻿@section Scripts{
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/characterView.js"></script>
 }
 
 ﻿@{
@@ -12,7 +11,7 @@
 
     <hr />
 
-    <img src="@ViewBag.Character.speciesimage" class="character-img"/>
+    <img src="@ViewBag.Character.speciesimage" class="character-img" />
 
     <h2>Species: @ViewBag.Character.speciestype</h2>
 
@@ -35,32 +34,35 @@
                 <th>Quantity</th>
                 <th>Action</th>
             </tr>
+
         </thead>
 
         @foreach (var item in @ViewBag.Inventory)
         {
-            <tr>
-                <td><img src="@item.imagePath" class="align-top navbar-image"/></td>
-                <td>@item.itemName</td>
-                <td>@item.itemType</td>
-                <td>@item.healingFactor</td>
-                <td>@item.attack</td>
-                <td>@item.quantity</td>
-                <td>
-                    @if (@item.itemType == "Healing" && @ViewBag.Character.playablecharacterhp < @ViewBag.Character.speciesbasehp)
-                    {
-                        <form asp-controller="PlayableCharacter" asp-action="Use">
-                            <input type="hidden" name="itemId" value="@item.id" />
-                            <input type="hidden" name="playableCharacterId" value="@ViewBag.Character.playablecharacterid" />
-                            <button class="useItem btn btn-outline-info form-submit" name="itemId" id="@item.id">Use</button>
-                        </form>
-                    }
-                </td>
-            </tr>
+            if (item.quantity > 0)
+            {
+                <tr>
+                    <td><img src="@item.imagePath" class="align-top navbar-image"/></td>
+                    <td>@item.itemName</td>
+                    <td>@item.itemType</td>
+                    <td>@item.healingFactor</td>
+                    <td>@item.attack</td>
+                    <td>@item.quantity</td>
+                    <td>
+                        @if (@item.itemType == "Healing" && @ViewBag.Character.playablecharacterhp < @ViewBag.Character.speciesbasehp)
+                        {
+                            <form asp-controller="PlayableCharacter" asp-action="Use">
+                                <input type="hidden" name="playableCharacterId" value="@ViewBag.Character.playablecharacterid" />
+                                <button class="useItem btn btn-outline-info form-submit" name="playerInventoryItemId" value="@item.id">Use</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+
         }
     </table>
 
     <div id="inventoryJson" style="display:none">@ViewBag.InventoryJson</div>
     <div id="playableCharacterId" style="display:none">@ViewBag.Character.playablecharacterid</div>
 </div>
-

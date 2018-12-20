@@ -69,7 +69,7 @@ namespace DungeonsAndDragons.Models
         {
             List<Inventory> playersCurrentInventory = getPlayersInventory(_context, chracterId);
 
-            Inventory itemToUpdate = playersCurrentInventory.FirstOrDefault(i => i.inventoryItemId == itemId);
+            Inventory itemToUpdate = playersCurrentInventory.FirstOrDefault(i => i.id == itemId);
             if (itemToUpdate != null)
             {
                 if (itemToUpdate.quantity <= quantity)
@@ -91,6 +91,16 @@ namespace DungeonsAndDragons.Models
         public static InventoryItem GetInventoryItemById(DungeonsAndDragonsContext _context, int itemId)
         {
             return _context.inventoryitems.Single(i => i.id == itemId);
+        }
+
+
+
+        public static InventoryItem GetInventoryItemFromPlayerInventoryById(DungeonsAndDragonsContext _context, int playerInventoryItemId)
+        {
+
+            var inventoryItemId = _context.inventory.Where(x => x.id == playerInventoryItemId).First().inventoryItemId;
+            var item = _context.inventoryitems.Single(i => i.id == inventoryItemId);
+            return item;
         }
     }
 }
