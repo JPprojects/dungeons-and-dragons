@@ -6,24 +6,38 @@
     <script src="~/js/characterPreview.js"></script>
 }
 
-<h1>Create NPC</h1>
+<div class="text-center">
+    <h1>Create NPC</h1>
 
-<form action="Create" method="post">
-    <input type="text" name="characterName" required="" autofocus="" placeholder="Character Name" />
-    <select id="species-form" name="speciesId" onchange="changePreview(this)">
-        @foreach (var species in ViewBag.Species)
-        {
-            <option value="@species.id">@species.species_type</option>
-        }
-    </select>
-    <input type="hidden" name="gameId" value="@ViewBag.GameID" />
-    <input type="submit" value="Create NPC" />
-</form>
+    <hr />
 
-<div id="character-preview">
-    <img id="character-image" class="preview" src="@ViewBag.Species[0].image_path" style="height: 150px; width: 100px;" />
-    <p>HP: <span id="character-hp">@ViewBag.Species[0].base_hp</span></p>
-    <p>Attack: <span id="character-attack">@ViewBag.Species[0].base_attack</span></p>
+    <form action="Create" method="post">
+        <div class="pt-2 pb-1">
+            <input type="text" name="characterName" required="" autofocus="" placeholder="Character Name" class="form-control form-input" />
+        </div>
+        <div class="pt-2 pb-1 inner">
+            <select id="species-form" name="speciesId" onchange="changePreview(this)" class="form-control dropdown">
+                @foreach (var species in ViewBag.Species)
+                {
+                    <option value="@species.id">@species.species_type</option>
+                }
+            </select>
+        </div> 
+        <div class="pt-2 pb-1">
+            <input type="hidden" name="gameId" value="@ViewBag.GameID" />
+            <button type="submit" class="btn btn-outline-info form-submit">Create NPC</button>
+        </div>
+    </form>
+
+    <div id="character-preview" class="pt-2 pb-1" >
+        <img id="character-image" class="img-preview" src="@ViewBag.Species[0].image_path" />
+        <div class="pt-2 pb-1">
+            HP: <span id="character-hp">@ViewBag.Species[0].base_hp</span>
+        </div>
+        <div class="pt-2 pb-1">
+            Attack: <span id="character-attack">@ViewBag.Species[0].base_attack</span>
+        </div>
+    </div>
+    <div id="json-species" style="display: none;">@ViewBag.jsonSpecies</div>
 </div>
 
-<div id="json-species" style="display: none;">@ViewBag.jsonSpecies</div>
