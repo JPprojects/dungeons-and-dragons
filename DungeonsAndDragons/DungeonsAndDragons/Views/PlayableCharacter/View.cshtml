@@ -34,6 +34,7 @@
                 <th>Quantity</th>
                 <th>Action</th>
             </tr>
+
         </thead>
 
         @foreach (var item in @ViewBag.Inventory)
@@ -41,7 +42,7 @@
             if (item.quantity > 0)
             {
                 <tr>
-                    <td>@item.imagePath</td>
+                    <td><img src="@item.imagePath" class="align-top navbar-image"/></td>
                     <td>@item.itemName</td>
                     <td>@item.itemType</td>
                     <td>@item.healingFactor</td>
@@ -65,4 +66,3 @@
     <div id="inventoryJson" style="display:none">@ViewBag.InventoryJson</div>
     <div id="playableCharacterId" style="display:none">@ViewBag.Character.playablecharacterid</div>
 </div>
-

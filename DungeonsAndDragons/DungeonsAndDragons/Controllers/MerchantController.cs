@@ -88,7 +88,7 @@ namespace DungeonsAndDragons.Controllers
             if (characterBalance < itemPrice)
             {
 
-                TempData["FlashMessage"] = "Insufficent funds.";
+                TempData["FlashMessage"] = "Merchant: 'You cannot afford that, peasant!'";
 
             }
             else
