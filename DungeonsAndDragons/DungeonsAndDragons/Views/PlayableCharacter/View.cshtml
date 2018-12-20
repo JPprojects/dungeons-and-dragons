@@ -7,51 +7,60 @@
     ViewData["Title"] = ViewBag.Character.playablecharactername;
 }
 
-<h1> @ViewBag.Character.playablecharactername </h1>
+<div class="text-center">
+    <h1> @ViewBag.Character.playablecharactername </h1>
 
-<img src="@ViewBag.Character.speciesimage" style="height:450px; width:300px;" />
+    <hr />
 
-<h2>Species: @ViewBag.Character.speciestype</h2>
+    <img src="@ViewBag.Character.speciesimage" class="character-img"/>
 
-<p>HP: @ViewBag.Character.playablecharacterhp</p>
+    <h2>Species: @ViewBag.Character.speciestype</h2>
 
-<p>Attack: @ViewBag.Character.playablecharacterattack</p>
+    <p>HP: @ViewBag.Character.playablecharacterhp</p>
 
-<h2>Inventory</h2>
+    <p>Attack: @ViewBag.Character.playablecharacterattack</p>
 
-<table style="width: 100%">
-    <tr>
-        <th>Item</th>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Healing Factor</th>
-        <th>Attack Strength</th>
-        <th>Quantity</th>
-        <th>Action</th>
-    </tr>
+    <hr />
 
-    @foreach (var item in @ViewBag.Inventory)
-    {
-        <tr>
-            <td>@item.imagePath</td>
-            <td>@item.itemName</td>
-            <td>@item.itemType</td>
-            <td>@item.healingFactor</td>
-            <td>@item.attack</td>
-            <td>@item.quantity</td>
-            <td>
-                @if (@item.itemType == "Healing" && @ViewBag.Character.playablecharacterhp < @ViewBag.Character.speciesbasehp)
-                {
-                    <form asp-controller="PlayableCharacter" asp-action="Use">
-                        <input type="hidden" name="itemId" value="@item.id" />
-                        <input type="hidden" name="playableCharacterId" value="@ViewBag.Character.playablecharacterid" />
-                        <button class="useItem" name="itemId" id="@item.id">Use</button>
-                    </form>
-                }
-            </td>
-        </tr>
-    }
-</table>
+    <h2>Inventory</h2>
 
-<div id="inventoryJson" style="display:none">@ViewBag.InventoryJson</div>
-<div id="playableCharacterId" style="display:none">@ViewBag.Character.playablecharacterid</div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Healing Factor</th>
+                <th>Attack Strength</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        @foreach (var item in @ViewBag.Inventory)
+        {
+            <tr>
+                <td>@item.imagePath</td>
+                <td>@item.itemName</td>
+                <td>@item.itemType</td>
+                <td>@item.healingFactor</td>
+                <td>@item.attack</td>
+                <td>@item.quantity</td>
+                <td>
+                    @if (@item.itemType == "Healing" && @ViewBag.Character.playablecharacterhp < @ViewBag.Character.speciesbasehp)
+                    {
+                        <form asp-controller="PlayableCharacter" asp-action="Use">
+                            <input type="hidden" name="itemId" value="@item.id" />
+                            <input type="hidden" name="playableCharacterId" value="@ViewBag.Character.playablecharacterid" />
+                            <button class="useItem btn btn-outline-info form-submit" name="itemId" id="@item.id">Use</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div id="inventoryJson" style="display:none">@ViewBag.InventoryJson</div>
+    <div id="playableCharacterId" style="display:none">@ViewBag.Character.playablecharacterid</div>
+</div>
+

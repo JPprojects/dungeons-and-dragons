@@ -6,73 +6,100 @@
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/dndhub.js"></script>
 }
+    <div class="text-center">
+        <h1> @ViewBag.Game.name </h1>
 
-<h1> @ViewBag.Game.name </h1>
+        <hr />
 
-@if (ViewBag.DM.id == ViewBag.UserID)
-{
-    <h2>Interactions</h2>
+        <h2>Game Master</h2>
 
-    <form action="../../Battle/Create" method="post">
-        <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
-        <select name="npcId">
-            @foreach (var npc in ViewBag.NPCs)
-            {
-                <option value="@npc.id">@npc.name</option>
-            }
-        </select>
-        <input type="submit" value="Start Battle" />
-    </form>
+        @ViewBag.DM.username
 
-    <form action="../../Merchant/Create" method="post">
-        <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
-        <input type="submit" value="Open Shop" />
-    </form>
+        <hr />
 
-    <h2>Invite Players</h2>
+        @if (ViewBag.DM.id == ViewBag.UserID)
+        
+    {
+        <h2>Game Management</h2>
 
-    <form action="../Invite" method="post">
-        <input type="hidden" name="id" value="@ViewBag.Game.id">
-        <input type="text" name="inviteeUsername" required="" autofocus="" placeholder="Player Name" />
-        <input type="submit" value="Invite" />
-    </form>
+        <h4>Interactions</h4>
 
-    @ViewBag.Message
+        <div class="pt-2 pb-2">
+            <form action="../../Merchant/Create" method="post">
+                <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
+                <button type="submit" class="btn btn-outline-info">Open Shop</button>
+            </form>
+        </div>
 
-    <h3>NPCs</h3>
+        <div class="pt-2 pb-3">
+            <form action="../../Battle/Create" method="post">
+            <div class="inner">
+                <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
+                <select name="npcId" class="form-control dropdown">
+                    @foreach (var npc in ViewBag.NPCs)
+                    {
+                        <option value="@npc.id">@npc.name</option>
+                    }
+                </select>
+                </div>
+                <div class="inner">
+                    <button type="submit" class="btn btn-outline-info">Start Battle</button>
+                </div>
+            </form>
+        </div>
 
-    <form action="../../NonPlayableCharacter/New" method="get">
-        <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
-        <input type="hidden" name="dmid" value="@ViewBag.DM.id" />
-        <input type="submit" value="Generate NPC" />
-    </form>
+        <h4>NPCs</h4>
 
-    @foreach (NonPlayableCharacter character in ViewBag.NPCs)
+        <form action="../../NonPlayableCharacter/New" method="get">
+            <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
+            <input type="hidden" name="dmid" value="@ViewBag.DM.id" />
+            <button type="submit" class="btn btn-outline-info">Create NPC</button>
+        </form>
+
+        @foreach (NonPlayableCharacter character in ViewBag.NPCs)
     {
         <a href="../../NonPlayableCharacter/View/@character.id">@character.name</a><br />
-    }
 }
 
-<h3>Game Master</h3>
+        <hr />
+}
 
-@ViewBag.DM.username
+        <h2>Invite Players</h2>
 
-<h3>Players</h3>
+        <form action="../Invite" method="post">
+            <div class="pt-2 pb-1">
+                <input type="hidden" name="id" value="@ViewBag.Game.id">
+                <input type="text" name="inviteeUsername" required="" autofocus="" placeholder="Player Name" class="form-control form-input" />
+            </div>
+            <div class="pt-2 pb-1">
+                <button type="submit" class="btn btn-outline-info">Invite</button>
+            </div>
+        </form>
 
-<div id="acceptedPlayers">
-    @foreach (var user in ViewBag.AcceptedUsers)
-    {
-        <p>@user.userusername playing as <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a></p>
+        @ViewBag.Message
+
+        <hr />
+
+        <h2>Players</h2>
+
+        <h4>Accepted</h4>
+
+        <div id="acceptedPlayers">
+            @foreach (var user in ViewBag.AcceptedUsers)
+        {
+            <p>@user.userusername playing as <a href="../../PlayableCharacter/View/@user.playablecharacterid">@user.playablecharactername</a></p>
     }
-</div>
+        </div>
+       
 
-<h3>Pending Players</h3>
+        <h4>Pending</h4>
 
-<div id="pendingPlayers">
-    @foreach (var user in ViewBag.PendingUsers)
-    {
-        <p>@user.userusername</p>
+        <div id="pendingPlayers">
+            @foreach (var user in ViewBag.PendingUsers)
+        {
+            <p>@user.userusername</p>
     }
-</div>
+        </div>
 
-<div id="gameid" style="display: none">@ViewBag.Game.id</div>
+        <div id="gameid" style="display: none">@ViewBag.Game.id</div>
+    </div>

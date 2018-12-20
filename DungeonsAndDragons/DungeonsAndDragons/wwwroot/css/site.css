@@ -1,12 +1,12 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
-for details on configuring this project to bundle and minify static web assets. */
-body {
+﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
+a {
+    color: #128193;
+}
+
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -41,8 +41,39 @@ body {
 }
 
 .form-submit {
-    width: 50%;
+    min-width: 20%;
     height: 40px;
     font-size: 15px;
     font-weight: bold;
+}
+
+.new-game-btn {
+    height: 45px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.inner {
+    display: inline-block;
+}
+
+.dropdown {
+    border-color: #bbeff7;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.navbar-image {
+    height: 35px;
+}
+
+.img-preview {
+    height: 220px;
+    width: 150px;
+}
+
+.character-img {
+    height: 450px;
+    width: 300px;
 }
