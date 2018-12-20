@@ -4,7 +4,7 @@
 }
 
 <style>
-    img {
+    .char-img {
         max-height: 200px;
         min-height: 200px;
         max-width: 133px;
@@ -26,6 +26,10 @@
     .progress-bar-enemy {
         background-color: maroon;
     }
+
+    .navbar-image {
+        height: 35px;
+    }
 </style>
 
 
@@ -38,7 +42,7 @@
 <div id="enemies" class="row d-flex justify-content-center">
 
     <div class="card mx-2">
-        <img class="card-img-top" id="enemyImage" src="">
+        <img class="card-img-top char-img" id="enemyImage" src="">
         <div class="card-body">
             <h5 class="card-title enemyName"></h5>
             <div class="progress">
@@ -63,7 +67,7 @@
     @foreach (var player in ViewBag.Battle.players)
     {
         <div class="card m-2 align-bottom">
-            <img class="card-img-top" id="@player.id-image" src="">
+            <img class="card-img-top char-img" id="@player.id-image" src="">
             <div class="card-body rounded" id="@player.id-card">
                 <h5 class="@player.id-name enemyName"></h5>
                 <div class="progress">
