@@ -51,7 +51,10 @@ namespace DungeonsAndDragons.Controllers
 
             GameUser generatedChracter = PlayableCharacter.GenerateCharacter(_context, gameUserId, userId, speciesId, characterName);
 
-            IQueryable gameUserAndPlayableCharacterJoin = Mapping.GameUserAndPlayableCharacterJoin(_context, userId);
+            var gameIdQuery = _context.gamesusers.SingleOrDefault(x => x.id == gameUserId);
+            var gameId = gameIdQuery.gameid;
+
+            IQueryable gameUserAndPlayableCharacterJoin = Mapping.GameUserAndPlayableCharacterJoin(_context, gameId);
 
             List<Mapping> acceptedplayers = Game.GetPlayerGames(gameUserAndPlayableCharacterJoin);
             List<Mapping> pendingplayers = Game.GetInvites(gameUserAndPlayableCharacterJoin);
