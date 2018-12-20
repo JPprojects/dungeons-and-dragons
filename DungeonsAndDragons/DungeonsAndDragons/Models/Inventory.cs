@@ -69,6 +69,27 @@ namespace DungeonsAndDragons.Models
         {
             List<Inventory> playersCurrentInventory = getPlayersInventory(_context, chracterId);
 
+            Inventory itemToUpdate = playersCurrentInventory.FirstOrDefault(i => i.inventoryItemId == itemId);
+            if (itemToUpdate != null)
+            {
+                if (itemToUpdate.quantity <= quantity)
+                {
+                    itemToUpdate.quantity = 0;
+                }
+                else
+                {
+                    itemToUpdate.quantity = itemToUpdate.quantity - quantity;
+                }
+                _context.SaveChanges();
+            }
+
+            return itemToUpdate;
+        }
+
+        public static Inventory RemoveHealingItemFromInventory(DungeonsAndDragonsContext _context, int chracterId, int itemId, int quantity)
+        {
+            List<Inventory> playersCurrentInventory = getPlayersInventory(_context, chracterId);
+
             Inventory itemToUpdate = playersCurrentInventory.FirstOrDefault(i => i.id == itemId);
             if (itemToUpdate != null)
             {
