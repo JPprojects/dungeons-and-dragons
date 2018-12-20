@@ -26,10 +26,7 @@
     .progress-bar-enemy {
         background-color: maroon;
     }
-
-    .navbar-image {
-        height: 35px;
-    }
+   
 </style>
 
 
@@ -37,6 +34,8 @@
 
 <center>
     <h1>Battle!</h1>
+    <hr />
+
 </center>
 
 <div id="enemies" class="row d-flex justify-content-center">
@@ -79,27 +78,37 @@
         </div>
     }
 </div>
+
+<hr />
+
 <center>
     @if (ViewBag.Battle.dmId == ViewBag.LoggedInUserID)
     {
-        <select id="npcAttack">
-            @foreach (var player in ViewBag.Battle.players)
-            {
-                <option class="@player.id-name" value="@player.id"></option>
-            }
-        </select>
-        <button id="npcAttackButton" type="submit">Attack!</button>
+        <div class="pt-2 pb-1">
+            <div class="inner">
+            <select id="npcAttack" class="form-control dropdown">
+                @foreach (var player in ViewBag.Battle.players)
+                {
+                    <option class="@player.id-name" value="@player.id"></option>
+                }
+            </select>
+            </div>
+            <button id="npcAttackButton" type="submit" class="btn btn-outline-info form-submit">Attack!</button>
+        </div>
 
-        <form action="../../Battle/End" method="post">
-            <input type="hidden" name="gameid" value="@ViewBag.gameid" />
-            <input type="submit" value="End Battle" />
-        </form>
+        <div class="pt-2 pb-1">
+            <form action="../../Battle/End" method="post">
+                <input type="hidden" name="gameid" value="@ViewBag.gameid" />
+                <button type="submit" class="btn btn-outline-info form-submit">End Battle</button>
+            </form>
+        </div>
+
     }
 
     <div id="playerAttack" style="display:none">
         @if (ViewBag.Battle.dmId != ViewBag.LoggedInUserID)
         {
-            <button id="playerAttackButton">Attack <span class="enemyName"></span>!</button>
+            <button id="playerAttackButton" class="btn btn-outline-info form-submit">Attack <span class="enemyName"></span>!</button>
         }
     </div>
 
