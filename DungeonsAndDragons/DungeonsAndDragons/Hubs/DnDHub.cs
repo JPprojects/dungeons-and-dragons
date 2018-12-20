@@ -44,9 +44,9 @@ namespace DungeonsAndDragons.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, gameid);
         }
 
-        public async Task UpdateBattleStats(string gameid, string updatedStatsJson)
+        public async Task UpdateBattleStats(string gameid, string updatedStatsJson, int attackingPlayerId)
         {
-            await Clients.Group(gameid).SendAsync("UpdateBattleStats", gameid, updatedStatsJson);
+            await Clients.Group(gameid).SendAsync("UpdateBattleStats", gameid, updatedStatsJson, attackingPlayerId);
 
         }
 

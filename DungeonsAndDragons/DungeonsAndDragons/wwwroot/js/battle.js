@@ -31,10 +31,20 @@ function UpdateJson(characterId = 0, characterCurrentHp = 0, attackingPlayerId =
         data: {
             "json" : JSON.stringify(battleJson),
             "characterId" : characterId,
-            "characterCurrentHp" : characterCurrentHp
+            "characterCurrentHp" : characterCurrentHp,
+            "attackingPlayerId": attackingPlayerId
         }
     });
 };
+
+
+function CreateBorder() {
+    var currentPlayerId = battleJson.currentPlayerId;
+    var attackingPlayerId = battleJson.players.find(obj => { return obj.userid == currentPlayerId}).id;
+    $(".card-body").css("border", "none");
+    $("#" + attackingPlayerId + "-card").css("border", "1px solid green");
+
+}
 
 function LoadBattleValues() {
     attackAnimation()
@@ -42,24 +52,34 @@ function LoadBattleValues() {
     $("#enemyImage").attr("src", battleJson.NPC.imagePath);
     $("#enemyCurrentHp").text(battleJson.NPC.currentHp);
     $("#enemyMaxHp").text(battleJson.NPC.maxHp);
+    $("#enemyHealthBar").attr("aria-valuemax", battleJson.NPC.maxHp);
+    $("#enemyHealthBar").attr("aria-valuenow", battleJson.NPC.currentHp);
+    $("#enemyHealthBar").css("width", (battleJson.NPC.currentHp / battleJson.NPC.maxHp * 100) + "%");
     $("#enemyAttack").text(battleJson.NPC.attack);
     battleJson.players.forEach(function(element) {
         $("." + element.id + "-name").text(element.name);
         $("#" + element.id + "-image").attr("src", element.imagePath);
         $("#" + element.id + "-currentHp").text(element.currentHp);
         $("#" + element.id + "-maxHp").text(element.maxHp);
+        $("#" + element.id + "-healthBar").attr("aria-valuemax", element.maxHp);
+        $("#" + element.id + "-healthBar").attr("aria-valuenow", element.currentHp);
+        $("#" + element.id + "-healthBar").css("width", (element.currentHp / element.maxHp * 100) + "%");
         $("#" + element.id + "-attack").text(element.attack);
     })
     SetLiveCharacters();
     ShowAndHidePlayerAttackButton();
+    CreateBorder();
 };
 
 function ShowAndHidePlayerAttackButton() {
+
     if ($("#loggedInUserId").text() == battleJson.currentPlayerId) {
         $("#playerAttack").attr("style", "display:block");
+        
     }
     else {
         $("#playerAttack").attr("style", "display:none");
+
     }
 };
 
@@ -117,7 +137,10 @@ function SetLiveCharacters() {
 $("#playerAttackButton").click(function(){
     if (battleJson.NPC.currentHp == 0) { alert("STAAAHP HE ALREADY DED!") };
     PlayerAttack();
-    var attackingPlayerId = battleJson.currentPlayerId;
+    var currentPlayerId = battleJson.currentPlayerId;
+
+    var attackingPlayerId = battleJson.players.find(obj => { return obj.userid == currentPlayerId}).id;
+    console.log(attackingPlayerId);
     SetCurrentPlayerId();
     UpdateJson(0, 0, attackingPlayerId);
 });
@@ -144,7 +167,8 @@ connection.on("EndBattleRedirect", function (gameid){
     window.location.replace("../../Game/View/" + gameid);
 });
 
-connection.on("UpdateBattleStats", function (gameId, updatedStatsJson) {
+connection.on("UpdateBattleStats", function (gameId, updatedStatsJson, attackingPlayerId) {
+    attackAnimation(attackingPlayerId);
     UpdateJsonDiv(updatedStatsJson);
 });
 
@@ -160,11 +184,8 @@ connection.start().then(function(result){
 
 // ************ Animations ************ //
 
-function moveUp(id){
-   
+function moveUp(id){ 
     $("#" + id + "-image").css("top", "-100px");
-
-
 }
 
 function moveDown(id){
@@ -172,7 +193,6 @@ function moveDown(id){
 
 
 }
-
 
 function attackAnimation(id){
     moveUp(id);
