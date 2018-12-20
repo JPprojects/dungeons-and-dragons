@@ -59,9 +59,16 @@ a {
 
 .dropdown {
     border-color: #bbeff7;
-  '
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .navbar-image {
     height: 35px;
+}
+
+.img-preview {
+    height: 220px;
+    width: 150px;
 }
