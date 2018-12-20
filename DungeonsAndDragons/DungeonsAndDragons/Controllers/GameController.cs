@@ -79,6 +79,10 @@ namespace DungeonsAndDragons.Controllers
             Game game = Game.getGameById(_context, gameId);
             IQueryable gameLobbyAcceptedAndPendingPlayers = Mapping.GameUserAndPlayableCharacterJoin(_context, gameId);
 
+            IQueryable<NonPlayableCharacter> NPCs = _context.nonplayablecharacters.Where(x => x.gameid == gameId);
+
+            bool NPCsHasElements = NPCs.AsQueryable().Any();
+
             ViewBag.Username = _sessionHandler.GetSignedInUsername();
             ViewBag.UserID = _sessionHandler.GetSignedInUserID();
             ViewBag.NPCs = _context.nonplayablecharacters.Where(x => x.gameid == gameId);
@@ -87,6 +91,7 @@ namespace DungeonsAndDragons.Controllers
             ViewBag.Game = game;
             ViewBag.Message = TempData["FlashMessage"];
             ViewBag.DM = _context.users.SingleOrDefault(x => x.id == game.dm);
+            ViewBag.hasNPCs = NPCsHasElements;
             return View();
         }
 

@@ -6,6 +6,7 @@
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/dndhub.js"></script>
 }
+
 <div class="text-center">
     <h1> @ViewBag.Game.name </h1>
 
@@ -30,7 +31,30 @@
                 <button type="submit" class="btn btn-outline-info">Open Shop</button>
             </form>
         </div>
+        @if (@ViewBag.hasNPCs)
+        {
+            <div class="pt-2 pb-3">
+                <form action="../../Battle/Create" method="post">
+                    <div class="inner">
+                        <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
 
+
+                        <select name="npcId" class="form-control dropdown">
+                            @foreach (var npc in ViewBag.NPCs)
+                            {
+                                <option value="@npc.id">@npc.name</option>
+                            }
+                        </select>
+
+
+                    </div>
+                    <div class="inner">
+                        <button type="submit" class="btn btn-outline-info">Start Battle</button>
+                    </div>
+                </form>
+            </div>
+        }
+  
         <div class="pt-2 pb-3">
             <form action="../../Battle/Create" method="post">
                 <div class="inner">
@@ -68,22 +92,21 @@
 
     {
 
-        <h2>Invite Players</h2>
+      <h2>Invite Players</h2>
 
-        <form action="../Invite" method="post">
-            <div class="pt-2 pb-1">
-                <input type="hidden" name="id" value="@ViewBag.Game.id">
-                <input type="text" name="inviteeUsername" required="" autofocus="" placeholder="Player Name" class="form-control form-input" />
-            </div>
-            <div class="pt-2 pb-1">
-                <button type="submit" class="btn btn-outline-info">Invite</button>
-            </div>
-        </form>
+      <form action="../Invite" method="post">
+          <div class="pt-2 pb-1">
+              <input type="hidden" name="id" value="@ViewBag.Game.id">
+              <input type="text" name="inviteeUsername" required="" autofocus="" placeholder="Player Name" class="form-control form-input" />
+          </div>
+          <div class="pt-2 pb-1">
+              <button type="submit" class="btn btn-outline-info">Invite</button>
+          </div>
+      </form>
 
-        @ViewBag.Message
+      @ViewBag.Message
 
-        <hr />
-
+      <hr />
     }
 
     <h2>Players</h2>
@@ -97,9 +120,8 @@
         }
     </div>
 
-
     <h4>Pending</h4>
-
+  
     <div id="pendingPlayers">
         @foreach (var user in ViewBag.PendingUsers)
         {
