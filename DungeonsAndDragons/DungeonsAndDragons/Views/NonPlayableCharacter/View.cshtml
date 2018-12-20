@@ -2,12 +2,17 @@
     ViewData["Title"] = ViewBag.Character.nonplayablecharactername;
 }
 
-<h1>@ViewBag.Character.nonplayablecharactername</h1>
+<div class="text-center">
+    <h1>@ViewBag.Character.nonplayablecharactername</h1>
 
-<img src="@ViewBag.Character.speciesimage" style="height:450px; width:300px;" />
+    <hr />
 
-<h2>Species: @ViewBag.Character.speciestype</h2>
+    <img src="@ViewBag.Character.speciesimage" class="character-img" />
 
-<p>HP: @ViewBag.Character.nonplayablecharacterhp</p>
+    <h2>Species: @ViewBag.Character.speciestype</h2>
 
-<p>Attack: @ViewBag.Character.nonplayablecharacterattack</p>
+    <p>HP: @ViewBag.Character.nonplayablecharacterhp</p>
+
+    <p>Attack: @ViewBag.Character.nonplayablecharacterattack</p>
+</div>
+
