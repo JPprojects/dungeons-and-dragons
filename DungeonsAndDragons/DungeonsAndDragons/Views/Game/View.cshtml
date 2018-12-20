@@ -35,7 +35,7 @@
             <form action="../../Battle/Create" method="post">
             <div class="inner">
                 <input type="hidden" name="gameid" value="@ViewBag.Game.id" />
-                <select name="npcId">
+                <select name="npcId" class="form-control dropdown">
                     @foreach (var npc in ViewBag.NPCs)
                     {
                         <option value="@npc.id">@npc.name</option>
