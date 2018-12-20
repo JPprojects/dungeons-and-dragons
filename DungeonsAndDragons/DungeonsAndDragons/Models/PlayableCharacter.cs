@@ -65,7 +65,7 @@ namespace DungeonsAndDragons.Models
         public static void UseHealingItem(DungeonsAndDragonsContext _context, int playerInventoryItemId, int playableCharacterId)
         {
             var playerInventory = Inventory.GetPlayersInventoryForDisplay(_context, playableCharacterId);
-            Inventory.RemoveItemFromInventory(_context, playableCharacterId, playerInventoryItemId, 1);
+            Inventory.RemoveHealingItemFromInventory(_context, playableCharacterId, playerInventoryItemId, 1);
             var healingFactor = playerInventory.Find(i => i.id == playerInventoryItemId);
             var playableCharacter = GetPlayableCharacterById(_context, playableCharacterId);
             playableCharacter.currentHp += healingFactor.healingFactor;
