@@ -18,6 +18,14 @@
     .card {
         border: none;
     }
+
+    .progress-bar-friendly {
+        background-color: green;
+    }
+
+    .progress-bar-enemy {
+        background-color: maroon;
+    }
 </style>
 
 
@@ -34,7 +42,7 @@
         <div class="card-body">
             <h5 class="card-title enemyName"></h5>
             <div class="progress">
-                <div id="enemyHealthBar" class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                <div id="enemyHealthBar" class="progress-bar progress-bar-enemy" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
             <p class="card-text">Health: <span id="enemyCurrentHp"></span> / <span id="enemyMaxHp"></span></p>
             <p class="card-text">Attack: <span id="enemyAttack"></span></p>
@@ -56,10 +64,10 @@
     {
         <div class="card m-2 align-bottom">
             <img class="card-img-top" id="@player.id-image" src="">
-            <div class="card-body">
+            <div class="card-body rounded" id="@player.id-card">
                 <h5 class="@player.id-name enemyName"></h5>
                 <div class="progress">
-                    <div id="@player.id-healthBar" class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div id="@player.id-healthBar" class="progress-bar progress-bar-friendly" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <p class="card-text">Health: <span id="@player.id-currentHp"></span> / <span id="@player.id-maxHp"></span></p>
                 <p class="card-text">Attack: <span id="@player.id-attack"></span></p>
