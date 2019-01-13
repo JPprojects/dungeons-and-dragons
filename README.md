@@ -67,7 +67,7 @@ dotnet ef database update
 ```
 
 ### Setup Foreign Keys and Nullable Values ###
-In each table manually set the following foreign keys and null requirements. Unless explicitly stated nullable should be set to false.
+In each table set the following foreign keys and null requirements. Unless explicitly stated nullable should be set to false.
 
 * games
   * dm => users.id
@@ -84,6 +84,30 @@ In each table manually set the following foreign keys and null requirements. Unl
 * playablecharacters
   * userid => users.id
   * species_id => species.id
+  
+Foreign Keys can be set by running the following SQL commands:
+
+```SQL
+ALTER TABLE games
+ADD FOREIGN KEY (dm) REFERENCES users(id);
+
+ALTER TABLE gamesusers
+ADD FOREIGN KEY (gameid) REFERENCES games(id),
+ADD FOREIGN KEY (userid) REFERENCES users(id),
+ADD FOREIGN KEY (playablecharacterid) REFERENCES playablecharacters(id);
+
+ALTER TABLE inventory
+ADD FOREIGN KEY (chracterid) REFERENCES playablecharacters(id),
+ADD FOREIGN KEY (inventoryItemId) REFERENCES inventoryitems(id);
+
+ALTER TABLE nonplayablecharacters
+ADD FOREIGN KEY (species_id) REFERENCES species(id),
+ADD FOREIGN KEY (game_id) REFERENCES games(id);
+
+ALTER TABLE playablecharacters
+ADD FOREIGN KEY (userid) REFERENCES users(id),
+ADD FOREIGN KEY (species_id) REFERENCES species(id);
+```
 
 ### Import Pre-existing Data ###
 There are files in the `sql_tables` directory that need to be imported to their respective tables.
